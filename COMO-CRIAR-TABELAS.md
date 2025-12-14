@@ -12,7 +12,7 @@ Copie todo o código abaixo e cole no editor SQL do Supabase:
 ```sql
 -- TABELA DE PRODUTOS
 create table public.products (
-  id uuid default gen_random_uuid() primary key,
+  id text primary key, -- ID texto
   user_id uuid references auth.users not null,
   name text not null,
   sku text,
@@ -25,7 +25,7 @@ create table public.products (
 
 -- TABELA DE MATERIAIS
 create table public.materials (
-  id uuid default gen_random_uuid() primary key,
+  id text primary key, -- ID texto
   user_id uuid references auth.users not null,
   name text not null,
   unit text,
