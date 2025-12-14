@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marcenaria Brutalista</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+      }
+      /* Custom Scrollbar for brutalist feel */
+      ::-webkit-scrollbar {
+        width: 12px;
+        background: #000;
+      }
+      .dark ::-webkit-scrollbar {
+        background: #000;
+      }
+      :not(.dark) ::-webkit-scrollbar {
+        background: #f3f4f6;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #0000FF;
+        border: 2px solid white;
+      }
+      :not(.dark) ::-webkit-scrollbar-thumb {
+        border: 2px solid black;
+      }
+
+      /* ANIMATIONS */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .hover-glitch:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 6px 6px 0px 0px #0000FF;
+      }
+      
+      .stagger-1 { animation-delay: 100ms; }
+      .stagger-2 { animation-delay: 200ms; }
+      .stagger-3 { animation-delay: 300ms; }
+      .stagger-4 { animation-delay: 400ms; }
+
+      /* GLOBAL BRUTALIST UTILITIES */
+      .brutal-btn {
+        transition: all 0.2s ease-in-out;
+      }
+      .brutal-btn:active {
+        transform: translateY(2px);
+        box-shadow: none !important;
+      }
+      
+      .brutal-input {
+        transition: border-color 0.2s, background-color 0.2s;
+      }
+
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0000FF",
+              "alert": "#FF0000",
+              "background-dark": "#000000",
+              "background-light": "#F3F4F6", 
+              "panel-dark": "#1A1A1A",
+              "panel-light": "#FFFFFF",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0",
+              "lg": "0",
+              "xl": "0",
+              "full": "0",
+            },
+            borderWidth: {
+              '3': '3px',
+              '4': '4px',
+            }
+          },
+        },
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react/": "https://esm.sh/react@18.2.0/",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?external=react,react-dom",
+    "recharts": "https://esm.sh/recharts@2.12.3?external=react,react-dom",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.7"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-background-light dark:bg-background-dark font-display text-black dark:text-white overflow-hidden transition-colors duration-300">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
