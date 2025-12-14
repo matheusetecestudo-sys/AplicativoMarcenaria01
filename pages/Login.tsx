@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { loginWithGitHub } from '../auth';
-import { GitHubLoginButton } from '../components/GitHubLoginButton';
 
 type ViewState = 'LOGIN' | 'REGISTER' | 'RECOVER';
 
@@ -138,20 +136,7 @@ export const Login: React.FC = () => {
                             </button>
 
 
-                            {/* GitHub OAuth Button */}
-                            <div className="relative my-6">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t-2 border-dashed border-gray-300 dark:border-gray-700"></div>
-                                </div>
-                                <div className="relative flex justify-center text-xs uppercase">
-                                    <span className="bg-white dark:bg-[#111] px-3 text-gray-500 font-black tracking-wider">Ou continue com</span>
-                                </div>
-                            </div>
 
-                            <GitHubLoginButton
-                                onError={(error) => setMessage({ type: 'error', text: error })}
-                                onLoading={setIsLoading}
-                            />
 
                             <div className="flex justify-between items-center mt-4 pt-4 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
                                 <button type="button" onClick={() => { clearMessage(); setView('REGISTER'); }} className="text-xs font-bold uppercase text-gray-500 hover:text-primary hover:underline">Solicitar Cadastro</button>
