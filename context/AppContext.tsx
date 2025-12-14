@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Order, Product, Material, AppSettings, TimeRange } from '../types';
+import { supabase, isSupabaseConfigured } from '../supabaseClient';
 
 interface AppContextType {
   orders: Order[];
