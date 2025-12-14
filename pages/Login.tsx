@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 
+import { signUpWithEmail, resetPassword } from '../auth';
+
 type ViewState = 'LOGIN' | 'REGISTER' | 'RECOVER';
 
 export const Login: React.FC = () => {
@@ -53,22 +55,40 @@ export const Login: React.FC = () => {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         clearMessage();
+
+        if (registerData.password !== registerData.confirmPassword) {
+            setMessage({ type: 'error', text: 'As senhas não coincidem.' });
+            return;
+        }
+
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            setMessage({ type: 'success', text: 'Solicitação enviada ao administrador.' });
-            setTimeout(() => setView('LOGIN'), 2000);
-        }, 1000);
+
+        const { error } = await signUpWithEmail(registerData.email, registerData.password, registerData.name);
+
+        setIsLoading(false);
+
+        if (error) {
+            setMessage({ type: 'error', text: error.message || 'Erro ao cadastrar.' });
+        } else {
+            setMessage({ type: 'success', text: 'Cadastro realizado! Verifique seu email para confirmar a conta.' });
+            setTimeout(() => setView('LOGIN'), 5000);
+        }
     };
 
     const handleRecover = async (e: React.FormEvent) => {
         e.preventDefault();
         clearMessage();
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            setMessage({ type: 'success', text: `Link de recuperação (simulado) enviado para ${recoverEmail}` });
-        }, 1000);
+
+        const { error } = await resetPassword(recoverEmail);
+
+        setIsLoading(false);
+
+        if (error) {
+            setMessage({ type: 'error', text: error.message || 'Erro ao enviar email.' });
+        } else {
+            setMessage({ type: 'success', text: `Link de recuperação enviado para ${recoverEmail}. Verifique sua caixa de entrada.` });
+        }
     };
 
     return (
