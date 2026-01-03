@@ -44,17 +44,20 @@ export const deleteRow = async (table: string, id: string) => {
 
 // --- SPECIFIC LOADERS (Com mapeamento se necessário) ---
 
+// ... (Modified fetch functions)
+
 export const fetchOrders = async (): Promise<Order[]> => {
+    const user = await getCurrentUser();
+    if (!user) return [];
+
     const { data, error } = await supabase
         .from('orders')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
     if (error) throw error;
 
-    // Converter snake_case do DB para camelCase do App se precisar, 
-    // mas vamos tentar manter compatibilidade direta.
-    // O campo 'items' vem como JSON, o Supabase já converte para objeto JS automaticamente.
     return data.map((o: any) => ({
         ...o,
         shippingCost: o.shipping_cost,
@@ -64,13 +67,27 @@ export const fetchOrders = async (): Promise<Order[]> => {
 };
 
 export const fetchProducts = async (): Promise<Product[]> => {
-    const { data, error } = await supabase.from('products').select('*');
+    const user = await getCurrentUser();
+    if (!user) return [];
+
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('user_id', user.id);
+
     if (error) throw error;
     return data as Product[];
 };
 
 export const fetchMaterials = async (): Promise<Material[]> => {
-    const { data, error } = await supabase.from('materials').select('*');
+    const user = await getCurrentUser();
+    if (!user) return [];
+
+    const { data, error } = await supabase
+        .from('materials')
+        .select('*')
+        .eq('user_id', user.id);
+
     if (error) throw error;
     return data.map((m: any) => ({
         ...m,
@@ -80,8 +97,17 @@ export const fetchMaterials = async (): Promise<Material[]> => {
 };
 
 export const fetchSettings = async (): Promise<AppSettings | null> => {
-    const { data, error } = await supabase.from('app_settings').select('*').single();
-    if (error) return null; // Pode não existir config ainda
+    const user = await getCurrentUser();
+    if (!user) return null;
+
+    // Explicitly filter by user_id to prevent leaking other users' settings
+    const { data, error } = await supabase
+        .from('app_settings')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+    if (error) return null;
 
     if (data) {
         return {

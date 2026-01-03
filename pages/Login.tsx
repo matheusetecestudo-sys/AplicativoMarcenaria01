@@ -239,6 +239,14 @@ export const Login: React.FC = () => {
                                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">send</span>
                             </div>
 
+                            <div className="bg-blue-50 dark:bg-blue-900/20 p-3 border-l-4 border-blue-500 text-[10px] text-blue-700 dark:text-blue-300 leading-relaxed">
+                                <strong className="block uppercase mb-1 font-black">Configuração Necessária:</strong>
+                                Para o link funcionar, adicione este endereço exato em "Redirect URLs" no painel do Supabase (Authentication):
+                                <code className="block mt-2 bg-white dark:bg-black p-1 border border-blue-200 dark:border-blue-800 rounded font-mono select-all">
+                                    {window.location.origin}
+                                </code>
+                            </div>
+
                             <button
                                 type="submit"
                                 disabled={isLoading}
