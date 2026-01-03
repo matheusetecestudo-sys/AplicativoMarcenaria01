@@ -202,8 +202,8 @@ export const Dashboard: React.FC = () => {
 
                         <div className="relative z-10 shrink-0">
                             {settings.company.logo ? (
-                                <div className="size-24 md:size-32 bg-white border-4 border-primary shadow-[4px_4px_0px_0px_#FFF] dark:shadow-[4px_4px_0px_0px_#333] p-1">
-                                    <img src={settings.company.logo} alt="Logo" className="w-full h-full object-contain" />
+                                <div className="h-24 md:h-32 w-auto min-w-[6rem] bg-white border-4 border-primary shadow-[4px_4px_0px_0px_#FFF] dark:shadow-[4px_4px_0px_0px_#333] p-1 flex items-center justify-center">
+                                    <img src={settings.company.logo} alt="Logo" className="h-full w-auto object-contain" />
                                 </div>
                             ) : (
                                 <div className="size-24 md:size-32 bg-primary flex items-center justify-center border-4 border-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">

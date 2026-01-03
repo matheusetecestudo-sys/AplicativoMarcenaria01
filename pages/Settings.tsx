@@ -326,10 +326,10 @@ export const Settings: React.FC = () => {
                             <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Seu Logotipo</span>
                             <div
                                 onClick={() => logoInputRef.current?.click()}
-                                className="size-40 border-4 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary cursor-pointer flex items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-black group transition-all hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg"
+                                className="h-40 w-auto min-w-[10rem] max-w-full border-4 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary cursor-pointer flex items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-black group transition-all hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg px-4"
                             >
                                 {companyForm.logo ? (
-                                    <img src={companyForm.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+                                    <img src={companyForm.logo} alt="Logo" className="h-full w-auto object-contain" />
                                 ) : (
                                     <div className="text-center text-gray-400 group-hover:text-primary transition-colors">
                                         <span className="material-symbols-outlined text-4xl">add_a_photo</span>
@@ -338,7 +338,7 @@ export const Settings: React.FC = () => {
                                 )}
                             </div>
                             <p className="text-[9px] font-bold text-gray-400 uppercase text-center md:text-left max-w-[160px]">
-                                Recomendado: PNG ou JPG (max 2MB).<br />Formato Quadrado (1:1).
+                                Recomendado: PNG ou JPG (max 2MB).
                             </p>
                             <input type="file" ref={logoInputRef} onChange={handleLogoUpload} accept="image/*" className="hidden" />
                             {companyForm.logo && (
