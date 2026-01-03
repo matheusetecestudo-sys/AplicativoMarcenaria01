@@ -329,7 +329,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     materials: product.materials,
                     cost: product.cost,
                     stock: product.stock,
-                    min_stock: product.minStock ?? 5, // Default to 5 if null
+                    minStock: product.minStock ?? 5, // Using camelCase to match schema expectation
                     image: product.image
                 });
             } catch (e: any) {
@@ -350,7 +350,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     materials: product.materials,
                     cost: product.cost,
                     stock: product.stock,
-                    min_stock: product.minStock,
+                    minStock: product.minStock,
                     image: product.image
                 });
             } catch (e: any) {
@@ -389,12 +389,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         if (isSupabaseConfigured && isAuthenticated) {
             try {
                 await insertRow('materials', {
-                    id: material.id, // AGORA OBRIGATÓRIO
+                    id: material.id,
                     name: material.name,
                     unit: material.unit,
-                    cost_per_unit: material.costPerUnit,
+                    costPerUnit: material.costPerUnit,
                     stock: material.stock,
-                    min_stock: material.minStock
+                    minStock: material.minStock
                 });
             } catch (e) { console.error(e); return; }
         }
@@ -407,9 +407,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                 await updateRow('materials', material.id, {
                     name: material.name,
                     unit: material.unit,
-                    cost_per_unit: material.costPerUnit,
+                    costPerUnit: material.costPerUnit,
                     stock: material.stock,
-                    min_stock: material.minStock
+                    minStock: material.minStock
                 });
             } catch (e) { console.error(e); return; }
         }
