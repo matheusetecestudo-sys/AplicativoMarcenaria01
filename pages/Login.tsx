@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 
-import { signUpWithEmail, resetPassword } from '../auth';
+import { resetPassword } from '../auth';
 
-type ViewState = 'LOGIN' | 'REGISTER' | 'RECOVER';
+type ViewState = 'LOGIN' | 'RECOVER';
 
 export const Login: React.FC = () => {
     const navigate = useNavigate();
@@ -23,7 +23,6 @@ export const Login: React.FC = () => {
 
     // Form States
     const [loginData, setLoginData] = useState({ email: 'admin@rino.com', password: '' });
-    const [registerData, setRegisterData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
     const [recoverEmail, setRecoverEmail] = useState('');
 
     const clearMessage = () => setMessage(null);
@@ -50,29 +49,6 @@ export const Login: React.FC = () => {
                 navigate('/dashboard');
             }
         }, 800);
-    };
-
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
-        clearMessage();
-
-        if (registerData.password !== registerData.confirmPassword) {
-            setMessage({ type: 'error', text: 'As senhas não coincidem.' });
-            return;
-        }
-
-        setIsLoading(true);
-
-        const { error } = await signUpWithEmail(registerData.email, registerData.password, registerData.name);
-
-        setIsLoading(false);
-
-        if (error) {
-            setMessage({ type: 'error', text: error.message || 'Erro ao cadastrar.' });
-        } else {
-            setMessage({ type: 'success', text: 'Cadastro realizado! Verifique seu email para confirmar a conta.' });
-            setTimeout(() => setView('LOGIN'), 5000);
-        }
     };
 
     const handleRecover = async (e: React.FormEvent) => {
@@ -107,7 +83,7 @@ export const Login: React.FC = () => {
                     {/* Header / Brand */}
                     <div className="mb-6 border-b-4 border-primary pb-4">
                         <h1 className="text-black dark:text-white text-3xl font-black uppercase tracking-tighter leading-none mb-1">
-                            {view === 'LOGIN' ? 'Acesso Local' : view === 'REGISTER' ? 'Novo Operador' : 'Recuperar Chave'}
+                            {view === 'LOGIN' ? 'Acesso Local' : 'Recuperar Chave'}
                         </h1>
                         <p className="text-gray-500 dark:text-gray-400 font-bold uppercase text-[10px] tracking-widest">
                             Rino Score System v2.0 (Offline)
@@ -158,64 +134,9 @@ export const Login: React.FC = () => {
 
 
 
-                            <div className="flex justify-between items-center mt-4 pt-4 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
-                                <button type="button" onClick={() => { clearMessage(); setView('REGISTER'); }} className="text-xs font-bold uppercase text-gray-500 hover:text-primary hover:underline">Solicitar Cadastro</button>
+                            <div className="flex justify-end items-center mt-4 pt-4 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
                                 <button type="button" onClick={() => { clearMessage(); setView('RECOVER'); }} className="text-xs font-bold uppercase text-gray-500 hover:text-primary hover:underline">Esqueci a Senha</button>
                             </div>
-                        </form>
-                    )}
-
-                    {/* --- VIEW: REGISTER --- */}
-                    {view === 'REGISTER' && (
-                        <form onSubmit={handleRegister} className="flex flex-col gap-4 animate-fade-in-up">
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 pl-10 text-black dark:text-white font-bold uppercase text-sm brutal-input"
-                                    placeholder="NOME COMPLETO"
-                                    value={registerData.name}
-                                    onChange={e => setRegisterData({ ...registerData, name: e.target.value })}
-                                />
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">badge</span>
-                            </div>
-                            <div className="relative">
-                                <input
-                                    type="email"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 pl-10 text-black dark:text-white font-bold uppercase text-sm brutal-input"
-                                    placeholder="EMAIL"
-                                    value={registerData.email}
-                                    onChange={e => setRegisterData({ ...registerData, email: e.target.value })}
-                                />
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">mail</span>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <input
-                                    type="password"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 text-black dark:text-white font-bold text-sm brutal-input"
-                                    placeholder="SENHA"
-                                    value={registerData.password}
-                                    onChange={e => setRegisterData({ ...registerData, password: e.target.value })}
-                                />
-                                <input
-                                    type="password"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 text-black dark:text-white font-bold text-sm brutal-input"
-                                    placeholder="CONFIRMAR"
-                                    value={registerData.confirmPassword}
-                                    onChange={e => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="mt-2 h-14 w-full bg-primary text-white font-black uppercase tracking-[0.2em] hover:brightness-110 border-2 border-transparent transition-all shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF] active:translate-y-[2px] active:shadow-none brutal-btn"
-                            >
-                                {isLoading ? 'Enviando...' : 'Cadastrar'}
-                            </button>
-
-                            <button type="button" onClick={() => { clearMessage(); setView('LOGIN'); }} className="mt-2 text-xs font-bold uppercase text-gray-500 hover:text-black dark:hover:text-white hover:underline text-center">
-                                Voltar para Login
-                            </button>
                         </form>
                     )}
 

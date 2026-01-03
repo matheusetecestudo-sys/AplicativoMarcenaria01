@@ -228,7 +228,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     // --- AUTH ---
     const login = async (email: string, pass: string) => {
         // Hybrid: Try Supabase first, fallback to mock if not configured or specific demo user
-        if (isSupabaseConfigured && email !== 'admin@rino.com') {
+        if (isSupabaseConfigured) {
             const { error } = await loginWithEmail(email, pass);
             if (!error) setIsAuthenticated(true);
             return { error };
