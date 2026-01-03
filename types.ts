@@ -10,7 +10,7 @@ export interface OrderItem {
 export interface Order {
   id: string;
   client: string;
-  items: OrderItem[]; 
+  items: OrderItem[];
   deadline: string;
   createdAt: string; // Data de criação para filtros temporais
   status: 'PENDENTE' | 'ATRASADO' | 'CONCLUÍDO' | 'CANCELADO';
@@ -26,6 +26,7 @@ export interface Product {
   materials: string[];
   cost: number;
   stock: number;
+  minStock: number;
   image: string;
 }
 
