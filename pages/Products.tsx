@@ -184,7 +184,7 @@ export const Products: React.FC = () => {
                         <div key={product.id} className="group flex flex-row md:flex-col bg-white dark:bg-[#1a1a1a] border-4 border-black dark:border-white hover:border-primary dark:hover:border-primary transition-all duration-300 relative overflow-hidden h-auto md:h-full shadow-sm hover:shadow-[8px_8px_0px_0px_rgba(0,0,255,0.2)]">
 
                             {/* IMAGE SECTION */}
-                            <div className="relative w-32 md:w-full shrink-0 md:aspect-[4/3] border-r-4 md:border-r-0 md:border-b-4 border-black dark:border-white bg-gray-100 dark:bg-black overflow-hidden flex flex-col justify-center">
+                            <div className="relative w-24 xs:w-32 md:w-full shrink-0 md:aspect-[4/3] border-r-4 md:border-r-0 md:border-b-4 border-black dark:border-white bg-gray-100 dark:bg-black overflow-hidden flex flex-col justify-center">
                                 <img
                                     src={product.image}
                                     alt={product.name}
@@ -264,8 +264,8 @@ export const Products: React.FC = () => {
             {/* MINIMALIST BRUTALIST MODAL */}
             {
                 isModalOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in-up" onClick={closeModal}>
-                        <div className="bg-white dark:bg-[#0A0A0A] w-full max-w-4xl border-4 border-primary shadow-[12px_12px_0px_0px_rgba(0,0,255,0.5)] flex flex-col max-h-[90vh]" onClick={e => e.stopPropagation()}>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 bg-black/90 backdrop-blur-sm animate-fade-in-up" onClick={closeModal}>
+                        <div className="bg-white dark:bg-[#0A0A0A] w-full max-w-4xl border-0 md:border-4 border-primary shadow-none md:shadow-[12px_12px_0px_0px_rgba(0,0,255,0.5)] flex flex-col h-full md:max-h-[90vh] md:rounded-lg" onClick={e => e.stopPropagation()}>
 
                             {/* Modal Header */}
                             <div className="bg-primary p-4 flex justify-between items-center shrink-0">
@@ -281,7 +281,7 @@ export const Products: React.FC = () => {
                             <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto md:overflow-hidden grid grid-cols-1 md:grid-cols-2">
 
                                 {/* LEFT: IMAGE & IDENTITY */}
-                                <div className="p-6 md:p-8 flex flex-col gap-6 overflow-y-auto border-b-4 md:border-b-0 md:border-r-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111]">
+                                <div className="p-4 md:p-8 flex flex-col gap-6 overflow-y-auto border-b-4 md:border-b-0 md:border-r-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111]">
 
                                     {/* Image Upload Area */}
                                     <div className="flex flex-col gap-2">
