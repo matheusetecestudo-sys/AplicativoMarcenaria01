@@ -7,6 +7,7 @@ export const Products: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const criticalItems = products.filter(p => p.stock <= (p.minStock || 5)).length;
 
     // Refs for File Upload
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -18,6 +19,7 @@ export const Products: React.FC = () => {
         materials: [],
         cost: 0,
         stock: 0,
+        minStock: 0,
         image: ''
     });
 
@@ -34,7 +36,7 @@ export const Products: React.FC = () => {
         } else {
             setEditingProduct(null);
             setFormData({
-                name: '', sku: '', cost: '', stock: '', image: '', materials: []
+                name: '', sku: '', cost: '', stock: '', minStock: '', image: '', materials: []
             });
             setImageUrlInput('');
         }
@@ -98,6 +100,7 @@ export const Products: React.FC = () => {
             ...formData,
             cost: parseFloat(formData.cost) || 0,
             stock: parseInt(formData.stock) || 0,
+            minStock: parseInt(formData.minStock) || 0,
             materials: formData.materials || [],
             image: imgUrl
         };
@@ -156,6 +159,19 @@ export const Products: React.FC = () => {
                 </div>
             </header>
 
+            {/* ALERTS SECTION (Industrial Style) */}
+            {criticalItems > 0 && (
+                <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/10 border-l-4 border-red-500 shadow-sm flex justify-between items-center animate-fade-in-up">
+                    <div>
+                        <p className="text-[10px] font-black uppercase text-red-500 tracking-widest">Atenção Necessária</p>
+                        <p className="text-xl font-black text-red-600 dark:text-red-400 uppercase">
+                            {criticalItems} {criticalItems === 1 ? 'Produto com' : 'Produtos com'} Estoque Baixo
+                        </p>
+                    </div>
+                    <span className="material-symbols-outlined text-4xl text-red-500">warning</span>
+                </div>
+            )}
+
             {/* GRID */}
             {filteredProducts.length === 0 ? (
                 <div className="flex-1 flex flex-col items-center justify-center opacity-50 border-4 border-dashed border-gray-300 dark:border-gray-800 p-12">
@@ -179,9 +195,9 @@ export const Products: React.FC = () => {
                                 />
                                 {/* Stock Overlay */}
                                 < div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-10 flex justify-between items-end" >
-                                    <div className={`px-2 py-0.5 border-2 ${product.stock <= 5 ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'bg-black/50 border-white text-white'}`}>
+                                    <div className={`px-2 py-0.5 border-2 ${product.stock <= (product.minStock || 5) ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'bg-black/50 border-white text-white'}`}>
                                         <span className="text-[10px] font-black uppercase">
-                                            {product.stock <= 5 ? 'Estoque Crítico' : 'Disponível'}
+                                            {product.stock <= (product.minStock || 5) ? 'Estoque Baixo' : 'Disponível'}
                                         </span>
                                     </div>
                                 </div>
@@ -373,15 +389,27 @@ export const Products: React.FC = () => {
                                             />
                                         </div>
 
-                                        <div className="flex flex-col gap-1">
-                                            <label className="text-[10px] font-bold uppercase text-gray-500">Estoque Inicial</label>
-                                            <input
-                                                type="number"
-                                                className="w-full bg-transparent border-b-2 border-gray-300 dark:border-gray-700 py-2 text-sm font-mono font-bold text-black dark:text-white placeholder:text-gray-400 focus:border-primary focus:outline-none transition-colors"
-                                                value={formData.stock}
-                                                onChange={e => setFormData({ ...formData, stock: e.target.value })}
-                                                required
-                                            />
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="flex flex-col gap-1">
+                                                <label className="text-[10px] font-bold uppercase text-gray-500">Estoque Atual</label>
+                                                <input
+                                                    type="number"
+                                                    className="w-full bg-transparent border-b-2 border-gray-300 dark:border-gray-700 py-2 text-sm font-mono font-bold text-black dark:text-white placeholder:text-gray-400 focus:border-primary focus:outline-none transition-colors"
+                                                    value={formData.stock}
+                                                    onChange={e => setFormData({ ...formData, stock: e.target.value })}
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-1">
+                                                <label className="text-[10px] font-bold uppercase text-red-500">Alerta Mínimo</label>
+                                                <input
+                                                    type="number"
+                                                    className="w-full bg-transparent border-b-2 border-red-200 dark:border-red-900 py-2 text-sm font-mono font-bold text-red-600 dark:text-red-400 placeholder:text-gray-400 focus:border-red-500 focus:outline-none transition-colors"
+                                                    value={formData.minStock}
+                                                    onChange={e => setFormData({ ...formData, minStock: e.target.value })}
+                                                    required
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -75,22 +75,22 @@ const initialMaterials: Material[] = [
 const initialProducts: Product[] = [
     {
         id: '1', name: 'Cadeira Eames Wood', sku: 'CDR-EAM',
-        materials: ['Madeira: 1', 'Plastico: 1'], cost: 120, stock: 15,
+        materials: ['Madeira: 1', 'Plastico: 1'], cost: 120, stock: 15, minStock: 5,
         image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=600&q=80'
     },
     {
         id: '2', name: 'Mesa Industrial', sku: 'MSA-IND',
-        materials: ['Ferro: 4', 'Madeira Maciça: 2'], cost: 450, stock: 4,
+        materials: ['Ferro: 4', 'Madeira Maciça: 2'], cost: 450, stock: 4, minStock: 2,
         image: 'https://images.unsplash.com/photo-1577140917170-285929db55cc?auto=format&fit=crop&w=600&q=80'
     },
     {
         id: '3', name: 'Banco de Jardim', sku: 'BNC-JRD',
-        materials: ['Madeira Maciça: 3', 'Verniz: 1'], cost: 200, stock: 2,
+        materials: ['Madeira Maciça: 3', 'Verniz: 1'], cost: 200, stock: 2, minStock: 5,
         image: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=600&q=80'
     },
     {
         id: '4', name: 'Estante Modular', sku: 'EST-MOD',
-        materials: ['Madeira Maciça: 5', 'Parafusos: 1'], cost: 600, stock: 8,
+        materials: ['Madeira Maciça: 5', 'Parafusos: 1'], cost: 600, stock: 8, minStock: 3,
         image: 'https://images.unsplash.com/photo-1594620302200-9a762244a156?auto=format&fit=crop&w=600&q=80'
     },
 ];
@@ -328,6 +328,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     materials: product.materials,
                     cost: product.cost,
                     stock: product.stock,
+                    min_stock: product.minStock,
                     image: product.image
                 });
                 // Re-fetch to get the real ID? Or just use local one? 
@@ -349,6 +350,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     materials: product.materials,
                     cost: product.cost,
                     stock: product.stock,
+                    min_stock: product.minStock,
                     image: product.image
                 });
             } catch (e) { console.error(e); return; }
