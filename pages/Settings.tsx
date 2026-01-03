@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { updatePassword } from '../auth';
 import { TimeRange } from '../types';
 
 // Simple Brutalist Toggle Switch Component
@@ -33,6 +34,8 @@ export const Settings: React.FC = () => {
 
     // Local state for the form to allow "Save" action
     const [companyForm, setCompanyForm] = useState(settings.company);
+    const [newPassword, setNewPassword] = useState('');
+    const [isPasswordLoading, setIsPasswordLoading] = useState(false);
 
     // --- MASKING UTILS ---
     const maskCNPJ = (value: string) => {
@@ -69,6 +72,25 @@ export const Settings: React.FC = () => {
     const saveCompanyChanges = async () => {
         await updateSettings({ company: companyForm });
         alert('Informações da empresa atualizadas com sucesso!');
+    };
+
+    const handlePasswordChange = async () => {
+        if (!newPassword) return;
+        if (newPassword.length < 6) {
+            alert('A senha deve ter pelo menos 6 caracteres.');
+            return;
+        }
+
+        setIsPasswordLoading(true);
+        const { error } = await updatePassword(newPassword);
+        setIsPasswordLoading(false);
+
+        if (error) {
+            alert('Erro ao atualizar senha: ' + (error.message || 'Erro desconhecido'));
+        } else {
+            alert('Senha atualizada com sucesso!');
+            setNewPassword('');
+        }
     };
 
     const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -468,6 +490,44 @@ export const Settings: React.FC = () => {
                             onChange={() => toggleNotification('deadlines')}
                         />
                     </div>
+                </div>
+
+                {/* 3.5 SECURITY SECTION */}
+                <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 animate-fade-in-up stagger-3 flex flex-col">
+                    <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
+                        <span className="material-symbols-outlined text-primary text-2xl">lock</span>
+                        <h2 className="text-xl font-black uppercase text-black dark:text-white">Segurança</h2>
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        <label className="flex flex-col gap-2">
+                            <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">Nova Senha</span>
+                            <div className="relative">
+                                <input
+                                    type="password"
+                                    className="w-full bg-gray-50 dark:bg-black border-4 border-gray-200 dark:border-gray-700 focus:border-primary focus:outline-none p-3 pl-10 text-sm font-bold text-black dark:text-white transition-all brutal-input placeholder-gray-400"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    placeholder="••••••"
+                                />
+                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">key</span>
+                            </div>
+                        </label>
+                        <button
+                            onClick={handlePasswordChange}
+                            disabled={!newPassword || isPasswordLoading}
+                            className="w-full py-4 bg-black dark:bg-white text-white dark:text-black font-black uppercase tracking-widest hover:bg-primary dark:hover:bg-primary hover:text-white dark:hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] active:translate-y-[2px] active:shadow-none brutal-btn disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isPasswordLoading ? 'Salvando...' : 'Alterar Senha'}
+                        </button>
+                    </div>
+
+                    <button
+                        onClick={handleLogout}
+                        className="mt-auto pt-6 text-[10px] font-bold uppercase text-red-500 hover:text-red-700 flex items-center justify-center gap-2"
+                    >
+                        <span className="material-symbols-outlined text-sm">logout</span> Sair da Conta
+                    </button>
                 </div>
 
                 {/* 4. DATA MANAGEMENT */}
