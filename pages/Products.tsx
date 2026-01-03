@@ -100,35 +100,44 @@ export const Products: React.FC = () => {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const [isSaving, setIsSaving] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSaving(true);
 
-        // Fallback image if none uploaded
-        const imgUrl = formData.image?.trim() || `https://placehold.co/400x400/1a1a1a/FFF?text=${formData.name?.substring(0, 3).toUpperCase()}`;
+        try {
+            // Fallback image if none uploaded
+            const imgUrl = formData.image?.trim() || `https://placehold.co/400x400/1a1a1a/FFF?text=${formData.name?.substring(0, 3).toUpperCase()}`;
 
-        // Ensure numbers are parsed correctly from string inputs
-        const cleanData: Product = {
-            ...formData,
-            cost: parseFloat(formData.cost) || 0,
-            stock: parseInt(formData.stock) || 0,
-            minStock: parseInt(formData.minStock) || 0,
-            materials: formData.materials || [],
-            image: imgUrl
-        };
+            // Ensure numbers are parsed correctly from string inputs
+            const cleanData: Product = {
+                ...formData,
+                cost: parseFloat(formData.cost) || 0,
+                stock: parseInt(formData.stock) || 0,
+                minStock: parseInt(formData.minStock) || 0,
+                materials: formData.materials || [],
+                image: imgUrl
+            };
 
-        if (editingProduct) {
-            updateProduct({
-                ...editingProduct,
-                ...cleanData,
-                id: editingProduct.id // Ensure ID is preserved
-            });
-        } else {
-            addProduct({
-                id: generateUUID(),
-                ...cleanData
-            });
+            if (editingProduct) {
+                await updateProduct({
+                    ...editingProduct,
+                    ...cleanData,
+                    id: editingProduct.id
+                });
+            } else {
+                await addProduct({
+                    id: generateUUID(),
+                    ...cleanData
+                });
+            }
+            closeModal();
+        } catch (error) {
+            console.error("Submit error:", error);
+        } finally {
+            setIsSaving(false);
         }
-        closeModal();
     };
 
     const filteredProducts = products.filter(p =>
@@ -507,9 +516,17 @@ export const Products: React.FC = () => {
                                             </button>
                                             <button
                                                 type="submit"
-                                                className="flex-[2] py-3 bg-primary text-white font-black uppercase hover:brightness-110 shadow-[4px_4px_0px_0px_black] active:translate-y-[2px] active:shadow-none transition-all text-xs tracking-widest border-2 border-black"
+                                                disabled={isSaving}
+                                                className={`flex-[2] py-3 bg-primary text-white font-black uppercase hover:brightness-110 shadow-[4px_4px_0px_0px_black] active:translate-y-[2px] active:shadow-none transition-all text-xs tracking-widest border-2 border-black flex items-center justify-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}
                                             >
-                                                Salvar Produto
+                                                {isSaving ? (
+                                                    <>
+                                                        <span className="size-4 border-2 border-white/30 border-t-white animate-spin rounded-full"></span>
+                                                        Salvando...
+                                                    </>
+                                                ) : (
+                                                    'Salvar Produto'
+                                                )}
                                             </button>
                                         </div>
                                     </div>

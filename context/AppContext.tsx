@@ -332,8 +332,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     min_stock: product.minStock ?? 5, // Default to 5 if null
                     image: product.image
                 });
-            } catch (e) {
+            } catch (e: any) {
                 console.error("Error adding product:", e);
+                alert(`Erro ao salvar produto: ${e.message || "Verifique se o Código/ID já existe."}`);
                 return;
             }
         }
@@ -352,7 +353,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     min_stock: product.minStock,
                     image: product.image
                 });
-            } catch (e) { console.error(e); return; }
+            } catch (e: any) {
+                console.error(e);
+                alert(`Erro ao atualizar produto: ${e.message}`);
+                return;
+            }
         }
         setProducts(prev => prev.map(p => p.id === product.id ? product : p));
     };
