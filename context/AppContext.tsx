@@ -453,9 +453,27 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         a.click();
     };
 
-    const resetApp = () => {
+    const resetApp = async () => {
+        if (isSupabaseConfigured && isAuthenticated) {
+            try {
+                // Delete all data for the user (RLS will ensure only their data is deleted)
+                await supabase.from('orders').delete().neq('id', '0');
+                await supabase.from('products').delete().neq('id', '0');
+                await supabase.from('materials').delete().neq('id', '0');
+                // We might want to keep settings, or reset them too? "Factory Reset" usually implies all.
+                // However, deleting the row in app_settings might be enough if we just want to reset to defaults.
+                // Or we update it to default values.
+                // Let's delete the row so it fetches null next time or create clean.
+                await supabase.from('app_settings').delete().neq('user_id', '00000000-0000-0000-0000-000000000000');
+            } catch (e) {
+                console.error("Error resetting Supabase data:", e);
+                alert("Erro ao resetar dados na nuvem. Verifique o console.");
+                return;
+            }
+        }
+
         localStorage.clear();
-        // Reload page to re-initialize with default mock data
+        // Reload page to re-initialize with default mock data or empty state
         window.location.reload();
     };
 

@@ -6,12 +6,12 @@ import { TimeRange } from '../types';
 
 // Simple Brutalist Toggle Switch Component
 const ToggleSwitch: React.FC<{ label: string; checked: boolean; onChange: () => void; icon: string }> = ({ label, checked, onChange, icon }) => (
-    <div 
+    <div
         onClick={onChange}
         className={`
             cursor-pointer flex justify-between items-center p-4 border-2 transition-all brutal-btn select-none
-            ${checked 
-                ? 'bg-primary border-black dark:border-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]' 
+            ${checked
+                ? 'bg-primary border-black dark:border-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]'
                 : 'bg-white dark:bg-black border-gray-300 dark:border-gray-700 hover:border-black dark:hover:border-white'}
         `}
     >
@@ -31,12 +31,44 @@ export const Settings: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const logoInputRef = useRef<HTMLInputElement>(null);
 
+    // Local state for the form to allow "Save" action
+    const [companyForm, setCompanyForm] = useState(settings.company);
+
+    // --- MASKING UTILS ---
+    const maskCNPJ = (value: string) => {
+        return value
+            .replace(/\D/g, '')
+            .replace(/^(\d{2})(\d)/, '$1.$2')
+            .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+            .replace(/\.(\d{3})(\d)/, '.$1/$2')
+            .replace(/(\d{4})(\d)/, '$1-$2')
+            .replace(/(-\d{2})\d+?$/, '$1');
+    };
+
+    const maskPhone = (value: string) => {
+        return value
+            .replace(/\D/g, '')
+            .replace(/^(\d{2})(\d)/, '($1) $2')
+            .replace(/(\d{5})(\d)/, '$1-$2')
+            .replace(/(-\d{4})\d+?$/, '$1');
+    };
+
     // Handlers
-    const handleCompanyChange = (key: keyof typeof settings.company, value: string) => {
-        updateSettings({ company: { ...settings.company, [key]: value } });
+    const handleLocalChange = (key: keyof typeof settings.company, value: string) => {
+        let finalValue = value;
+        if (key === 'cnpj') finalValue = maskCNPJ(value);
+        if (key === 'contact') finalValue = maskPhone(value);
+
+        setCompanyForm(prev => ({ ...prev, [key]: finalValue }));
+
         if (key === 'logo' && value === '' && logoInputRef.current) {
             logoInputRef.current.value = '';
         }
+    };
+
+    const saveCompanyChanges = async () => {
+        await updateSettings({ company: companyForm });
+        alert('Informações da empresa atualizadas com sucesso!');
     };
 
     const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +76,7 @@ export const Settings: React.FC = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                handleCompanyChange('logo', reader.result as string);
+                handleLocalChange('logo', reader.result as string);
             };
             reader.readAsDataURL(file);
         }
@@ -68,7 +100,7 @@ export const Settings: React.FC = () => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
-        
+
         const reader = new FileReader();
         reader.onload = (e) => {
             const success = importData(e.target?.result as string);
@@ -91,7 +123,7 @@ export const Settings: React.FC = () => {
     };
 
     const handleLogout = () => {
-        if(window.confirm('Deseja desconectar e voltar para a tela de login?')) {
+        if (window.confirm('Deseja desconectar e voltar para a tela de login?')) {
             logout(); // Call logout context
             navigate('/login');
         }
@@ -102,7 +134,7 @@ export const Settings: React.FC = () => {
         // Filter Logic
         const now = new Date();
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        
+
         const filteredOrders = orders.filter(order => {
             const orderDate = new Date(order.createdAt);
             const orderDay = new Date(orderDate.getFullYear(), orderDate.getMonth(), orderDate.getDate());
@@ -126,13 +158,13 @@ export const Settings: React.FC = () => {
 
         const totalRevenue = filteredOrders.reduce((acc, o) => acc + o.totalValue, 0);
         const totalCostEstimate = filteredOrders.reduce((acc, order) => {
-             let orderCost = 0;
-             order.items.forEach(item => {
-                 const product = products.find(p => p.id === item.productId);
-                 const unitCost = product ? product.cost : (item.unitPrice * 0.6); 
-                 orderCost += (unitCost * item.quantity);
-             });
-             return acc + orderCost;
+            let orderCost = 0;
+            order.items.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                const unitCost = product ? product.cost : (item.unitPrice * 0.6);
+                orderCost += (unitCost * item.quantity);
+            });
+            return acc + orderCost;
         }, 0);
         const totalProfit = totalRevenue - totalCostEstimate;
         // Calculate stock values
@@ -142,7 +174,7 @@ export const Settings: React.FC = () => {
 
         // --- TOP PRODUCTS ANALYSIS ---
         const productStats: Record<string, { quantity: number, revenue: number }> = {};
-        
+
         filteredOrders.forEach(order => {
             order.items.forEach(item => {
                 if (!productStats[item.productName]) {
@@ -159,7 +191,7 @@ export const Settings: React.FC = () => {
             .slice(0, 5); // Get Top 5
 
         const maxRevenue = Math.max(...topProducts.map(p => p.revenue), 1); // Avoid div by zero
-        
+
         const reportContent = `
             <!DOCTYPE html>
             <html lang="pt-BR">
@@ -212,9 +244,9 @@ export const Settings: React.FC = () => {
                 
                 <div class="section-title"><span>Resumo Financeiro (${timeRange})</span></div>
                 <div class="grid-3">
-                    <div class="kpi-box"><div class="kpi-title">Faturamento</div><div class="kpi-value" style="color: blue;">R$ ${totalRevenue.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div></div>
-                    <div class="kpi-box"><div class="kpi-title">Custos Estimados</div><div class="kpi-value" style="color: red;">R$ ${totalCostEstimate.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div></div>
-                    <div class="kpi-box"><div class="kpi-title">Lucro Operacional</div><div class="kpi-value" style="color: green;">R$ ${totalProfit.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div></div>
+                    <div class="kpi-box"><div class="kpi-title">Faturamento</div><div class="kpi-value" style="color: blue;">R$ ${totalRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div></div>
+                    <div class="kpi-box"><div class="kpi-title">Custos Estimados</div><div class="kpi-value" style="color: red;">R$ ${totalCostEstimate.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div></div>
+                    <div class="kpi-box"><div class="kpi-title">Lucro Operacional</div><div class="kpi-value" style="color: green;">R$ ${totalProfit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div></div>
                 </div>
 
                 <div class="section-title"><span>Top 5 Produtos (Receita Gerada)</span></div>
@@ -225,7 +257,7 @@ export const Settings: React.FC = () => {
                             <div class="bar-track">
                                 <div class="bar-fill" style="width: ${(p.revenue / maxRevenue) * 100}%;"></div>
                             </div>
-                            <div class="bar-value">R$ ${p.revenue.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div class="bar-value">R$ ${p.revenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
                             <div class="bar-sub">(${p.quantity} un)</div>
                         </div>
                     `).join('') : '<div style="text-align:center; padding: 20px; color: #888;">Nenhuma venda registrada neste período.</div>'}
@@ -234,7 +266,7 @@ export const Settings: React.FC = () => {
                 <div class="section-title"><span>Insumos em Alerta (Baixo Estoque)</span></div>
                 <table>
                     <thead><tr><th>Insumo</th><th>Atual</th><th>Mínimo</th><th>Status</th></tr></thead>
-                    <tbody>${criticalMaterials.length > 0 ? criticalMaterials.slice(0,8).map(m => `<tr><td>${m.name}</td><td>${m.stock} ${m.unit}</td><td>${m.minStock}</td><td style="color:red; font-weight:bold;">REPOR</td></tr>`).join('') : '<tr><td colspan="4" style="text-align:center;">Estoque operando normalmente.</td></tr>'}</tbody>
+                    <tbody>${criticalMaterials.length > 0 ? criticalMaterials.slice(0, 8).map(m => `<tr><td>${m.name}</td><td>${m.stock} ${m.unit}</td><td>${m.minStock}</td><td style="color:red; font-weight:bold;">REPOR</td></tr>`).join('') : '<tr><td colspan="4" style="text-align:center;">Estoque operando normalmente.</td></tr>'}</tbody>
                 </table>
                 <div class="footer">Gerado por Rino Score System • ${new Date().getFullYear()}</div>
             </body>
@@ -255,27 +287,88 @@ export const Settings: React.FC = () => {
             </header>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                
+
                 {/* 1. IDENTITY SECTION */}
                 <div className="lg:col-span-2 xl:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 shadow-sm animate-fade-in-up stagger-1">
                     <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
                         <span className="material-symbols-outlined text-primary text-2xl">business</span>
                         <h2 className="text-xl font-black uppercase text-black dark:text-white">Identidade Corporativa</h2>
                     </div>
-                    <div className="flex flex-col md:flex-row gap-6">
-                        <div className="flex flex-col gap-2 shrink-0">
-                            <span className="text-[10px] font-bold uppercase text-gray-500">Logotipo</span>
-                            <div onClick={() => logoInputRef.current?.click()} className="size-32 border-4 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary cursor-pointer flex items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-black group transition-colors">
-                                {settings.company.logo ? ( <img src={settings.company.logo} alt="Logo" className="w-full h-full object-contain p-2" /> ) : ( <div className="text-center text-gray-400 group-hover:text-primary"><span className="material-symbols-outlined text-3xl">add_a_photo</span><p className="text-[9px] font-black uppercase mt-1">Carregar</p></div> )}
+
+                    {/* FORM CONTAINER */}
+                    <div className="flex flex-col md:flex-row gap-8">
+
+                        {/* LOGO UPLOAD */}
+                        <div className="flex flex-col gap-3 shrink-0 items-center md:items-start">
+                            <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Seu Logotipo</span>
+                            <div
+                                onClick={() => logoInputRef.current?.click()}
+                                className="size-40 border-4 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary cursor-pointer flex items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-black group transition-all hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg"
+                            >
+                                {companyForm.logo ? (
+                                    <img src={companyForm.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+                                ) : (
+                                    <div className="text-center text-gray-400 group-hover:text-primary transition-colors">
+                                        <span className="material-symbols-outlined text-4xl">add_a_photo</span>
+                                        <p className="text-[10px] font-black uppercase mt-2">Carregar Imagem</p>
+                                    </div>
+                                )}
                             </div>
                             <input type="file" ref={logoInputRef} onChange={handleLogoUpload} accept="image/*" className="hidden" />
-                            {settings.company.logo && <button onClick={() => handleCompanyChange('logo', '')} className="text-[10px] font-bold uppercase text-red-500 hover:underline text-center">Remover</button>}
+                            {companyForm.logo && (
+                                <button
+                                    onClick={() => handleLocalChange('logo', '')}
+                                    className="text-[10px] font-bold uppercase text-red-500 hover:text-red-600 hover:underline flex items-center gap-1"
+                                >
+                                    <span className="material-symbols-outlined text-sm">delete</span> Remover Logo
+                                </button>
+                            )}
                         </div>
-                        <div className="flex-1 flex flex-col gap-4">
-                            <label className="flex flex-col gap-1"><span className="text-[10px] font-bold uppercase text-gray-500">Nome da Empresa</span><input className="w-full bg-transparent border-b-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none py-2 text-xl font-black text-black dark:text-white uppercase transition-colors brutal-input" value={settings.company.name} onChange={(e) => handleCompanyChange('name', e.target.value)} placeholder="SUA MARCENARIA" /></label>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <label className="flex flex-col gap-1"><span className="text-[10px] font-bold uppercase text-gray-500">CNPJ / Documento</span><input className="w-full bg-transparent border-b-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none py-2 text-sm font-bold font-mono text-black dark:text-white uppercase transition-colors brutal-input" value={settings.company.cnpj} onChange={(e) => handleCompanyChange('cnpj', e.target.value)} placeholder="00.000.000/0000-00" /></label>
-                                <label className="flex flex-col gap-1"><span className="text-[10px] font-bold uppercase text-gray-500">Contato (Tel/Email)</span><input className="w-full bg-transparent border-b-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none py-2 text-sm font-bold text-black dark:text-white uppercase transition-colors brutal-input" value={settings.company.contact} onChange={(e) => handleCompanyChange('contact', e.target.value)} placeholder="(00) 00000-0000" /></label>
+
+                        {/* INPUT FIELDS */}
+                        <div className="flex-1 flex flex-col gap-5 justify-center">
+                            <label className="flex flex-col gap-2">
+                                <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">Nome da Empresa</span>
+                                <input
+                                    className="w-full bg-gray-50 dark:bg-black/50 border-b-4 border-gray-200 dark:border-gray-700 focus:border-primary focus:outline-none p-3 text-xl font-black text-black dark:text-white uppercase transition-all brutal-input placeholder-gray-300 dark:placeholder-gray-700"
+                                    value={companyForm.name}
+                                    onChange={(e) => handleLocalChange('name', e.target.value)}
+                                    placeholder="SUA MARCENARIA"
+                                />
+                            </label>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <label className="flex flex-col gap-2">
+                                    <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">CNPJ / Documento</span>
+                                    <input
+                                        className="w-full bg-gray-50 dark:bg-black/50 border-b-4 border-gray-200 dark:border-gray-700 focus:border-primary focus:outline-none p-3 text-sm font-bold font-mono text-black dark:text-white uppercase transition-all brutal-input"
+                                        value={companyForm.cnpj}
+                                        onChange={(e) => handleLocalChange('cnpj', e.target.value)}
+                                        placeholder="00.000.000/0000-00"
+                                        maxLength={18}
+                                    />
+                                </label>
+                                <label className="flex flex-col gap-2">
+                                    <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">Contato (Tel/WhatsApp)</span>
+                                    <input
+                                        className="w-full bg-gray-50 dark:bg-black/50 border-b-4 border-gray-200 dark:border-gray-700 focus:border-primary focus:outline-none p-3 text-sm font-bold text-black dark:text-white uppercase transition-all brutal-input"
+                                        value={companyForm.contact}
+                                        onChange={(e) => handleLocalChange('contact', e.target.value)}
+                                        placeholder="(00) 00000-0000"
+                                        maxLength={15}
+                                    />
+                                </label>
+                            </div>
+
+                            {/* SAVE BUTTON */}
+                            <div className="mt-4 flex justify-end">
+                                <button
+                                    onClick={saveCompanyChanges}
+                                    className="bg-black dark:bg-white text-white dark:text-black py-3 px-6 font-black uppercase tracking-widest hover:bg-primary dark:hover:bg-primary hover:text-white dark:hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] active:translate-y-[2px] active:shadow-none brutal-btn flex items-center gap-2"
+                                >
+                                    <span className="material-symbols-outlined">save</span>
+                                    Salvar Alterações
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -286,7 +379,7 @@ export const Settings: React.FC = () => {
                     <div>
                         <div className="flex items-center gap-2 mb-4 text-white"><span className="material-symbols-outlined text-3xl">print</span><h2 className="text-xl font-black uppercase">Relatórios</h2></div>
                         <p className="text-white/80 text-sm font-medium mb-6 leading-relaxed">Gere um relatório executivo com os produtos mais vendidos e resumo financeiro. Selecione o período:</p>
-                        
+
                         {/* Time Filter for Report */}
                         <div className="flex bg-black/20 p-1 border-2 border-white/50 mb-6">
                             {(['HOJE', '7D', 'MES', 'ANO', 'TUDO'] as TimeRange[]).map((range) => (
@@ -295,8 +388,8 @@ export const Settings: React.FC = () => {
                                     onClick={() => setTimeRange(range)}
                                     className={`
                                         flex-1 py-2 text-[10px] font-black uppercase transition-all duration-200
-                                        ${timeRange === range 
-                                            ? 'bg-white text-primary' 
+                                        ${timeRange === range
+                                            ? 'bg-white text-primary'
                                             : 'text-white/70 hover:text-white hover:bg-white/10'}
                                     `}
                                 >
@@ -314,9 +407,9 @@ export const Settings: React.FC = () => {
                         <span className="material-symbols-outlined text-primary text-2xl">tune</span>
                         <h2 className="text-xl font-black uppercase text-black dark:text-white">Preferências</h2>
                     </div>
-                    
+
                     {/* Animated Theme Toggle */}
-                    <button 
+                    <button
                         onClick={handleThemeToggle}
                         className="w-full py-6 flex flex-col items-center justify-center gap-4 bg-gray-50 dark:bg-black border-4 border-black dark:border-white hover:border-primary dark:hover:border-primary transition-all group brutal-btn shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] active:translate-y-[2px] active:shadow-none mb-6"
                     >
@@ -330,30 +423,30 @@ export const Settings: React.FC = () => {
 
                     {/* Toggle Switches */}
                     <div className="flex flex-col gap-3">
-                        <ToggleSwitch 
-                            label="Modo Compacto" 
-                            icon="compress" 
-                            checked={settings.appearance.density === 'COMPACTO'} 
-                            onChange={handleDensityToggle} 
+                        <ToggleSwitch
+                            label="Modo Compacto"
+                            icon="compress"
+                            checked={settings.appearance.density === 'COMPACTO'}
+                            onChange={handleDensityToggle}
                         />
-                        <ToggleSwitch 
-                            label="Alertas de Estoque" 
-                            icon="inventory" 
-                            checked={settings.notifications.lowStock} 
-                            onChange={() => toggleNotification('lowStock')} 
+                        <ToggleSwitch
+                            label="Alertas de Estoque"
+                            icon="inventory"
+                            checked={settings.notifications.lowStock}
+                            onChange={() => toggleNotification('lowStock')}
                         />
-                        <ToggleSwitch 
-                            label="Alertas de Prazo" 
-                            icon="timer" 
-                            checked={settings.notifications.deadlines} 
-                            onChange={() => toggleNotification('deadlines')} 
+                        <ToggleSwitch
+                            label="Alertas de Prazo"
+                            icon="timer"
+                            checked={settings.notifications.deadlines}
+                            onChange={() => toggleNotification('deadlines')}
                         />
                     </div>
                 </div>
 
                 {/* 4. DATA MANAGEMENT */}
                 <div className="lg:col-span-2 bg-gray-50 dark:bg-[#111] border-4 border-black dark:border-white p-6 animate-fade-in-up stagger-4">
-                     <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-200 dark:border-gray-800 pb-2"><span className="material-symbols-outlined text-black dark:text-white text-2xl">database</span><h2 className="text-xl font-black uppercase text-black dark:text-white">Gestão de Dados</h2></div>
+                    <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-200 dark:border-gray-800 pb-2"><span className="material-symbols-outlined text-black dark:text-white text-2xl">database</span><h2 className="text-xl font-black uppercase text-black dark:text-white">Gestão de Dados</h2></div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <button onClick={exportData} className="py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2"><span className="material-symbols-outlined">download</span><span className="text-xs tracking-widest">Backup (JSON)</span></button>
                         <div className="relative"><input type="file" accept=".json" ref={fileInputRef} onChange={handleFileChange} className="hidden" /><button onClick={() => fileInputRef.current?.click()} className="w-full h-full py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2"><span className="material-symbols-outlined">upload</span><span className="text-xs tracking-widest">Restaurar</span></button></div>
