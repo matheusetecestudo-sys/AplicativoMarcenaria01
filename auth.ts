@@ -119,13 +119,30 @@ export const resetPassword = async (email: string) => {
 
     try {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.origin}/#/reset-password`,
+            redirectTo: window.location.origin,
         });
 
         if (error) return { error };
         return { error: null };
     } catch (error) {
         return { error: { message: 'Erro ao enviar email de recuperação' } };
+    }
+};
+
+/**
+ * Atualizar senha (para usuário logado)
+ */
+export const updatePassword = async (password: string) => {
+    if (!isSupabaseConfigured) {
+        return { error: { message: 'Supabase não configurado' } };
+    }
+
+    try {
+        const { data, error } = await supabase.auth.updateUser({ password });
+        if (error) return { error };
+        return { data, error: null };
+    } catch (error) {
+        return { error: { message: 'Erro ao atualizar senha' } };
     }
 };
 
