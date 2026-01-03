@@ -357,7 +357,7 @@ export const Orders: React.FC = () => {
                 </div>
 
                 {/* BODY WRAPPER (Collapsible on Mobile) */}
-                <div className={`${isBuilderExpanded ? 'flex' : 'hidden'} lg:flex flex-col flex-1 overflow-hidden`}>
+                <div className={`${isBuilderExpanded ? 'flex' : 'hidden'} lg:flex flex-col flex-1 overflow-hidden min-h-0`}>
                     {/* 2. ITEM ENTRY TOOLBAR (Dark/Contrast) */}
                     <div className="bg-black dark:bg-gray-800 p-3 flex flex-col gap-2 border-b-4 border-black dark:border-white shrink-0">
                         <div className="flex items-center gap-2">
@@ -394,7 +394,7 @@ export const Orders: React.FC = () => {
                     </div>
 
                     {/* 3. CART LIST (Receipt Style) - Scrollable */}
-                    <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-[#111] p-0 relative min-h-[200px] custom-scrollbar">
+                    <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-[#111] p-0 relative min-h-0 custom-scrollbar">
                         {currentItems.length === 0 ? (
                             <div className="flex flex-col items-center justify-center text-gray-400 opacity-40 h-full p-8">
                                 <span className="material-symbols-outlined text-5xl mb-2">shopping_bag</span>
