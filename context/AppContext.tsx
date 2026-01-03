@@ -321,21 +321,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const addProduct = async (product: Product) => {
         if (isSupabaseConfigured && isAuthenticated) {
             try {
-                // Ensure we send a valid payload to Supabase
+                // Remove 'minStock' from payload because column doesn't exist in Supabase yet
+                const { minStock, ...payload } = product;
                 await insertRow('products', {
-                    id: product.id,
-                    name: product.name,
-                    sku: product.sku || '', // Ensure string
-                    materials: product.materials,
-                    cost: product.cost,
-                    stock: product.stock,
-                    minStock: product.minStock ?? 5, // Using camelCase to match schema expectation
-                    image: product.image
+                    ...payload,
+                    sku: product.sku || ''
                 });
             } catch (e: any) {
                 console.error("Error adding product:", e);
                 alert(`Erro ao salvar produto: ${e.message || "Verifique se o Código/ID já existe."}`);
-                return;
+                throw e; // Relaunch to prevent closeModal
             }
         }
         setProducts(prev => [...prev, product]);
@@ -350,13 +345,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     materials: product.materials,
                     cost: product.cost,
                     stock: product.stock,
-                    minStock: product.minStock,
                     image: product.image
                 });
             } catch (e: any) {
                 console.error(e);
                 alert(`Erro ao atualizar produto: ${e.message}`);
-                return;
+                throw e;
             }
         }
         setProducts(prev => prev.map(p => p.id === product.id ? product : p));
@@ -392,11 +386,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     id: material.id,
                     name: material.name,
                     unit: material.unit,
-                    costPerUnit: material.costPerUnit,
+                    cost_per_unit: material.costPerUnit,
                     stock: material.stock,
-                    minStock: material.minStock
+                    min_stock: material.minStock
                 });
-            } catch (e) { console.error(e); return; }
+            } catch (e) {
+                console.error(e);
+                alert("Erro ao salvar material no banco.");
+                return;
+            }
         }
         setMaterials(prev => [...prev, material]);
     };
@@ -407,11 +405,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                 await updateRow('materials', material.id, {
                     name: material.name,
                     unit: material.unit,
-                    costPerUnit: material.costPerUnit,
+                    cost_per_unit: material.costPerUnit,
                     stock: material.stock,
-                    minStock: material.minStock
+                    min_stock: material.minStock
                 });
-            } catch (e) { console.error(e); return; }
+            } catch (e) {
+                console.error(e);
+                alert("Erro ao atualizar material.");
+                return;
+            }
         }
         setMaterials(prev => prev.map(m => m.id === material.id ? material : m));
     };
