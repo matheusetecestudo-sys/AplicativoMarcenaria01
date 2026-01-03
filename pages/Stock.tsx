@@ -81,7 +81,7 @@ export const Stock: React.FC = () => {
             </header>
 
             {/* KPI MODULES */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
                 <div className="bg-white dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 relative overflow-hidden group animate-fade-in-up stagger-1">
                     <div className="absolute right-[-10px] top-[-10px] size-20 bg-gray-100 dark:bg-[#222] rounded-full z-0 group-hover:scale-150 transition-transform duration-500"></div>
                     <div className="relative z-10">

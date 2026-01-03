@@ -401,7 +401,7 @@ export const Settings: React.FC = () => {
                 </div>
 
                 {/* 2. REPORT GENERATION */}
-                <div className="bg-primary p-6 border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_#000] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)] flex flex-col justify-between animate-fade-in-up stagger-2">
+                <div className="bg-primary p-4 md:p-6 border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_#000] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)] flex flex-col justify-between animate-fade-in-up stagger-2">
                     <div>
                         <div className="flex items-center gap-2 mb-4 text-white"><span className="material-symbols-outlined text-3xl">print</span><h2 className="text-xl font-black uppercase">Relatórios</h2></div>
                         <p className="text-white/80 text-sm font-medium mb-6 leading-relaxed">Gere um relatório executivo com os produtos mais vendidos e resumo financeiro. Selecione o período:</p>
@@ -428,7 +428,7 @@ export const Settings: React.FC = () => {
                 </div>
 
                 {/* 3. INTERFACE & PREFERENCES */}
-                <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 animate-fade-in-up stagger-3 flex flex-col">
+                <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-3 flex flex-col">
                     <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
                         <span className="material-symbols-outlined text-primary text-2xl">tune</span>
                         <h2 className="text-xl font-black uppercase text-black dark:text-white">Preferências</h2>
@@ -471,7 +471,7 @@ export const Settings: React.FC = () => {
                 </div>
 
                 {/* 4. DATA MANAGEMENT */}
-                <div className="lg:col-span-2 bg-gray-50 dark:bg-[#111] border-4 border-black dark:border-white p-6 animate-fade-in-up stagger-4">
+                <div className="lg:col-span-2 bg-gray-50 dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-4">
                     <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-200 dark:border-gray-800 pb-2"><span className="material-symbols-outlined text-black dark:text-white text-2xl">database</span><h2 className="text-xl font-black uppercase text-black dark:text-white">Gestão de Dados</h2></div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <button onClick={exportData} className="py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2"><span className="material-symbols-outlined">download</span><span className="text-xs tracking-widest">Backup (JSON)</span></button>

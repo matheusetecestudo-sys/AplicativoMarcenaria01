@@ -284,7 +284,7 @@ export const Dashboard: React.FC = () => {
             </div>
 
             {/* 2. KPI MODULES (Industrial Cards) */}
-            <div className="col-span-1 lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up stagger-1">
+            <div className="col-span-1 lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 animate-fade-in-up stagger-1">
 
                 {/* TOTAL FLOW */}
                 <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 shadow-[8px_8px_0px_0px_#0000FF] hover:-translate-y-1 transition-transform group">
@@ -351,19 +351,19 @@ export const Dashboard: React.FC = () => {
             </div>
 
             {/* 3. SALES CHANNELS (RADIAL TURBINES) */}
-            <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] animate-fade-in-up stagger-2">
+            <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] animate-fade-in-up stagger-2">
                 <div className="flex items-center gap-3 mb-6 border-b-4 border-black dark:border-white pb-2">
-                    <span className="material-symbols-outlined text-primary text-3xl">public</span>
+                    <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">public</span>
                     <div>
-                        <h3 className="text-black dark:text-white text-xl font-black uppercase leading-none">Canais</h3>
-                        <p className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Performance de Vendas</p>
+                        <h3 className="text-black dark:text-white text-lg md:text-xl font-black uppercase leading-none">Canais</h3>
+                        <p className="text-[9px] md:text-[10px] font-bold uppercase text-gray-500 tracking-widest">Performance</p>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2 md:gap-4">
                     {/* ONLINE TURBINE */}
                     <div className="flex flex-col items-center">
-                        <div className="relative size-32 flex items-center justify-center">
+                        <div className="relative size-24 md:size-32 flex items-center justify-center">
                             <div className="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-800 opacity-30"></div>
                             <svg className="size-full -rotate-90 transform" viewBox="0 0 100 100">
                                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#00FFFF" strokeWidth="12"
@@ -372,19 +372,19 @@ export const Dashboard: React.FC = () => {
                                     className="transition-all duration-1000 ease-out" />
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="material-symbols-outlined text-[#00FFFF] text-xl">wifi</span>
-                                <span className="font-black text-xl text-black dark:text-white">{onlineOrders.length}</span>
+                                <span className="material-symbols-outlined text-[#00FFFF] text-lg">wifi</span>
+                                <span className="font-black text-lg md:text-xl text-black dark:text-white">{onlineOrders.length}</span>
                             </div>
                         </div>
                         <div className="text-center mt-2">
-                            <p className="text-[#00FFFF] font-black uppercase text-sm">Internet</p>
-                            <p className="text-[10px] font-bold text-gray-500 uppercase">{formatCurrencyShort(onlineProfit)} Lucro</p>
+                            <p className="text-[#00FFFF] font-black uppercase text-xs md:text-sm">Internet</p>
+                            <p className="text-[9px] font-bold text-gray-500 uppercase">{formatCurrencyShort(onlineProfit)} Lucro</p>
                         </div>
                     </div>
 
                     {/* PHYSICAL TURBINE */}
                     <div className="flex flex-col items-center">
-                        <div className="relative size-32 flex items-center justify-center">
+                        <div className="relative size-24 md:size-32 flex items-center justify-center">
                             <div className="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-800 opacity-30"></div>
                             <svg className="size-full -rotate-90 transform" viewBox="0 0 100 100">
                                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#FFA500" strokeWidth="12"
@@ -393,25 +393,25 @@ export const Dashboard: React.FC = () => {
                                     className="transition-all duration-1000 ease-out" />
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="material-symbols-outlined text-[#FFA500] text-xl">storefront</span>
-                                <span className="font-black text-xl text-black dark:text-white">{physicalOrders.length}</span>
+                                <span className="material-symbols-outlined text-[#FFA500] text-lg">storefront</span>
+                                <span className="font-black text-lg md:text-xl text-black dark:text-white">{physicalOrders.length}</span>
                             </div>
                         </div>
                         <div className="text-center mt-2">
-                            <p className="text-[#FFA500] font-black uppercase text-sm">Loja Física</p>
-                            <p className="text-[10px] font-bold text-gray-500 uppercase">{formatCurrencyShort(physicalProfit)} Lucro</p>
+                            <p className="text-[#FFA500] font-black uppercase text-xs md:text-sm">Loja Física</p>
+                            <p className="text-[9px] font-bold text-gray-500 uppercase">{formatCurrencyShort(physicalProfit)} Lucro</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* 4. STATUS DONUT CHART */}
-            <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 animate-fade-in-up stagger-2">
+            <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-2">
                 <div className="flex items-center gap-3 mb-2 border-b-4 border-black dark:border-white pb-2">
-                    <span className="material-symbols-outlined text-primary text-3xl">donut_small</span>
+                    <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">donut_small</span>
                     <div>
-                        <h3 className="text-black dark:text-white text-xl font-black uppercase leading-none">Status</h3>
-                        <p className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Distribuição por Estado</p>
+                        <h3 className="text-black dark:text-white text-lg md:text-xl font-black uppercase leading-none">Status</h3>
+                        <p className="text-[9px] md:text-[10px] font-bold uppercase text-gray-500 tracking-widest">Distribuição</p>
                     </div>
                 </div>
 
@@ -456,7 +456,7 @@ export const Dashboard: React.FC = () => {
             </div>
 
             {/* 5. FINANCIAL CHART */}
-            <div className="col-span-1 lg:col-span-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 animate-fade-in-up stagger-3">
+            <div className="col-span-1 lg:col-span-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-3">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4 border-b-2 border-gray-100 dark:border-gray-800 pb-4">
                     <div>
                         <h3 className="text-black dark:text-white text-xl font-black uppercase flex items-center gap-2">

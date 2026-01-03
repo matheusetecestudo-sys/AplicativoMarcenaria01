@@ -67,7 +67,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </header>
 
         {/* Main Content Area - Scrollable */}
-        <main className={`flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-6 lg:p-8 animate-fade-in-up custom-scrollbar ${containerClass}`}>
+        <main className={`flex-1 overflow-y-auto overflow-x-hidden p-3 md:p-6 lg:p-8 animate-fade-in-up custom-scrollbar ${containerClass}`}>
           {children}
         </main>
       </div>
