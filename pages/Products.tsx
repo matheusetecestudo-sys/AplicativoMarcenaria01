@@ -279,7 +279,7 @@ export const Products: React.FC = () => {
                                 </button>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="flex-1 overflow-hidden grid grid-cols-1 md:grid-cols-2">
+                            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto md:overflow-hidden grid grid-cols-1 md:grid-cols-2">
 
                                 {/* LEFT: IMAGE & IDENTITY */}
                                 <div className="p-6 md:p-8 flex flex-col gap-6 overflow-y-auto border-b-4 md:border-b-0 md:border-r-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111]">
@@ -387,7 +387,7 @@ export const Products: React.FC = () => {
                                 </div>
 
                                 {/* RIGHT: MATERIALS (Clean Table) */}
-                                <div className="p-6 md:p-8 flex flex-col bg-gray-50 dark:bg-[#000] h-full overflow-hidden relative">
+                                <div className="p-6 md:p-8 flex flex-col bg-gray-50 dark:bg-[#000] min-h-[500px] md:min-h-0 h-full overflow-hidden relative">
                                     {/* Background decoration */}
                                     <div className="absolute top-4 right-4 opacity-10 pointer-events-none">
                                         <span className="material-symbols-outlined text-9xl">construction</span>
