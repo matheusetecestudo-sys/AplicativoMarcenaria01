@@ -168,7 +168,7 @@ export const Products: React.FC = () => {
                         <div key={product.id} className="group flex flex-col bg-white dark:bg-[#1a1a1a] border-4 border-black dark:border-white hover:border-primary dark:hover:border-primary transition-all duration-300 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_#0000FF] h-full relative overflow-hidden">
 
                             {/* Image Area */}
-                            < div className="relative w-full aspect-[4/3] bg-gray-200 dark:bg-black overflow-hidden border-b-4 border-black dark:border-white shrink-0" >
+                            <div className="relative w-full aspect-[4/3] bg-gray-200 dark:bg-black overflow-hidden border-b-4 border-black dark:border-white shrink-0">
                                 <img
                                     src={product.image}
                                     alt={product.name}
