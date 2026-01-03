@@ -133,7 +133,7 @@ export const Products: React.FC = () => {
 
     const filteredProducts = products.filter(p =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.sku.toLowerCase().includes(searchTerm.toLowerCase())
+        (p.sku || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -154,7 +154,7 @@ export const Products: React.FC = () => {
                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
                         <input
                             type="text"
-                            placeholder="BUSCAR NOME..."
+                            placeholder="BUSCAR NOME OU ID..."
                             className="w-full pl-10 pr-4 py-3 bg-white dark:bg-black border-4 border-gray-300 dark:border-gray-700 text-black dark:text-white font-bold uppercase focus:border-primary focus:outline-none transition-colors brutal-input"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -210,6 +210,14 @@ export const Products: React.FC = () => {
                                         </span>
                                     </div>
                                 </div>
+                                {/* ID Badge */}
+                                <div className="absolute top-3 right-3">
+                                    <div className="bg-black/80 dark:bg-white/80 backdrop-blur-sm px-2 py-0.5 border border-white/20 dark:border-black/20">
+                                        <span className="text-[9px] font-mono font-bold text-white dark:text-black">
+                                            #{product.sku || 'S/ID'}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* CONTENT SECTION */}
@@ -235,10 +243,16 @@ export const Products: React.FC = () => {
                                     <div className="text-xs font-mono text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed">
                                         {product.materials.length > 0 ? (
                                             <ul className="list-disc list-inside">
-                                                {product.materials.slice(0, 3).map((m, i) => (
-                                                    <li key={i} className="truncate">{m}</li>
-                                                ))}
-                                                {product.materials.length > 3 && <li className="italic text-[10px] opacity-70">...mais {product.materials.length - 3} itens</li>}
+                                                {product.materials.slice(0, 3).map((m, i) => {
+                                                    const [name, qty] = m.split(':');
+                                                    return (
+                                                        <li key={i} className="truncate text-[10px] md:text-xs">
+                                                            <span className="font-bold text-black dark:text-gray-200">{name}</span>
+                                                            {qty && <span className="text-gray-400 ml-1">({qty}un)</span>}
+                                                        </li>
+                                                    );
+                                                })}
+                                                {product.materials.length > 3 && <li className="italic text-[10px] opacity-70 mt-1">...mais {product.materials.length - 3} itens</li>}
                                             </ul>
                                         ) : (
                                             <span className="italic opacity-50">Nenhum material cadastrado.</span>
@@ -356,6 +370,17 @@ export const Products: React.FC = () => {
 
                                     {/* Main Info Inputs */}
                                     <div className="flex flex-col gap-6">
+                                        <div className="flex flex-col gap-2">
+                                            <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Identificador (ID / Código)</label>
+                                            <input
+                                                className="w-full bg-gray-50 dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-3 text-sm font-mono font-bold text-black dark:text-white focus:border-primary focus:outline-none transition-colors uppercase"
+                                                placeholder="EX: PROD-001"
+                                                value={formData.sku}
+                                                onChange={e => setFormData({ ...formData, sku: e.target.value })}
+                                                required
+                                            />
+                                        </div>
+
                                         <div className="flex flex-col gap-2">
                                             <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Nome do Produto</label>
                                             <input

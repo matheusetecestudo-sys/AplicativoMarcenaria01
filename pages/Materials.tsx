@@ -283,55 +283,96 @@ export const Materials: React.FC = () => {
 
             {/* BRUTALIST MODAL (Technical Blueprint Style) */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in-up" onClick={closeModal}>
-                    <div className="bg-white dark:bg-[#050505] border-4 border-white w-full max-w-lg shadow-[0_0_0_1000px_rgba(0,0,0,0.5)] relative flex flex-col" onClick={e => e.stopPropagation()}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 bg-black/90 backdrop-blur-sm animate-fade-in-up" onClick={closeModal}>
+                    <div className="bg-white dark:bg-[#050505] border-0 md:border-4 border-primary w-full max-w-lg shadow-none md:shadow-[12px_12px_0px_0px_rgba(0,0,255,0.3)] relative flex flex-col h-full md:h-auto md:max-h-[90vh] md:rounded-lg overflow-hidden" onClick={e => e.stopPropagation()}>
 
                         {/* Modal Header */}
-                        <div className="bg-primary p-4 flex justify-between items-center border-b-4 border-black dark:border-white">
+                        <div className="bg-primary p-4 flex justify-between items-center border-b-4 border-black dark:border-white shrink-0">
                             <h2 className="text-lg font-black uppercase text-white tracking-widest flex items-center gap-2">
                                 <span className="material-symbols-outlined">dataset</span>
-                                {editingMaterial ? 'Editar Especificação' : 'Nova Especificação'}
+                                {editingMaterial ? 'Editar Insumo' : 'Novo Insumo'}
                             </h2>
                             <button onClick={closeModal} className="text-white hover:text-black transition-colors">
-                                <span className="material-symbols-outlined">close</span>
+                                <span className="material-symbols-outlined text-3xl">close</span>
                             </button>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="p-8 flex flex-col gap-6 bg-[linear-gradient(45deg,#f3f4f6_25%,transparent_25%,transparent_75%,#f3f4f6_75%,#f3f4f6),linear-gradient(45deg,#f3f4f6_25%,transparent_25%,transparent_75%,#f3f4f6_75%,#f3f4f6)] dark:bg-[linear-gradient(45deg,#111_25%,transparent_25%,transparent_75%,#111_75%,#111),linear-gradient(45deg,#111_25%,transparent_25%,transparent_75%,#111_75%,#111)] bg-[length:20px_20px] bg-[position:0_0,10px_10px]">
-                            <div className="bg-white dark:bg-[#111] border-4 border-black dark:border-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)]">
-                                <label className="flex flex-col text-black dark:text-white font-bold uppercase mb-4">
-                                    <span className="text-[10px] text-gray-500 mb-1 tracking-widest">Descrição do Insumo</span>
-                                    <input required className="p-3 bg-transparent text-black dark:text-white border-b-4 border-black dark:border-white focus:border-primary focus:outline-none text-xl font-black uppercase placeholder:text-gray-300 dark:placeholder:text-gray-700" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="EX: CHAPA MDF" />
+                        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col gap-6 bg-white dark:bg-[#0A0A0A]">
+                            <div className="bg-gray-50 dark:bg-[#111] border-2 md:border-4 border-black dark:border-white p-4 md:p-6 shadow-none md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
+                                <label className="flex flex-col text-black dark:text-white font-bold uppercase mb-6">
+                                    <span className="text-[10px] text-gray-500 mb-2 tracking-widest">Nome do Insumo / Descrição</span>
+                                    <input
+                                        required
+                                        className="p-3 bg-white dark:bg-black text-black dark:text-white border-b-4 border-primary focus:border-black dark:focus:border-white focus:outline-none text-xl font-black uppercase placeholder:text-gray-300 dark:placeholder:text-gray-700 transition-all"
+                                        value={formData.name}
+                                        onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                        placeholder="EX: CHAPA MDF BRANCO 18MM"
+                                    />
                                 </label>
 
-                                <div className="grid grid-cols-2 gap-6">
+                                <div className="grid grid-cols-2 gap-4 md:gap-6">
                                     <label className="flex flex-col text-black dark:text-white font-bold uppercase">
-                                        <span className="text-[10px] text-gray-500 mb-1 tracking-widest">Unidade</span>
-                                        <input required className="p-2 bg-gray-100 dark:bg-black text-black dark:text-white border-2 border-black dark:border-white focus:border-primary focus:outline-none font-mono font-bold" value={formData.unit} onChange={e => setFormData({ ...formData, unit: e.target.value })} placeholder="UN" />
+                                        <span className="text-[10px] text-gray-500 mb-2 tracking-widest">Unidade</span>
+                                        <input
+                                            required
+                                            className="p-3 bg-white dark:bg-black text-black dark:text-white border-2 border-gray-200 dark:border-gray-800 focus:border-primary focus:outline-none font-mono font-bold"
+                                            value={formData.unit}
+                                            onChange={e => setFormData({ ...formData, unit: e.target.value })}
+                                            placeholder="UN, M2, LT..."
+                                        />
                                     </label>
                                     <label className="flex flex-col text-black dark:text-white font-bold uppercase">
-                                        <span className="text-[10px] text-gray-500 mb-1 tracking-widest">Custo (R$)</span>
-                                        <input type="number" step="0.01" required className="p-2 bg-gray-100 dark:bg-black text-black dark:text-white border-2 border-black dark:border-white focus:border-primary focus:outline-none font-mono font-bold" value={formData.costPerUnit} onChange={e => setFormData({ ...formData, costPerUnit: parseFloat(e.target.value) })} />
+                                        <span className="text-[10px] text-gray-500 mb-2 tracking-widest">Custo Unit. (R$)</span>
+                                        <input
+                                            type="number" step="0.01"
+                                            required
+                                            className="p-3 bg-white dark:bg-black text-black dark:text-white border-2 border-gray-200 dark:border-gray-800 focus:border-primary focus:outline-none font-mono font-bold"
+                                            value={formData.costPerUnit}
+                                            onChange={e => setFormData({ ...formData, costPerUnit: parseFloat(e.target.value) })}
+                                        />
                                     </label>
                                 </div>
 
-                                <div className="my-4 border-t-2 border-dashed border-gray-300 dark:border-gray-700"></div>
+                                <div className="my-6 border-t-2 border-dashed border-gray-300 dark:border-gray-700"></div>
 
-                                <div className="grid grid-cols-2 gap-6">
+                                <div className="grid grid-cols-2 gap-4 md:gap-6">
                                     <label className="flex flex-col text-black dark:text-white font-bold uppercase">
-                                        <span className="text-[10px] text-gray-500 mb-1 tracking-widest">Estoque Atual</span>
-                                        <input type="number" required className="p-2 bg-gray-100 dark:bg-black text-black dark:text-white border-2 border-black dark:border-white focus:border-primary focus:outline-none font-mono font-bold text-lg" value={formData.stock} onChange={e => setFormData({ ...formData, stock: parseInt(e.target.value) })} />
+                                        <span className="text-[10px] text-gray-500 mb-2 tracking-widest">Qtd em Estoque</span>
+                                        <input
+                                            type="number"
+                                            required
+                                            className="p-3 bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white focus:border-primary focus:outline-none font-mono font-bold text-lg"
+                                            value={formData.stock}
+                                            onChange={e => setFormData({ ...formData, stock: parseInt(e.target.value) })}
+                                        />
                                     </label>
                                     <label className="flex flex-col text-black dark:text-white font-bold uppercase">
-                                        <span className="text-[10px] text-red-500 mb-1 tracking-widest">Ponto de Alerta</span>
-                                        <input type="number" required className="p-2 bg-red-50 dark:bg-red-900/10 text-red-600 border-2 border-red-200 dark:border-red-900 focus:border-red-500 focus:outline-none font-mono font-bold text-lg" value={formData.minStock} onChange={e => setFormData({ ...formData, minStock: parseInt(e.target.value) })} />
+                                        <span className="text-[10px] text-red-500 mb-2 tracking-widest">Alerta de Baixa</span>
+                                        <input
+                                            type="number"
+                                            required
+                                            className="p-3 bg-red-50 dark:bg-red-900/10 text-red-600 border-2 border-red-500 focus:border-black focus:outline-none font-mono font-bold text-lg"
+                                            value={formData.minStock}
+                                            onChange={e => setFormData({ ...formData, minStock: parseInt(e.target.value) })}
+                                        />
                                     </label>
                                 </div>
                             </div>
 
-                            <div className="flex gap-4">
-                                <button type="button" onClick={closeModal} className="flex-1 py-4 bg-white dark:bg-black text-black dark:text-white font-black uppercase border-4 border-transparent hover:border-black dark:hover:border-white transition-all brutal-btn text-xs tracking-widest">Cancelar</button>
-                                <button type="submit" className="flex-1 py-4 bg-primary text-white font-black uppercase border-4 border-black dark:border-white hover:brightness-110 transition-all brutal-btn shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.5)] active:translate-y-[2px] active:shadow-none text-xs tracking-widest">Confirmar</button>
+                            <div className="mt-auto pt-6 flex flex-col md:flex-row gap-4">
+                                <button
+                                    type="button"
+                                    onClick={closeModal}
+                                    className="flex-1 py-4 text-black dark:text-white font-black uppercase hover:bg-gray-100 dark:hover:bg-white/5 transition-all text-sm tracking-widest"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="flex-1 py-4 bg-primary text-white font-black uppercase shadow-[4px_4px_0px_0px_black] active:translate-y-[2px] active:shadow-none transition-all text-sm tracking-widest border-2 border-black"
+                                >
+                                    Salvar Insumo
+                                </button>
                             </div>
                         </form>
                     </div>
