@@ -89,6 +89,17 @@ export const Products: React.FC = () => {
         setFormData({ ...formData, materials: updatedMaterials });
     };
 
+    // UUID Generator
+    const generateUUID = () => {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+            return crypto.randomUUID();
+        }
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -113,7 +124,7 @@ export const Products: React.FC = () => {
             });
         } else {
             addProduct({
-                id: Math.random().toString(36).substr(2, 9),
+                id: generateUUID(),
                 ...cleanData
             });
         }
@@ -184,11 +195,11 @@ export const Products: React.FC = () => {
                         <div key={product.id} className="group flex flex-col bg-white dark:bg-[#1a1a1a] border-4 border-black dark:border-white hover:border-primary dark:hover:border-primary transition-all duration-300 relative overflow-hidden shadow-sm hover:shadow-[8px_8px_0px_0px_rgba(0,0,255,0.2)]">
 
                             {/* IMAGE SECTION - Big & Clear */}
-                            <div className="relative w-full aspect-[3/2] border-b-4 border-black dark:border-white bg-gray-100 dark:bg-black overflow-hidden flex flex-col justify-center">
+                            <div className="relative w-full aspect-[3/2] border-b-4 border-black dark:border-white bg-gray-50 dark:bg-black overflow-hidden flex flex-col justify-center">
                                 <img
                                     src={product.image}
                                     alt={product.name}
-                                    className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500"
+                                    className="w-full h-full object-contain p-2 filter grayscale group-hover:grayscale-0 transition-all duration-500"
                                     onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x400/1a1a1a/FFF?text=${product.name.substring(0, 3).toUpperCase()}`; }}
                                 />
                                 {/* Stock Badge */}

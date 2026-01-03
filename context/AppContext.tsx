@@ -321,18 +321,17 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const addProduct = async (product: Product) => {
         if (isSupabaseConfigured && isAuthenticated) {
             try {
+                // Ensure we send a valid payload to Supabase
                 await insertRow('products', {
-                    id: product.id, // AGORA OBRIGATÓRIO
+                    id: product.id,
                     name: product.name,
-                    sku: product.sku,
+                    sku: product.sku || '', // Ensure string
                     materials: product.materials,
                     cost: product.cost,
                     stock: product.stock,
-                    min_stock: product.minStock,
+                    min_stock: product.minStock ?? 5, // Default to 5 if null
                     image: product.image
                 });
-                // Re-fetch to get the real ID? Or just use local one? 
-                // For simplicity in this session, we assume successful insert.
             } catch (e) {
                 console.error("Error adding product:", e);
                 return;
