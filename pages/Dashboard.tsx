@@ -190,367 +190,262 @@ export const Dashboard: React.FC = () => {
             {/* 1. COMMAND CENTER HEADER */}
             <div className="col-span-1 lg:col-span-4 flex flex-col gap-0 animate-fade-in-up">
 
-                {/* Top Row: Identity & System Monitor */}
-                <div className="flex flex-col border-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)]">
+                {/* Linha Superior: Identidade & Monitor do Sistema */}
+                <div className="flex flex-col border-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
                     {/* Logo & Name Area */}
-                    <div className="p-4 md:p-6 flex flex-row items-center gap-4 md:gap-6 border-b-4 border-black dark:border-white relative overflow-hidden">
+                    <div className="p-4 md:p-6 flex flex-row items-center gap-4 md:gap-8 border-b-4 border-black dark:border-white relative overflow-hidden bg-white dark:bg-[#1A1A1A]">
                         {/* Decoration Background */}
-                        <div className="absolute top-0 right-0 p-2 opacity-5 pointer-events-none">
-                            <span className="material-symbols-outlined text-7xl md:text-9xl">factory</span>
+                        <div className="absolute top-0 right-0 p-2 opacity-[0.03] pointer-events-none">
+                            <span className="material-symbols-outlined text-8xl md:text-[120px]">precision_manufacturing</span>
                         </div>
 
                         <div className="relative z-10 shrink-0">
                             {settings.company.logo ? (
-                                <div className="size-20 md:size-32 bg-white border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,255,0.2)] p-1 flex items-center justify-center">
+                                <div className="size-20 md:size-32 bg-white border-4 border-black shadow-[4px_4px_0px_0px_#0000FF] p-1 flex items-center justify-center">
                                     <img src={settings.company.logo} alt="Logo" className="h-full w-auto object-contain" />
                                 </div>
                             ) : (
-                                <div className="size-20 md:size-32 bg-primary flex items-center justify-center border-4 border-white shadow-[4px_4px_0px_0px_#000]">
-                                    <span className="material-symbols-outlined text-white text-4xl md:text-6xl">precision_manufacturing</span>
+                                <div className="size-20 md:size-32 bg-black dark:bg-white flex items-center justify-center border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_#0000FF]">
+                                    <span className="material-symbols-outlined text-white dark:text-black text-4xl md:text-6xl">factory</span>
                                 </div>
                             )}
                         </div>
 
                         <div className="flex flex-col relative z-10 flex-1 min-w-0">
-                            <h1 className="text-black dark:text-white text-xl md:text-3xl font-black uppercase tracking-[-0.05em] leading-[1.1] line-clamp-2">
+                            <h1 className="text-black dark:text-white text-2xl md:text-4xl font-black uppercase tracking-[-0.05em] leading-[0.9] break-words">
                                 {settings.company.name || 'DASHBOARD'}
                             </h1>
-                            <div className="flex items-center gap-2 mt-1">
-                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shrink-0"></span>
-                                <p className="text-[10px] md:text-xs font-bold uppercase text-gray-500 dark:text-gray-400 tracking-[0.2em] truncate">
-                                    Operação Ativa
-                                </p>
+                            <div className="flex items-center gap-3 mt-2">
+                                <span className="flex items-center gap-1.5 bg-green-500/10 text-green-600 dark:text-green-400 px-2 py-0.5 border border-green-500/20 rounded-full">
+                                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                    <span className="text-[9px] md:text-xs font-black uppercase tracking-wider">Sistema Online</span>
+                                </span>
+                                <span className="text-[10px] md:text-xs font-bold uppercase text-gray-500 tracking-widest hidden sm:inline">v2.5 // CORE_ENGINE</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* System Monitor (Clock & Status) */}
-                    <div className="bg-black dark:bg-[#111] text-white p-4 flex flex-col justify-center relative overflow-hidden">
-                        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-black to-black pointer-events-none"></div>
-
-                        <div className="flex justify-between items-start mb-1 relative z-10">
-                            <span className="text-[9px] font-black uppercase tracking-widest text-primary">System Time</span>
-                            <span className="text-[9px] font-black uppercase tracking-widest opacity-60">{dateString}</span>
-                        </div>
+                    {/* System Monitor (Relógio & Status) */}
+                    <div className="bg-black text-white p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 relative overflow-hidden">
+                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_50%,_rgba(0,0,255,0.4),transparent)] pointer-events-none"></div>
 
                         <div className="relative z-10">
-                            <span className="font-mono text-4xl md:text-6xl font-black tracking-tighter tabular-nums leading-none block md:text-right">
-                                {timeString}
-                            </span>
+                            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 block mb-1">DATA DO SISTEMA</span>
+                            <span className="text-sm md:text-base font-black uppercase tracking-tighter opacity-80">{dateString}</span>
                         </div>
 
-                        <div className="mt-2 border-t border-gray-800 pt-2 flex justify-between items-center relative z-10">
-                            <div className="flex items-center gap-2">
-                                <span className="material-symbols-outlined text-[14px]">database</span>
-                                <span className="text-[9px] font-bold uppercase">DB: Conectado</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-[9px] font-bold uppercase">v2.5</span>
-                                <span className="material-symbols-outlined text-[14px] text-primary">verified</span>
-                            </div>
+                        <div className="relative z-10 flex flex-col items-start md:items-end">
+                            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-400 block mb-1">HORÁRIO LOCAL</span>
+                            <span className="font-mono text-4xl md:text-6xl font-black tracking-tighter tabular-nums leading-none">
+                                {timeString}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                {/* Second Row: Tuner Bar (Filters) */}
-                <div className="bg-gray-100 dark:bg-[#0A0A0A] border-x-4 border-b-4 border-black dark:border-white p-2">
-                    <div className="flex flex-wrap md:flex-nowrap gap-2 justify-between items-center">
-                        <span className="hidden md:flex items-center gap-2 px-4 text-xs font-black uppercase text-gray-400 tracking-widest">
-                            <span className="material-symbols-outlined text-sm">tune</span>
-                            Filtro Temporal
-                        </span>
-
-                        <div className="flex flex-1 bg-white dark:bg-black border-2 border-black dark:border-white">
+                {/* Segunda Linha: Barra de Ajuste (Filtros) - Estilo Orders Page */}
+                <div className="bg-white dark:bg-black border-x-4 border-b-4 border-black dark:border-white p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                    <div className="flex flex-col sm:flex-row gap-3 items-center">
+                        <div className="flex-1 w-full grid grid-cols-5 bg-gray-100 dark:bg-[#111] p-1 border-2 border-black dark:border-white">
                             {(['HOJE', '7D', 'MES', 'ANO', 'TUDO'] as TimeRange[]).map((range) => (
                                 <button
                                     key={range}
                                     onClick={() => setTimeRange(range)}
                                     className={`
-                                flex-1 py-3 text-xs font-black uppercase transition-all duration-200 relative overflow-hidden group
-                                ${timeRange === range
-                                            ? 'bg-primary text-white'
-                                            : 'text-gray-500 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-900'}
-                            `}
+                                        py-2 text-[10px] font-black uppercase transition-all duration-200
+                                        ${timeRange === range
+                                            ? 'bg-black dark:bg-white text-white dark:text-black shadow-[2px_2px_0px_#0000FF]'
+                                            : 'text-gray-500 hover:text-black dark:hover:text-white'}
+                                    `}
                                 >
-                                    <span className="relative z-10">{range}</span>
-                                    {timeRange === range && (
-                                        <span className="absolute bottom-0 left-0 w-full h-1 bg-black dark:bg-white"></span>
-                                    )}
+                                    {range}
                                 </button>
                             ))}
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* 2. KPI MODULES (Industrial Cards) */}
-            <div className="col-span-1 lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 animate-fade-in-up stagger-1">
-
-                {/* TOTAL FLOW */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 shadow-[8px_8px_0px_0px_#0000FF] hover:-translate-y-1 transition-transform group">
-                    {/* Corner Brackets */}
-                    <div className="absolute top-0 left-0 w-3 h-3 border-t-4 border-l-4 border-primary"></div>
-                    <div className="absolute top-0 right-0 w-3 h-3 border-t-4 border-r-4 border-primary"></div>
-                    <div className="absolute bottom-0 left-0 w-3 h-3 border-b-4 border-l-4 border-primary"></div>
-                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b-4 border-r-4 border-primary"></div>
-
-                    <div className="flex justify-between items-start mb-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Fluxo Total</span>
-                        <span className="material-symbols-outlined text-primary group-hover:rotate-12 transition-transform">receipt_long</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-4xl md:text-6xl font-black text-black dark:text-white leading-none tracking-tighter">{totalOrders}</span>
-                        <span className="text-[10px] md:text-xs font-bold uppercase text-primary mt-1">Pedidos Registrados</span>
-                    </div>
-                </div>
-
-                {/* PENDING */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 hover:border-[#FFFF00] transition-colors duration-300 group">
-                    <div className="flex justify-between items-start mb-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-hover:text-[#FFFF00]">Em Aberto</span>
-                        <span className="material-symbols-outlined text-gray-300 dark:text-gray-600 group-hover:text-[#FFFF00]">pending</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-4xl md:text-6xl font-black text-black dark:text-white leading-none tracking-tighter group-hover:text-[#FFFF00] transition-colors">{pendingOrders}</span>
-                        <div className="w-full bg-gray-100 dark:bg-black h-2 mt-2 border border-gray-300 dark:border-gray-700">
-                            <div className="h-full bg-[#FFFF00]" style={{ width: `${calculatePercent(pendingOrders)}%` }}></div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* LATE (ALERT) */}
-                <div className={`relative bg-white dark:bg-[#1A1A1A] border-4 ${lateOrders > 0 ? 'border-[#FF0000]' : 'border-black dark:border-white'} p-4 md:p-6 transition-colors duration-300 group`}>
-                    {lateOrders > 0 && <div className="absolute inset-0 border-4 border-[#FF0000] animate-pulse pointer-events-none opacity-50"></div>}
-
-                    <div className="flex justify-between items-start mb-4">
-                        <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${lateOrders > 0 ? 'text-[#FF0000]' : 'text-gray-400'}`}>Crítico</span>
-                        <span className={`material-symbols-outlined ${lateOrders > 0 ? 'text-[#FF0000]' : 'text-gray-300'}`}>warning</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className={`text-4xl md:text-6xl font-black leading-none tracking-tighter ${lateOrders > 0 ? 'text-[#FF0000]' : 'text-black dark:text-white'}`}>{lateOrders}</span>
-                        <div className="w-full bg-gray-100 dark:bg-black h-2 mt-2 border border-gray-300 dark:border-gray-700">
-                            <div className="h-full bg-[#FF0000]" style={{ width: `${calculatePercent(lateOrders)}%` }}></div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* COMPLETED */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 hover:border-[#00FF00] transition-colors duration-300 group">
-                    <div className="flex justify-between items-start mb-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-hover:text-[#00FF00]">Finalizados</span>
-                        <span className="material-symbols-outlined text-gray-300 dark:text-gray-600 group-hover:text-[#00FF00]">check_circle</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-4xl md:text-6xl font-black text-black dark:text-white leading-none tracking-tighter group-hover:text-[#00FF00] transition-colors">{completedOrders}</span>
-                        <div className="w-full bg-gray-100 dark:bg-black h-2 mt-2 border border-gray-300 dark:border-gray-700">
-                            <div className="h-full bg-[#00FF00]" style={{ width: `${calculatePercent(completedOrders)}%` }}></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            {/* 3. SALES CHANNELS (RADIAL TURBINES) */}
-            <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] animate-fade-in-up stagger-2">
-                <div className="flex items-center gap-3 mb-6 border-b-4 border-black dark:border-white pb-2">
-                    <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">public</span>
-                    <div>
-                        <h3 className="text-black dark:text-white text-lg md:text-xl font-black uppercase leading-none">Canais</h3>
-                        <p className="text-[9px] md:text-[10px] font-bold uppercase text-gray-500 tracking-widest">Performance</p>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 md:gap-4">
-                    {/* ONLINE TURBINE */}
-                    <div className="flex flex-col items-center">
-                        <div className="relative size-24 md:size-32 flex items-center justify-center">
-                            <div className="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-800 opacity-30"></div>
-                            <svg className="size-full -rotate-90 transform" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#00FFFF" strokeWidth="12"
-                                    strokeDasharray={`${(onlineOrders.length / (totalOrders || 1)) * 251} 251`}
-                                    strokeLinecap="butt"
-                                    className="transition-all duration-1000 ease-out" />
-                            </svg>
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="material-symbols-outlined text-[#00FFFF] text-lg">wifi</span>
-                                <span className="font-black text-lg md:text-xl text-black dark:text-white">{onlineOrders.length}</span>
-                            </div>
-                        </div>
-                        <div className="text-center mt-2">
-                            <p className="text-[#00FFFF] font-black uppercase text-xs md:text-sm">Internet</p>
-                            <p className="text-[9px] font-bold text-gray-500 uppercase">{formatCurrencyShort(onlineProfit)} Lucro</p>
-                        </div>
-                    </div>
-
-                    {/* PHYSICAL TURBINE */}
-                    <div className="flex flex-col items-center">
-                        <div className="relative size-24 md:size-32 flex items-center justify-center">
-                            <div className="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-800 opacity-30"></div>
-                            <svg className="size-full -rotate-90 transform" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#FFA500" strokeWidth="12"
-                                    strokeDasharray={`${(physicalOrders.length / (totalOrders || 1)) * 251} 251`}
-                                    strokeLinecap="butt"
-                                    className="transition-all duration-1000 ease-out" />
-                            </svg>
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="material-symbols-outlined text-[#FFA500] text-lg">storefront</span>
-                                <span className="font-black text-lg md:text-xl text-black dark:text-white">{physicalOrders.length}</span>
-                            </div>
-                        </div>
-                        <div className="text-center mt-2">
-                            <p className="text-[#FFA500] font-black uppercase text-xs md:text-sm">Loja Física</p>
-                            <p className="text-[9px] font-bold text-gray-500 uppercase">{formatCurrencyShort(physicalProfit)} Lucro</p>
+                        <div className="hidden md:flex items-center gap-2 px-4 text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] border-l-2 border-gray-200 dark:border-gray-800 h-10">
+                            <span className="material-symbols-outlined text-sm">filter_alt</span>
+                            Parâmetros Globais
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* 4. STATUS DONUT CHART */}
-            <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-2">
-                <div className="flex items-center gap-3 mb-2 border-b-4 border-black dark:border-white pb-2">
-                    <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">donut_small</span>
-                    <div>
-                        <h3 className="text-black dark:text-white text-lg md:text-xl font-black uppercase leading-none">Status</h3>
-                        <p className="text-[9px] md:text-[10px] font-bold uppercase text-gray-500 tracking-widest">Distribuição</p>
+            {/* 2. MÓDULOS DE KPI (Cards Industriais) */}
+            <div className="col-span-1 lg:col-span-4 grid grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in-up stagger-1">
+
+                {/* FLUXO TOTAL */}
+                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] group overflow-hidden">
+                    <div className="absolute right-0 top-0 p-1 opacity-10">
+                        <span className="material-symbols-outlined text-4xl">receipt_long</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Total Pedidos</span>
+                        <span className="text-3xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{totalOrders}</span>
                     </div>
                 </div>
 
-                <div className="h-48 w-full flex items-center justify-center relative">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                            <Pie
-                                data={statusData}
-                                cx="50%"
-                                cy="50%"
-                                innerRadius={60}
-                                outerRadius={80}
-                                paddingAngle={5}
-                                dataKey="value"
-                                stroke="none"
-                            >
-                                {statusData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                                ))}
-                            </Pie>
-                            <Tooltip
-                                contentStyle={{ backgroundColor: '#000', border: '2px solid #FFF', color: '#FFF' }}
-                                itemStyle={{ color: '#FFF', fontWeight: 'bold' }}
-                            />
-                        </PieChart>
-                    </ResponsiveContainer>
-                    {/* Center Text */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                        <span className="text-4xl font-black text-black dark:text-white leading-none">{totalOrders}</span>
-                        <span className="text-[10px] font-bold uppercase text-gray-500">Total</span>
+                {/* PENDENTES */}
+                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_#FFFF00] group overflow-hidden">
+                    <div className="absolute right-0 top-0 p-1 opacity-10">
+                        <span className="material-symbols-outlined text-4xl text-yellow-500">pending</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-500 mb-1">Pendentes</span>
+                        <span className="text-3xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{pendingOrders}</span>
                     </div>
                 </div>
-                {/* Legend */}
-                <div className="flex justify-center gap-4 mt-2">
-                    {statusData.map((d, i) => (
-                        <div key={i} className="flex items-center gap-1">
-                            <div className="size-3 rounded-full" style={{ backgroundColor: d.fill }}></div>
-                            <span className="text-[10px] font-bold uppercase text-gray-500">{d.name}</span>
-                        </div>
-                    ))}
+
+                {/* ATRASADOS */}
+                <div className={`relative bg-white dark:bg-[#1A1A1A] border-4 ${lateOrders > 0 ? 'border-red-500 shadow-[4px_4px_0px_0px_#FF0000]' : 'border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]'} p-4 transition-all duration-300 group overflow-hidden`}>
+                    <div className="absolute right-0 top-0 p-1 opacity-10">
+                        <span className={`material-symbols-outlined text-4xl ${lateOrders > 0 ? 'text-red-500' : ''}`}>warning</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className={`text-[9px] font-black uppercase tracking-widest ${lateOrders > 0 ? 'text-red-500' : 'text-gray-400'} mb-1`}>Críticos</span>
+                        <span className={`text-3xl md:text-5xl font-black leading-none tracking-tighter ${lateOrders > 0 ? 'text-red-500' : 'text-black dark:text-white'}`}>{lateOrders}</span>
+                    </div>
+                </div>
+
+                {/* CONCLUÍDOS */}
+                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_#00FF00] group overflow-hidden">
+                    <div className="absolute right-0 top-0 p-1 opacity-10">
+                        <span className="material-symbols-outlined text-4xl text-green-500">check_circle</span>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Concluídos</span>
+                        <span className="text-3xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{completedOrders}</span>
+                    </div>
                 </div>
             </div>
 
-            {/* 5. FINANCIAL CHART */}
-            <div className="col-span-1 lg:col-span-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-3">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4 border-b-2 border-gray-100 dark:border-gray-800 pb-4">
-                    <div>
-                        <h3 className="text-black dark:text-white text-xl font-black uppercase flex items-center gap-2">
-                            <span className="material-symbols-outlined text-primary">attach_money</span>
+            {/* 3. COLUNA DE MÉTRICAS E GRÁFICOS */}
+            <div className="col-span-1 lg:col-span-2 space-y-6">
+                {/* FINANCEIRO */}
+                <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 animate-fade-in-up stagger-2 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)]">
+                    <div className="flex justify-between items-center mb-6 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
+                        <h3 className="text-black dark:text-white text-sm font-black uppercase flex items-center gap-2">
+                            <span className="material-symbols-outlined text-primary">analytics</span>
                             Fluxo Financeiro
                         </h3>
+                        <div className="flex gap-4">
+                            <div className="text-right">
+                                <p className="text-[8px] font-black text-gray-400 uppercase">Receita</p>
+                                <p className="text-xs font-black text-blue-600">{formatCurrencyShort(totals.faturamento)}</p>
+                            </div>
+                            <div className="text-right border-l-2 border-gray-200 dark:border-gray-800 pl-4">
+                                <p className="text-[8px] font-black text-gray-400 uppercase">Lucro</p>
+                                <p className="text-xs font-black text-green-600">{formatCurrencyShort(totals.lucro)}</p>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="flex flex-wrap gap-4">
-                        <div className="flex flex-col">
-                            <span className="text-[10px] font-bold uppercase text-gray-500">Faturamento</span>
-                            <span className="text-blue-600 dark:text-blue-500 font-black text-lg">{formatCurrencyShort(totals.faturamento)}</span>
-                        </div>
-                        <div className="flex flex-col border-l-2 border-gray-300 dark:border-gray-700 pl-4">
-                            <span className="text-[10px] font-bold uppercase text-gray-500">Lucro (Liq)</span>
-                            <span className="text-green-600 dark:text-green-500 font-black text-lg">{formatCurrencyShort(totals.lucro)}</span>
-                        </div>
+                    <div className="h-48 w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <ComposedChart data={chartData} margin={{ top: 10, right: 0, left: -25, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
+                                <XAxis dataKey="name" stroke={chartAxisColor} tick={{ fill: chartAxisColor, fontSize: 8, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
+                                <YAxis stroke={chartAxisColor} tick={{ fill: chartAxisColor, fontSize: 8, fontWeight: 'bold' }} tickFormatter={formatCurrencyShort} axisLine={false} tickLine={false} />
+                                <Tooltip content={<FinancialTooltip />} />
+                                <Bar dataKey="faturamento" fill="#0000FF" barSize={12} radius={[2, 2, 0, 0]} />
+                                <Line type="monotone" dataKey="lucro" stroke="#00FF00" strokeWidth={3} dot={{ r: 3 }} />
+                            </ComposedChart>
+                        </ResponsiveContainer>
                     </div>
                 </div>
 
-                <div className="h-64 w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <ComposedChart data={chartData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
-                            <XAxis
-                                dataKey="name"
-                                stroke={chartAxisColor}
-                                tick={{ fill: chartAxisColor, fontWeight: 'bold', fontSize: 10 }}
-                                axisLine={false} tickLine={false} dy={10}
-                            />
-                            <YAxis
-                                stroke={chartAxisColor}
-                                tick={{ fill: chartAxisColor, fontWeight: 'bold', fontSize: 10 }}
-                                tickFormatter={formatCurrencyShort}
-                                axisLine={false} tickLine={false}
-                            />
-                            <Tooltip content={<FinancialTooltip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
+                {/* CANAIS E STATUS (COLUNA DUPLA NO DESKTOP, STACK NO MOBILE) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* CANAIS */}
+                    <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                        <div className="flex items-center gap-2 mb-4 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
+                            <span className="material-symbols-outlined text-primary text-lg">public</span>
+                            <h3 className="text-black dark:text-white text-xs font-black uppercase">Canais</h3>
+                        </div>
+                        <div className="flex justify-around items-center h-24">
+                            <div className="flex flex-col items-center">
+                                <span className="text-2xl font-black text-black dark:text-white">{onlineOrders.length}</span>
+                                <span className="text-[8px] font-black uppercase text-cyan-500">Online</span>
+                            </div>
+                            <div className="w-px h-12 bg-gray-200 dark:border-gray-800"></div>
+                            <div className="flex flex-col items-center">
+                                <span className="text-2xl font-black text-black dark:text-white">{physicalOrders.length}</span>
+                                <span className="text-[8px] font-black uppercase text-orange-500">Físico</span>
+                            </div>
+                        </div>
+                    </div>
 
-                            <Bar dataKey="faturamento" fill="#0000FF" barSize={20} radius={[2, 2, 0, 0]} fillOpacity={0.9} />
-                            <Bar dataKey="custo" fill="#FF0000" barSize={20} radius={[2, 2, 0, 0]} fillOpacity={0.8} />
-                            <Line type="monotone" dataKey="lucro" stroke="#00FF00" strokeWidth={3} dot={{ r: 4, fill: '#000', stroke: '#00FF00', strokeWidth: 2 }} activeDot={{ r: 6 }} />
-                        </ComposedChart>
-                    </ResponsiveContainer>
+                    {/* STATUS */}
+                    <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                        <div className="flex items-center gap-2 mb-4 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
+                            <span className="material-symbols-outlined text-primary text-lg">donut_small</span>
+                            <h3 className="text-black dark:text-white text-xs font-black uppercase">Status</h3>
+                        </div>
+                        <div className="h-24 w-full relative">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <PieChart>
+                                    <Pie data={statusData} cx="50%" cy="50%" innerRadius={25} outerRadius={35} paddingAngle={5} dataKey="value" stroke="none">
+                                        {statusData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                                        ))}
+                                    </Pie>
+                                </PieChart>
+                            </ResponsiveContainer>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-sm font-black text-black dark:text-white">{totalOrders}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {/* 6. RECENT ORDERS LIST */}
-            <div className="col-span-1 lg:col-span-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white animate-fade-in-up stagger-4">
-                <div className="bg-primary p-3 border-b-4 border-black dark:border-white flex flex-col sm:flex-row justify-between items-center gap-2">
-                    <p className="text-white text-lg font-black uppercase">Pedidos Recentes ({filteredOrders.length})</p>
-                    <div className="flex gap-2">
-                        <span className="md:hidden text-[9px] font-black uppercase bg-black/20 text-white px-2 py-1 rounded flex items-center gap-1 animate-pulse">
-                            <span className="material-symbols-outlined text-[10px]">swap_horiz</span>
-                            Arraste
-                        </span>
-                        <button onClick={() => navigate('/pedidos')} className="text-[10px] md:text-xs bg-black text-white px-3 py-1 font-bold uppercase hover:bg-white hover:text-black transition-colors border border-transparent hover:border-black">
-                            Gerenciar Todos
-                        </button>
-                    </div>
+            {/* 4. ATIVIDADE RECENTE (LISTA ESTILO ORDERS PAGE) */}
+            <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white flex flex-col shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
+                <div className="bg-black text-white p-3 flex justify-between items-center">
+                    <h3 className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
+                        <span className="material-symbols-outlined text-blue-400">monitoring</span>
+                        Log de Atividade
+                    </h3>
+                    <button onClick={() => navigate('/pedidos')} className="text-[10px] font-black uppercase bg-blue-600 px-2 py-1 hover:bg-white hover:text-black transition-colors">
+                        Ver Tudo
+                    </button>
                 </div>
-                <div className="overflow-x-auto p-2 md:p-4">
-                    <table className="w-full text-left min-w-[600px]">
-                        <thead className="border-b-4 border-black dark:border-white text-black dark:text-white">
-                            <tr>
-                                <th className="p-2 md:p-3 uppercase font-black text-xs tracking-wider">Data</th>
-                                <th className="p-2 md:p-3 uppercase font-black text-xs tracking-wider">Cliente</th>
-                                <th className="p-2 md:p-3 uppercase font-black text-xs tracking-wider text-center">Status</th>
-                                <th className="p-2 md:p-3 uppercase font-black text-xs tracking-wider text-right">Total</th>
-                                <th className="p-2 md:p-3 w-10"></th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-gray-700 dark:text-gray-300">
-                            {filteredOrders.slice(0, 5).map(order => (
-                                <tr key={order.id} className="border-b border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
-                                    <td className="p-3 font-mono text-xs font-bold">{new Date(order.createdAt).toLocaleDateString()}</td>
-                                    <td className="p-3 font-bold text-sm uppercase">{order.client}</td>
-                                    <td className="p-3 text-center">
-                                        <span className={`font-black px-2 py-0.5 text-[10px] uppercase border border-black dark:border-white shadow-sm
-                                    ${order.status === 'ATRASADO' ? 'bg-[#FF0000] text-white border-red-800' :
-                                                order.status === 'CONCLUÍDO' ? 'bg-[#00FF00] text-black border-green-800' :
-                                                    'bg-[#FFFF00] text-black border-yellow-600'}`}>
-                                            {order.status}
-                                        </span>
-                                    </td>
-                                    <td className="p-3 text-right font-black font-mono text-sm">R$ {order.totalValue.toFixed(2)}</td>
-                                    <td className="p-3 text-right">
-                                        <button onClick={(e) => handleDelete(e, order.id)} className="text-gray-400 hover:text-red-500 transition-colors">
-                                            <span className="material-symbols-outlined text-lg">delete</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar max-h-[600px]">
+                    {filteredOrders.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-12 opacity-30">
+                            <span className="material-symbols-outlined text-5xl">inventory</span>
+                            <p className="text-xs font-black uppercase mt-2">Nenhuma atividade</p>
+                        </div>
+                    ) : (
+                        filteredOrders.slice(0, 10).map((order) => (
+                            <div key={order.id} className="border-2 border-black dark:border-white bg-white dark:bg-black p-3 hover:shadow-[4px_4px_0px_0px_#0000FF] transition-all cursor-pointer group" onClick={() => navigate('/pedidos')}>
+                                <div className="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p className="text-[10px] font-black text-gray-400 uppercase">#{order.id.substring(0, 8)}</p>
+                                        <p className="text-sm font-black text-black dark:text-white uppercase line-clamp-1">{order.client}</p>
+                                    </div>
+                                    <span className={`text-[8px] font-black px-1.5 py-0.5 border-2 border-black dark:border-white uppercase
+                                        ${order.status === 'ATRASADO' ? 'bg-red-500 text-white' :
+                                            order.status === 'CONCLUÍDO' ? 'bg-green-500 text-black' :
+                                                'bg-yellow-400 text-black'}`}>
+                                        {order.status}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-end">
+                                    <div className="flex gap-1 overflow-hidden">
+                                        {order.items.slice(0, 2).map((item, i) => (
+                                            <span key={i} className="text-[9px] font-bold text-gray-500 bg-gray-100 dark:bg-white/5 px-1.5 py-0.5 border border-black/10 dark:border-white/10 uppercase truncate max-w-[80px]">
+                                                {item.productName}
+                                            </span>
+                                        ))}
+                                        {order.items.length > 2 && <span className="text-[9px] font-bold text-gray-400">+{order.items.length - 2}</span>}
+                                    </div>
+                                    <p className="font-mono text-sm font-black text-black dark:text-white">
+                                        {formatCurrencyFull(order.totalValue)}
+                                    </p>
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
 

@@ -471,12 +471,27 @@ export const Settings: React.FC = () => {
                 </div>
 
                 {/* 4. DATA MANAGEMENT */}
-                <div className="lg:col-span-2 bg-gray-50 dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-4">
-                    <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-200 dark:border-gray-800 pb-2"><span className="material-symbols-outlined text-black dark:text-white text-2xl">database</span><h2 className="text-xl font-black uppercase text-black dark:text-white">Gestão de Dados</h2></div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <button onClick={exportData} className="py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2"><span className="material-symbols-outlined">download</span><span className="text-xs tracking-widest">Backup (JSON)</span></button>
-                        <div className="relative"><input type="file" accept=".json" ref={fileInputRef} onChange={handleFileChange} className="hidden" /><button onClick={() => fileInputRef.current?.click()} className="w-full h-full py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2"><span className="material-symbols-outlined">upload</span><span className="text-xs tracking-widest">Restaurar</span></button></div>
-                        <button onClick={handleReset} className="py-4 px-4 border-2 border-red-500 bg-red-50 dark:bg-red-900/10 text-red-600 font-bold uppercase hover:bg-red-500 hover:text-white transition-all brutal-btn flex flex-col items-center gap-2"><span className="material-symbols-outlined">delete_forever</span><span className="text-xs tracking-widest">Resetar Fábrica</span></button>
+                <div className="lg:col-span-2 bg-gray-50 dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-4 mb-4">
+                    <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-200 dark:border-gray-800 pb-2">
+                        <span className="material-symbols-outlined text-black dark:text-white text-2xl">database</span>
+                        <h2 className="text-xl font-black uppercase text-black dark:text-white">Gestão de Dados</h2>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <button onClick={exportData} className="py-3 px-2 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2">
+                            <span className="material-symbols-outlined">download</span>
+                            <span className="text-[10px] md:text-xs tracking-widest text-center">Backup (JSON)</span>
+                        </button>
+                        <div className="relative">
+                            <input type="file" accept=".json" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
+                            <button onClick={() => fileInputRef.current?.click()} className="w-full h-full py-3 px-2 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2">
+                                <span className="material-symbols-outlined">upload</span>
+                                <span className="text-[10px] md:text-xs tracking-widest text-center">Restaurar</span>
+                            </button>
+                        </div>
+                        <button onClick={handleReset} className="py-3 px-2 border-2 border-red-500 bg-red-50 dark:bg-red-900/10 text-red-600 font-bold uppercase hover:bg-red-500 hover:text-white transition-all brutal-btn flex flex-col items-center gap-2">
+                            <span className="material-symbols-outlined">delete_forever</span>
+                            <span className="text-[10px] md:text-xs tracking-widest text-center">Resetar Fábrica</span>
+                        </button>
                     </div>
                 </div>
             </div>

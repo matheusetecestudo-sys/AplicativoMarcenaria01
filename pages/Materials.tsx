@@ -137,24 +137,25 @@ export const Materials: React.FC = () => {
                     ))}
                 </div>
 
-                <div className="flex gap-4 w-full xl:w-auto">
+                <div className="flex flex-col gap-4 w-full xl:w-auto mt-4 xl:mt-0">
+                    <button
+                        onClick={() => openModal()}
+                        className="flex items-center justify-center h-14 w-full xl:w-auto px-6 bg-primary text-white text-sm font-black uppercase border-4 border-black dark:border-white hover:brightness-110 transition-all brutal-btn shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:translate-y-[2px] active:shadow-none whitespace-nowrap gap-2 order-first xl:order-last"
+                    >
+                        <span className="material-symbols-outlined text-xl">add_box</span>
+                        <span>Novo Insumo</span>
+                    </button>
+
                     <div className="relative flex-1 xl:w-80">
                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">search</span>
                         <input
                             type="text"
                             placeholder="BUSCAR INSUMO..."
-                            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-black border-2 border-gray-300 dark:border-gray-700 text-black dark:text-white font-bold uppercase focus:border-primary focus:outline-none transition-colors brutal-input text-sm"
+                            className="w-full pl-10 pr-4 py-4 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 text-black dark:text-white font-bold uppercase focus:border-primary focus:outline-none transition-colors brutal-input text-sm"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <button
-                        onClick={() => openModal()}
-                        className="flex items-center justify-center px-6 bg-primary text-white text-xs font-black uppercase border-2 border-transparent hover:brightness-110 transition-all brutal-btn shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:translate-y-[2px] active:shadow-none whitespace-nowrap gap-2"
-                    >
-                        <span className="material-symbols-outlined text-lg">add</span>
-                        <span>Novo Item</span>
-                    </button>
                 </div>
             </div>
 

@@ -215,19 +215,19 @@ export const Stock: React.FC = () => {
                         Análise de Níveis de Insumo
                     </span>
                 </div>
-                <div className="h-[300px] w-full p-6">
+                <div className="h-[300px] w-full p-2 md:p-6">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                             data={materialData}
-                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                            margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
                             barGap={0}
                         >
-                            <XAxis dataKey="name" stroke={chartAxisColor} tick={{ fill: chartTickColor, fontSize: 10, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
-                            <YAxis stroke={chartAxisColor} tick={{ fill: chartTickColor, fontSize: 10, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
+                            <XAxis dataKey="name" stroke={chartAxisColor} tick={{ fill: chartTickColor, fontSize: 9, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
+                            <YAxis stroke={chartAxisColor} tick={{ fill: chartTickColor, fontSize: 9, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
-                            <Legend wrapperStyle={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', paddingTop: '10px' }} />
-                            <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={30} radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={10} radius={[4, 4, 0, 0]} fillOpacity={0.5} />
+                            <Legend wrapperStyle={{ fontSize: '9px', fontWeight: 'bold', textTransform: 'uppercase', paddingTop: '10px' }} />
+                            <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={window.innerWidth < 768 ? 20 : 30} radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={window.innerWidth < 768 ? 6 : 10} radius={[4, 4, 0, 0]} fillOpacity={0.5} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
