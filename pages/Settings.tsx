@@ -319,25 +319,25 @@ export const Settings: React.FC = () => {
                     </div>
 
                     {/* FORM CONTAINER */}
-                    <div className="flex flex-col md:flex-row gap-8">
+                    <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
 
                         {/* LOGO UPLOAD */}
-                        <div className="flex flex-col gap-3 shrink-0 items-center md:items-start">
+                        <div className="flex flex-col gap-3 shrink-0 items-center">
                             <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Seu Logotipo</span>
                             <div
                                 onClick={() => logoInputRef.current?.click()}
-                                className="size-40 border-4 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary cursor-pointer flex items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-black group transition-all hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg"
+                                className="size-32 md:size-40 border-4 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary cursor-pointer flex items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-black group transition-all hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg"
                             >
                                 {companyForm.logo ? (
                                     <img src={companyForm.logo} alt="Logo" className="h-full w-auto object-contain" />
                                 ) : (
                                     <div className="text-center text-gray-400 group-hover:text-primary transition-colors">
-                                        <span className="material-symbols-outlined text-4xl">add_a_photo</span>
-                                        <p className="text-[10px] font-black uppercase mt-2">Carregar Imagem</p>
+                                        <span className="material-symbols-outlined text-3xl md:text-4xl">add_a_photo</span>
+                                        <p className="text-[9px] font-black uppercase mt-1 md:mt-2">Carregar Imagem</p>
                                     </div>
                                 )}
                             </div>
-                            <p className="text-[9px] font-bold text-gray-400 uppercase text-center md:text-left max-w-[160px]">
+                            <p className="text-[9px] font-bold text-gray-400 uppercase max-w-[140px] md:max-w-[160px]">
                                 Recomendado: PNG ou JPG (max 2MB).
                             </p>
                             <input type="file" ref={logoInputRef} onChange={handleLogoUpload} accept="image/*" className="hidden" />
@@ -407,13 +407,13 @@ export const Settings: React.FC = () => {
                         <p className="text-white/80 text-sm font-medium mb-6 leading-relaxed">Gere um relatório executivo com os produtos mais vendidos e resumo financeiro. Selecione o período:</p>
 
                         {/* Time Filter for Report */}
-                        <div className="flex bg-black/20 p-1 border-2 border-white/50 mb-6">
+                        <div className="grid grid-cols-3 sm:flex bg-black/20 p-1 border-2 border-white/50 mb-6 font-mono">
                             {(['HOJE', '7D', 'MES', 'ANO', 'TUDO'] as TimeRange[]).map((range) => (
                                 <button
                                     key={range}
                                     onClick={() => setTimeRange(range)}
                                     className={`
-                                        flex-1 py-2 text-[10px] font-black uppercase transition-all duration-200
+                                        flex-1 py-2 text-[9px] md:text-[10px] font-black uppercase transition-all duration-200
                                         ${timeRange === range
                                             ? 'bg-white text-primary'
                                             : 'text-white/70 hover:text-white hover:bg-white/10'}

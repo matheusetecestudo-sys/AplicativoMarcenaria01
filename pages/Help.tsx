@@ -100,20 +100,22 @@ const HelpSection: React.FC<{
     return (
         <div id={id} className="scroll-mt-32 mb-20 animate-fade-in-up group relative">
             {/* Header */}
-            <div className="flex items-start gap-4 mb-6">
-                <div className="size-14 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center border-4 border-primary shadow-[6px_6px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)] shrink-0">
-                    <span className="material-symbols-outlined text-3xl">{icon}</span>
-                </div>
-                <div className="flex-1">
-                    <h2 className="text-3xl font-black uppercase text-black dark:text-white tracking-tighter leading-none">
-                        {title}
-                    </h2>
-                    <p className="text-xs font-bold uppercase text-primary tracking-widest mt-1">{subtitle}</p>
+            <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
+                <div className="flex items-start gap-4 flex-1">
+                    <div className="size-12 md:size-14 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] shrink-0">
+                        <span className="material-symbols-outlined text-2xl md:text-3xl">{icon}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <h2 className="text-2xl md:text-3xl font-black uppercase text-black dark:text-white tracking-tighter leading-none truncate md:whitespace-normal">
+                            {title}
+                        </h2>
+                        <p className="text-[10px] font-bold uppercase text-primary tracking-widest mt-1">{subtitle}</p>
+                    </div>
                 </div>
                 {actionLabel && actionLink && (
                     <button
                         onClick={() => navigate(actionLink)}
-                        className="hidden md:flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#222] text-black dark:text-white text-[10px] font-black uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)] active:translate-y-[2px] active:shadow-none"
+                        className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#222] text-black dark:text-white text-[10px] font-black uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)] active:translate-y-[2px] active:shadow-none shrink-0"
                     >
                         {actionLabel} <span className="material-symbols-outlined text-sm">arrow_forward</span>
                     </button>
@@ -121,7 +123,7 @@ const HelpSection: React.FC<{
             </div>
 
             {/* Content Container */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-l-4 border-gray-200 dark:border-gray-800 pl-6 ml-7">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-l-4 border-gray-200 dark:border-gray-800 pl-4 md:pl-6 ml-4 md:ml-7">
 
                 {/* Left: Text Explanation */}
                 <div className="lg:col-span-8 flex flex-col gap-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed text-justify">
@@ -254,6 +256,26 @@ export const Help: React.FC = () => {
                     </div>
                 </div>
             </aside>
+
+            {/* MOBILE NAVIGATION BAR (Shown only on small screens) */}
+            <div className="md:hidden sticky top-[-1px] z-40 bg-white dark:bg-[#1A1A1A] border-b-4 border-black dark:border-white -mx-4 px-4 py-3 flex gap-3 overflow-x-auto no-scrollbar shadow-lg">
+                {navLinks.map(link => (
+                    <button
+                        key={link.id}
+                        onClick={() => scrollTo(link.id)}
+                        className={`
+                            whitespace-nowrap px-4 py-2 rounded-none border-2 border-black dark:border-white text-[10px] font-black uppercase tracking-tighter transition-all flex items-center gap-2
+                            ${activeSection === link.id
+                                ? 'bg-primary text-white border-primary shadow-[2px_2px_0px_0px_#000]'
+                                : 'bg-white dark:bg-black text-black dark:text-white'
+                            }
+                        `}
+                    >
+                        <span className="material-symbols-outlined text-[14px]">{link.icon}</span>
+                        {link.label.split('. ')[1]}
+                    </button>
+                ))}
+            </div>
 
             {/* RIGHT: CONTENT */}
             <div className="flex-1 max-w-5xl pt-2 pr-2">

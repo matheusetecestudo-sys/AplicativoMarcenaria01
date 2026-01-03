@@ -191,34 +191,33 @@ export const Dashboard: React.FC = () => {
             <div className="col-span-1 lg:col-span-4 flex flex-col gap-0 animate-fade-in-up">
 
                 {/* Top Row: Identity & System Monitor */}
-                <div className="grid grid-cols-1 md:grid-cols-12 border-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A]">
-
+                <div className="flex flex-col border-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)]">
                     {/* Logo & Name Area */}
-                    <div className="md:col-span-7 lg:col-span-8 p-4 md:p-6 flex items-center gap-6 border-b-4 md:border-b-0 md:border-r-4 border-black dark:border-white relative overflow-hidden">
+                    <div className="p-4 md:p-6 flex flex-row items-center gap-4 md:gap-6 border-b-4 border-black dark:border-white relative overflow-hidden">
                         {/* Decoration Background */}
-                        <div className="absolute top-0 right-0 p-2 opacity-10 pointer-events-none">
-                            <span className="material-symbols-outlined text-9xl">factory</span>
+                        <div className="absolute top-0 right-0 p-2 opacity-5 pointer-events-none">
+                            <span className="material-symbols-outlined text-7xl md:text-9xl">factory</span>
                         </div>
 
                         <div className="relative z-10 shrink-0">
                             {settings.company.logo ? (
-                                <div className="h-24 md:h-32 w-auto min-w-[6rem] bg-white border-4 border-primary shadow-[4px_4px_0px_0px_#FFF] dark:shadow-[4px_4px_0px_0px_#333] p-1 flex items-center justify-center">
+                                <div className="size-20 md:size-32 bg-white border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,255,0.2)] p-1 flex items-center justify-center">
                                     <img src={settings.company.logo} alt="Logo" className="h-full w-auto object-contain" />
                                 </div>
                             ) : (
-                                <div className="size-24 md:size-32 bg-primary flex items-center justify-center border-4 border-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
-                                    <span className="material-symbols-outlined text-white text-6xl">precision_manufacturing</span>
+                                <div className="size-20 md:size-32 bg-primary flex items-center justify-center border-4 border-white shadow-[4px_4px_0px_0px_#000]">
+                                    <span className="material-symbols-outlined text-white text-4xl md:text-6xl">precision_manufacturing</span>
                                 </div>
                             )}
                         </div>
 
-                        <div className="flex flex-col relative z-10">
-                            <h1 className="text-black dark:text-white text-2xl md:text-3xl font-black uppercase tracking-[-0.05em] leading-tight line-clamp-2 break-words">
+                        <div className="flex flex-col relative z-10 flex-1 min-w-0">
+                            <h1 className="text-black dark:text-white text-xl md:text-3xl font-black uppercase tracking-[-0.05em] leading-[1.1] line-clamp-2">
                                 {settings.company.name || 'DASHBOARD'}
                             </h1>
-                            <div className="flex items-center gap-2 mt-2">
-                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                <p className="text-xs font-bold uppercase text-gray-500 dark:text-gray-400 tracking-[0.3em]">
+                            <div className="flex items-center gap-2 mt-1">
+                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shrink-0"></span>
+                                <p className="text-[10px] md:text-xs font-bold uppercase text-gray-500 dark:text-gray-400 tracking-[0.2em] truncate">
                                     Operação Ativa
                                 </p>
                             </div>
@@ -226,28 +225,28 @@ export const Dashboard: React.FC = () => {
                     </div>
 
                     {/* System Monitor (Clock & Status) */}
-                    <div className="md:col-span-5 lg:col-span-4 bg-black dark:bg-white text-white dark:text-black p-4 flex flex-col justify-center relative overflow-hidden">
-                        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-500 via-black to-black pointer-events-none"></div>
+                    <div className="bg-black dark:bg-[#111] text-white p-4 flex flex-col justify-center relative overflow-hidden">
+                        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-black to-black pointer-events-none"></div>
 
-                        <div className="flex justify-between items-start mb-2 relative z-10">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-primary">System Time</span>
-                            <span className="text-[10px] font-black uppercase tracking-widest">{dateString}</span>
+                        <div className="flex justify-between items-start mb-1 relative z-10">
+                            <span className="text-[9px] font-black uppercase tracking-widest text-primary">System Time</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest opacity-60">{dateString}</span>
                         </div>
 
-                        <div className="relative z-10 text-right">
-                            <span className="font-mono text-5xl md:text-6xl font-black tracking-tighter tabular-nums leading-none block">
+                        <div className="relative z-10">
+                            <span className="font-mono text-4xl md:text-6xl font-black tracking-tighter tabular-nums leading-none block md:text-right">
                                 {timeString}
                             </span>
                         </div>
 
-                        <div className="mt-2 border-t border-gray-700 dark:border-gray-300 pt-2 flex justify-between items-center relative z-10">
+                        <div className="mt-2 border-t border-gray-800 pt-2 flex justify-between items-center relative z-10">
                             <div className="flex items-center gap-2">
-                                <span className="material-symbols-outlined text-sm">database</span>
-                                <span className="text-[10px] font-bold uppercase">DB: Conectado</span>
+                                <span className="material-symbols-outlined text-[14px]">database</span>
+                                <span className="text-[9px] font-bold uppercase">DB: Conectado</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-bold uppercase">Versão 2.5</span>
-                                <span className="material-symbols-outlined text-sm">verified</span>
+                                <span className="text-[9px] font-bold uppercase">v2.5</span>
+                                <span className="material-symbols-outlined text-[14px] text-primary">verified</span>
                             </div>
                         </div>
                     </div>
@@ -288,7 +287,7 @@ export const Dashboard: React.FC = () => {
             <div className="col-span-1 lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up stagger-1">
 
                 {/* TOTAL FLOW */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 shadow-[8px_8px_0px_0px_#0000FF] hover:-translate-y-1 transition-transform group">
+                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 shadow-[8px_8px_0px_0px_#0000FF] hover:-translate-y-1 transition-transform group">
                     {/* Corner Brackets */}
                     <div className="absolute top-0 left-0 w-3 h-3 border-t-4 border-l-4 border-primary"></div>
                     <div className="absolute top-0 right-0 w-3 h-3 border-t-4 border-r-4 border-primary"></div>
@@ -300,19 +299,19 @@ export const Dashboard: React.FC = () => {
                         <span className="material-symbols-outlined text-primary group-hover:rotate-12 transition-transform">receipt_long</span>
                     </div>
                     <div className="flex flex-col">
-                        <span className="text-6xl font-black text-black dark:text-white leading-none tracking-tighter">{totalOrders}</span>
-                        <span className="text-xs font-bold uppercase text-primary mt-1">Pedidos Registrados</span>
+                        <span className="text-4xl md:text-6xl font-black text-black dark:text-white leading-none tracking-tighter">{totalOrders}</span>
+                        <span className="text-[10px] md:text-xs font-bold uppercase text-primary mt-1">Pedidos Registrados</span>
                     </div>
                 </div>
 
                 {/* PENDING */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 hover:border-[#FFFF00] transition-colors duration-300 group">
+                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 hover:border-[#FFFF00] transition-colors duration-300 group">
                     <div className="flex justify-between items-start mb-4">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-hover:text-[#FFFF00]">Em Aberto</span>
                         <span className="material-symbols-outlined text-gray-300 dark:text-gray-600 group-hover:text-[#FFFF00]">pending</span>
                     </div>
                     <div className="flex flex-col">
-                        <span className="text-6xl font-black text-black dark:text-white leading-none tracking-tighter group-hover:text-[#FFFF00] transition-colors">{pendingOrders}</span>
+                        <span className="text-4xl md:text-6xl font-black text-black dark:text-white leading-none tracking-tighter group-hover:text-[#FFFF00] transition-colors">{pendingOrders}</span>
                         <div className="w-full bg-gray-100 dark:bg-black h-2 mt-2 border border-gray-300 dark:border-gray-700">
                             <div className="h-full bg-[#FFFF00]" style={{ width: `${calculatePercent(pendingOrders)}%` }}></div>
                         </div>
@@ -320,7 +319,7 @@ export const Dashboard: React.FC = () => {
                 </div>
 
                 {/* LATE (ALERT) */}
-                <div className={`relative bg-white dark:bg-[#1A1A1A] border-4 ${lateOrders > 0 ? 'border-[#FF0000]' : 'border-black dark:border-white'} p-6 transition-colors duration-300 group`}>
+                <div className={`relative bg-white dark:bg-[#1A1A1A] border-4 ${lateOrders > 0 ? 'border-[#FF0000]' : 'border-black dark:border-white'} p-4 md:p-6 transition-colors duration-300 group`}>
                     {lateOrders > 0 && <div className="absolute inset-0 border-4 border-[#FF0000] animate-pulse pointer-events-none opacity-50"></div>}
 
                     <div className="flex justify-between items-start mb-4">
@@ -328,7 +327,7 @@ export const Dashboard: React.FC = () => {
                         <span className={`material-symbols-outlined ${lateOrders > 0 ? 'text-[#FF0000]' : 'text-gray-300'}`}>warning</span>
                     </div>
                     <div className="flex flex-col">
-                        <span className={`text-6xl font-black leading-none tracking-tighter ${lateOrders > 0 ? 'text-[#FF0000]' : 'text-black dark:text-white'}`}>{lateOrders}</span>
+                        <span className={`text-4xl md:text-6xl font-black leading-none tracking-tighter ${lateOrders > 0 ? 'text-[#FF0000]' : 'text-black dark:text-white'}`}>{lateOrders}</span>
                         <div className="w-full bg-gray-100 dark:bg-black h-2 mt-2 border border-gray-300 dark:border-gray-700">
                             <div className="h-full bg-[#FF0000]" style={{ width: `${calculatePercent(lateOrders)}%` }}></div>
                         </div>
@@ -336,13 +335,13 @@ export const Dashboard: React.FC = () => {
                 </div>
 
                 {/* COMPLETED */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 hover:border-[#00FF00] transition-colors duration-300 group">
+                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 md:p-6 hover:border-[#00FF00] transition-colors duration-300 group">
                     <div className="flex justify-between items-start mb-4">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 group-hover:text-[#00FF00]">Finalizados</span>
                         <span className="material-symbols-outlined text-gray-300 dark:text-gray-600 group-hover:text-[#00FF00]">check_circle</span>
                     </div>
                     <div className="flex flex-col">
-                        <span className="text-6xl font-black text-black dark:text-white leading-none tracking-tighter group-hover:text-[#00FF00] transition-colors">{completedOrders}</span>
+                        <span className="text-4xl md:text-6xl font-black text-black dark:text-white leading-none tracking-tighter group-hover:text-[#00FF00] transition-colors">{completedOrders}</span>
                         <div className="w-full bg-gray-100 dark:bg-black h-2 mt-2 border border-gray-300 dark:border-gray-700">
                             <div className="h-full bg-[#00FF00]" style={{ width: `${calculatePercent(completedOrders)}%` }}></div>
                         </div>
@@ -506,21 +505,27 @@ export const Dashboard: React.FC = () => {
 
             {/* 6. RECENT ORDERS LIST */}
             <div className="col-span-1 lg:col-span-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white animate-fade-in-up stagger-4">
-                <div className="bg-primary p-3 border-b-4 border-black dark:border-white flex justify-between items-center">
+                <div className="bg-primary p-3 border-b-4 border-black dark:border-white flex flex-col sm:flex-row justify-between items-center gap-2">
                     <p className="text-white text-lg font-black uppercase">Pedidos Recentes ({filteredOrders.length})</p>
-                    <button onClick={() => navigate('/pedidos')} className="text-xs bg-black text-white px-3 py-1 font-bold uppercase hover:bg-white hover:text-black transition-colors border border-transparent hover:border-black">
-                        Gerenciar Todos
-                    </button>
+                    <div className="flex gap-2">
+                        <span className="md:hidden text-[9px] font-black uppercase bg-black/20 text-white px-2 py-1 rounded flex items-center gap-1 animate-pulse">
+                            <span className="material-symbols-outlined text-[10px]">swap_horiz</span>
+                            Arraste
+                        </span>
+                        <button onClick={() => navigate('/pedidos')} className="text-[10px] md:text-xs bg-black text-white px-3 py-1 font-bold uppercase hover:bg-white hover:text-black transition-colors border border-transparent hover:border-black">
+                            Gerenciar Todos
+                        </button>
+                    </div>
                 </div>
-                <div className="overflow-x-auto p-4">
+                <div className="overflow-x-auto p-2 md:p-4">
                     <table className="w-full text-left min-w-[600px]">
                         <thead className="border-b-4 border-black dark:border-white text-black dark:text-white">
                             <tr>
-                                <th className="p-3 uppercase font-black text-xs tracking-wider">Data</th>
-                                <th className="p-3 uppercase font-black text-xs tracking-wider">Cliente</th>
-                                <th className="p-3 uppercase font-black text-xs tracking-wider text-center">Status</th>
-                                <th className="p-3 uppercase font-black text-xs tracking-wider text-right">Total</th>
-                                <th className="p-3 w-10"></th>
+                                <th className="p-2 md:p-3 uppercase font-black text-xs tracking-wider">Data</th>
+                                <th className="p-2 md:p-3 uppercase font-black text-xs tracking-wider">Cliente</th>
+                                <th className="p-2 md:p-3 uppercase font-black text-xs tracking-wider text-center">Status</th>
+                                <th className="p-2 md:p-3 uppercase font-black text-xs tracking-wider text-right">Total</th>
+                                <th className="p-2 md:p-3 w-10"></th>
                             </tr>
                         </thead>
                         <tbody className="text-gray-700 dark:text-gray-300">
