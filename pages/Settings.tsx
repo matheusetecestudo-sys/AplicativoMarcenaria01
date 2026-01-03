@@ -326,7 +326,7 @@ export const Settings: React.FC = () => {
                             <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Seu Logotipo</span>
                             <div
                                 onClick={() => logoInputRef.current?.click()}
-                                className="h-40 w-auto min-w-[10rem] max-w-full border-4 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary cursor-pointer flex items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-black group transition-all hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg px-4"
+                                className="size-40 border-4 border-dashed border-gray-300 dark:border-gray-700 hover:border-primary cursor-pointer flex items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-black group transition-all hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg"
                             >
                                 {companyForm.logo ? (
                                     <img src={companyForm.logo} alt="Logo" className="h-full w-auto object-contain" />
