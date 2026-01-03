@@ -140,7 +140,7 @@ export const Products: React.FC = () => {
                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
                         <input
                             type="text"
-                            placeholder="BUSCAR NOME OU SKU..."
+                            placeholder="BUSCAR NOME..."
                             className="w-full pl-10 pr-4 py-3 bg-white dark:bg-black border-4 border-gray-300 dark:border-gray-700 text-black dark:text-white font-bold uppercase focus:border-primary focus:outline-none transition-colors brutal-input"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
