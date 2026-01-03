@@ -76,7 +76,10 @@ export const fetchProducts = async (): Promise<Product[]> => {
         .eq('user_id', user.id);
 
     if (error) throw error;
-    return data as Product[];
+    return data.map((p: any) => ({
+        ...p,
+        minStock: p.min_stock || p.minStock || 0
+    })) as Product[];
 };
 
 export const fetchMaterials = async (): Promise<Material[]> => {

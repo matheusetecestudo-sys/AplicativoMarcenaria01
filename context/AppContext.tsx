@@ -321,16 +321,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const addProduct = async (product: Product) => {
         if (isSupabaseConfigured && isAuthenticated) {
             try {
-                // Remove 'minStock' from payload because column doesn't exist in Supabase yet
-                const { minStock, ...payload } = product;
                 await insertRow('products', {
-                    ...payload,
-                    sku: product.sku || ''
+                    id: product.id,
+                    name: product.name,
+                    sku: product.sku || '',
+                    materials: product.materials,
+                    cost: product.cost,
+                    stock: product.stock,
+                    min_stock: product.minStock, // Now enabled!
+                    image: product.image
                 });
             } catch (e: any) {
                 console.error("Error adding product:", e);
                 alert(`Erro ao salvar produto: ${e.message || "Verifique se o Código/ID já existe."}`);
-                throw e; // Relaunch to prevent closeModal
+                throw e;
             }
         }
         setProducts(prev => [...prev, product]);
@@ -345,6 +349,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     materials: product.materials,
                     cost: product.cost,
                     stock: product.stock,
+                    min_stock: product.minStock,
                     image: product.image
                 });
             } catch (e: any) {
