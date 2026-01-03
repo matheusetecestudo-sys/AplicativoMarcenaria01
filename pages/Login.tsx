@@ -68,7 +68,11 @@ export const Login: React.FC = () => {
         setIsLoading(false);
 
         if (error) {
-            setMessage({ type: 'error', text: error.message || 'Erro ao cadastrar.' });
+            let errorText = error.message || 'Erro ao cadastrar.';
+            if (errorText.includes('User already registered')) {
+                errorText = 'Este email já possui cadastro.';
+            }
+            setMessage({ type: 'error', text: errorText });
         } else {
             setMessage({ type: 'success', text: 'Cadastro realizado! Verifique seu email para confirmar a conta.' });
             setTimeout(() => setView('LOGIN'), 5000);
