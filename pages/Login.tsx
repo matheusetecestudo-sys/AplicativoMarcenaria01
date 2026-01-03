@@ -159,7 +159,7 @@ export const Login: React.FC = () => {
 
 
                             <div className="flex justify-between items-center mt-4 pt-4 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
-                                <button type="button" onClick={() => { clearMessage(); setView('REGISTER'); }} className="text-xs font-bold uppercase text-gray-500 hover:text-primary hover:underline">Solicitar Cadastro</button>
+                                <button type="button" onClick={() => { clearMessage(); setView('REGISTER'); }} className="text-xs font-bold uppercase text-gray-500 hover:text-primary hover:underline">Cadastrar</button>
                                 <button type="button" onClick={() => { clearMessage(); setView('RECOVER'); }} className="text-xs font-bold uppercase text-gray-500 hover:text-primary hover:underline">Esqueci a Senha</button>
                             </div>
                         </form>
