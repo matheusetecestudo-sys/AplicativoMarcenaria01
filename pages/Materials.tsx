@@ -474,7 +474,7 @@ export const Materials: React.FC = () => {
             {/* BRUTALIST MODAL (Technical Blueprint Style) */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 bg-black/90 backdrop-blur-sm animate-fade-in-up" onClick={closeModal}>
-                    <div className="bg-white dark:bg-[#050505] border-0 md:border-4 border-primary w-full max-w-lg shadow-none md:shadow-[12px_12px_0px_0px_rgba(0,0,255,0.3)] relative flex flex-col h-full md:h-auto md:max-h-[90vh] md:rounded-lg overflow-hidden" onClick={e => e.stopPropagation()}>
+                    <div className="bg-white dark:bg-[#050505] border-0 md:border-4 border-primary w-full max-w-lg shadow-none md:shadow-[12px_12px_0px_0px_rgba(0,0,255,0.3)] relative flex flex-col h-auto max-h-full md:max-h-[90vh] md:rounded-lg overflow-hidden" onClick={e => e.stopPropagation()}>
 
                         {/* Modal Header */}
                         <div className="bg-primary p-4 flex justify-between items-center border-b-4 border-black dark:border-white shrink-0">
@@ -561,7 +561,7 @@ export const Materials: React.FC = () => {
                                     </label>
                                 </div>
                             </div>
-                            <div className="mt-auto pt-6 flex flex-col md:flex-row gap-4">
+                            <div className="mt-8 flex flex-col md:flex-row gap-4">
                                 <button
                                     type="button"
                                     onClick={closeModal}
