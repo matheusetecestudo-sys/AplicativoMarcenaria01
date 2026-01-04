@@ -4,6 +4,7 @@ export interface OrderItem {
   productName: string;
   quantity: number;
   unitPrice: number;
+  unitCost?: number; // Add unitCost to track profit
   total: number;
 }
 

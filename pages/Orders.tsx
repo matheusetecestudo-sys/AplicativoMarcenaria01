@@ -159,6 +159,7 @@ export const Orders: React.FC = () => {
     const [selectedProductId, setSelectedProductId] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [customUnitPrice, setCustomUnitPrice] = useState<number | ''>('');
+    const [currentUnitCost, setCurrentUnitCost] = useState<number>(0);
 
     // Layout State (Mobile)
     const [isBuilderExpanded, setIsBuilderExpanded] = useState(true);
@@ -168,10 +169,13 @@ export const Orders: React.FC = () => {
         if (selectedProductId) {
             const product = products.find(p => p.id === selectedProductId);
             if (product) {
-                // Default to +50% margin like before
-                const calculatedPrice = product.cost * 1.5;
-                setCustomUnitPrice(Number(calculatedPrice.toFixed(2)));
+                const defaultPrice = product.price > 0 ? product.price : product.cost * 1.5;
+                setCustomUnitPrice(Number(defaultPrice.toFixed(2)));
+                setCurrentUnitCost(product.cost);
             }
+        } else {
+            setCurrentUnitCost(0);
+            setCustomUnitPrice('');
         }
     }, [selectedProductId, products]);
 
@@ -188,6 +192,7 @@ export const Orders: React.FC = () => {
             productName: productDetails.name,
             quantity: quantity,
             unitPrice: unitPrice,
+            unitCost: currentUnitCost,
             total: unitPrice * quantity
         };
 
@@ -409,6 +414,16 @@ export const Orders: React.FC = () => {
                                     value={customUnitPrice}
                                     onChange={e => setCustomUnitPrice(parseFloat(e.target.value) || '')}
                                 />
+                                {currentUnitCost > 0 && (
+                                    <div className="flex justify-between items-center mt-1 px-1">
+                                        <span className="text-[9px] font-mono text-gray-500">Custo: R$ {currentUnitCost.toFixed(2)}</span>
+                                        {typeof customUnitPrice === 'number' && (
+                                            <span className={`text-[9px] font-mono font-bold ${customUnitPrice > currentUnitCost ? 'text-green-500' : 'text-red-500'}`}>
+                                                {((customUnitPrice - currentUnitCost) / customUnitPrice * 100).toFixed(0)}% Mg
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                             <button
                                 onClick={addItemToCart}

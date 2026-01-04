@@ -26,6 +26,7 @@ export const Products: React.FC = () => {
         sku: '',
         materials: [],
         cost: '',
+        price: '',
         laborCost: '',
         stock: '',
         minStock: '5',
@@ -44,6 +45,7 @@ export const Products: React.FC = () => {
                 name: editingProduct.name,
                 sku: editingProduct.sku || '',
                 cost: editingProduct.cost.toString(),
+                price: (editingProduct.price || '').toString(),
                 laborCost: (editingProduct.laborCost || '').toString(),
                 stock: editingProduct.stock.toString(),
                 minStock: (editingProduct.minStock || 5).toString(),
@@ -59,7 +61,7 @@ export const Products: React.FC = () => {
 
     const resetForm = () => {
         setFormData({
-            name: '', sku: '', cost: '', laborCost: '', stock: '', minStock: '5', image: '', materials: []
+            name: '', sku: '', cost: '', price: '', laborCost: '', stock: '', minStock: '5', image: '', materials: []
         });
         setImageUrlInput('');
         setSelectedMaterialName('');
@@ -119,6 +121,7 @@ export const Products: React.FC = () => {
             const cleanData: Product = {
                 ...formData,
                 cost: parseFloat(formData.cost) || 0,
+                price: parseFloat(formData.price) || 0,
                 laborCost: parseFloat(formData.laborCost) || 0,
                 stock: parseInt(formData.stock) || 0,
                 minStock: parseInt(formData.minStock) || 5,
@@ -225,10 +228,15 @@ export const Products: React.FC = () => {
                             </div>
 
                             {/* Info Bar */}
+                            {/* Info Bar */}
                             <div className="bg-gray-50 dark:bg-black p-4 border-b-4 border-black dark:border-white flex justify-between items-center transition-colors group-hover:bg-white dark:group-hover:bg-[#111]">
-                                <div className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-primary text-base">sell</span>
-                                    <span className="text-2xl font-black text-primary font-mono tracking-tighter">R$ {product.cost.toFixed(2)}</span>
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] font-black uppercase text-gray-400">Preço</span>
+                                    <div className="flex items-center gap-1">
+                                        <span className="material-symbols-outlined text-primary text-sm">sell</span>
+                                        <span className="text-xl font-black text-primary font-mono tracking-tighter">R$ {(product.price || 0).toFixed(2)}</span>
+                                    </div>
+                                    <span className="text-[9px] font-mono text-gray-400 mt-1">Custo: R$ {product.cost.toFixed(2)}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <span className="material-symbols-outlined text-gray-400 text-base">inventory</span>
@@ -347,6 +355,19 @@ export const Products: React.FC = () => {
 
                                 {/* Financial / Inventory */}
                                 <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex flex-col gap-1.5 h-full">
+                                        <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-1">
+                                            Preço Venda
+                                            <span className="material-symbols-outlined text-[10px] text-green-500" title="Preço final para o cliente">attach_money</span>
+                                        </label>
+                                        <input
+                                            type="number" step="0.01"
+                                            className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
+                                            value={formData.price}
+                                            onChange={e => setFormData({ ...formData, price: e.target.value })}
+                                            required
+                                        />
+                                    </div>
                                     <div className="flex flex-col gap-1.5 h-full">
                                         <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-1">
                                             Custo Prod.

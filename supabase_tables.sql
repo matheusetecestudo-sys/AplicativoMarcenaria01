@@ -6,7 +6,10 @@ create table public.products (
   sku text,
   materials text[], -- Array de strings simples
   cost numeric default 0,
+  price numeric default 0, -- Preço de Venda
+  labor_cost numeric default 0, -- Custo Mão de Obra
   stock numeric default 0,
+  min_stock numeric default 5, -- Estoque Mínimo
   image text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
