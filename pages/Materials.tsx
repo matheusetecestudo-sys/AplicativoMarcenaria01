@@ -10,12 +10,38 @@ export const Materials: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState<'TODOS' | 'BAIXO' | 'CRITICO'>('TODOS');
 
-    // Estado para animação de atualização
     const [updatingId, setUpdatingId] = useState<string | null>(null);
+    const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
+    const [editingNameId, setEditingNameId] = useState<string | null>(null);
+    const [tempPrice, setTempPrice] = useState<string>('');
+    const [tempName, setTempName] = useState<string>('');
 
     const handleQuickStock = async (id: string, delta: number) => {
         setUpdatingId(id);
         await updateMaterialStock(id, delta);
+        setTimeout(() => setUpdatingId(null), 500);
+    };
+
+    const handleQuickPrice = async (material: Material, newPrice: string) => {
+        const price = parseFloat(newPrice);
+        if (isNaN(price)) {
+            setEditingPriceId(null);
+            return;
+        }
+        setUpdatingId(material.id);
+        await updateMaterial({ ...material, costPerUnit: price });
+        setEditingPriceId(null);
+        setTimeout(() => setUpdatingId(null), 500);
+    };
+
+    const handleQuickName = async (material: Material, newName: string) => {
+        if (!newName.trim() || newName.trim() === material.name) {
+            setEditingNameId(null);
+            return;
+        }
+        setUpdatingId(material.id);
+        await updateMaterial({ ...material, name: newName.trim() });
+        setEditingNameId(null);
         setTimeout(() => setUpdatingId(null), 500);
     };
 
@@ -205,15 +231,60 @@ export const Materials: React.FC = () => {
                                 `}>
                                     <td className="p-5 border-r border-gray-100 dark:border-gray-800">
                                         <div className="flex flex-col gap-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-base font-black text-black dark:text-white uppercase tracking-tight group-hover:text-primary transition-colors">{material.name}</span>
-                                                {isExcluded && <span className="bg-gray-500 text-white text-[8px] px-1 font-bold">EXCLUÍDO</span>}
-                                            </div>
+                                            {editingNameId === material.id ? (
+                                                <input
+                                                    autoFocus
+                                                    className="w-full bg-white dark:bg-black border-2 border-primary text-black dark:text-white px-2 font-black uppercase focus:outline-none"
+                                                    value={tempName}
+                                                    onChange={e => setTempName(e.target.value)}
+                                                    onBlur={() => handleQuickName(material, tempName)}
+                                                    onKeyDown={e => {
+                                                        if (e.key === 'Enter') handleQuickName(material, tempName);
+                                                        if (e.key === 'Escape') setEditingNameId(null);
+                                                    }}
+                                                />
+                                            ) : (
+                                                <div className="flex items-center gap-2 group/name">
+                                                    <span
+                                                        className="text-base font-black text-black dark:text-white uppercase tracking-tight group-hover:text-primary transition-colors cursor-text"
+                                                        onClick={(e) => { e.stopPropagation(); setEditingNameId(material.id); setTempName(material.name); }}
+                                                    >
+                                                        {material.name}
+                                                    </span>
+                                                    {isExcluded && <span className="bg-gray-500 text-white text-[8px] px-1 font-bold">EXCLUÍDO</span>}
+                                                    <span className="material-symbols-outlined text-[12px] text-gray-400 opacity-0 group-hover/name:opacity-100 transition-opacity">edit</span>
+                                                </div>
+                                            )}
                                             <span className="text-[10px] font-mono font-bold text-gray-400 uppercase">ID: {material.id.substring(0, 8).toUpperCase()}</span>
                                         </div>
                                     </td>
                                     <td className="p-5 text-right border-r border-gray-100 dark:border-gray-800 font-mono font-bold text-black dark:text-white">
-                                        R$ {material.costPerUnit.toFixed(2)}
+                                        {editingPriceId === material.id ? (
+                                            <div className="flex items-center justify-end gap-1">
+                                                <span className="text-[10px] text-primary">R$</span>
+                                                <input
+                                                    autoFocus
+                                                    type="number"
+                                                    step="0.01"
+                                                    className="w-24 bg-white dark:bg-black border-2 border-primary text-right px-1 focus:outline-none"
+                                                    value={tempPrice}
+                                                    onChange={e => setTempPrice(e.target.value)}
+                                                    onBlur={() => handleQuickPrice(material, tempPrice)}
+                                                    onKeyDown={e => {
+                                                        if (e.key === 'Enter') handleQuickPrice(material, tempPrice);
+                                                        if (e.key === 'Escape') setEditingPriceId(null);
+                                                    }}
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div
+                                                className="hover:text-primary transition-colors flex items-center justify-end gap-1 group/price"
+                                                onClick={(e) => { e.stopPropagation(); setEditingPriceId(material.id); setTempPrice(material.costPerUnit.toString()); }}
+                                            >
+                                                <span>R$ {material.costPerUnit.toFixed(2)}</span>
+                                                <span className="material-symbols-outlined text-[10px] opacity-0 group-hover/price:opacity-100 transition-opacity">edit</span>
+                                            </div>
+                                        )}
                                     </td>
                                     <td className="p-5 border-r border-gray-100 dark:border-gray-800">
                                         <div className="flex flex-col gap-2">
@@ -300,14 +371,56 @@ export const Materials: React.FC = () => {
                                 <div className="flex justify-between items-start">
                                     <div className="flex-1 pr-2">
                                         <p className="text-[10px] font-black text-gray-400 uppercase">#{material.id.substring(0, 8)}</p>
-                                        <h3 className="text-lg font-black text-black dark:text-white uppercase leading-tight">{material.name}</h3>
+                                        {editingNameId === material.id ? (
+                                            <input
+                                                autoFocus
+                                                className="w-full bg-white dark:bg-black border-2 border-primary text-lg font-black text-black dark:text-white uppercase focus:outline-none"
+                                                value={tempName}
+                                                onChange={e => setTempName(e.target.value)}
+                                                onBlur={() => handleQuickName(material, tempName)}
+                                                onKeyDown={e => {
+                                                    if (e.key === 'Enter') handleQuickName(material, tempName);
+                                                    if (e.key === 'Escape') setEditingNameId(null);
+                                                }}
+                                            />
+                                        ) : (
+                                            <h3
+                                                className="text-lg font-black text-black dark:text-white uppercase leading-tight flex items-center gap-2 group/mname"
+                                                onClick={(e) => { e.stopPropagation(); setEditingNameId(material.id); setTempName(material.name); }}
+                                            >
+                                                {material.name}
+                                                <span className="material-symbols-outlined text-sm opacity-0 group-hover/mname:opacity-100">edit</span>
+                                            </h3>
+                                        )}
                                     </div>
-                                    <div className="flex flex-col items-end gap-1">
+                                    <div
+                                        className="flex flex-col items-end gap-1"
+                                        onClick={(e) => { e.stopPropagation(); setEditingPriceId(material.id); setTempPrice(material.costPerUnit.toString()); }}
+                                    >
                                         <span className={`px-2 py-1 text-[9px] font-black uppercase border-2 shadow-[2px_2px_0px_#000]
-                                            ${isCritical ? 'bg-red-500 text-white border-red-700' : isLow ? 'bg-yellow-400 text-black border-yellow-600' : 'bg-green-500 text-white border-green-700'}`}>
+                                                ${isCritical ? 'bg-red-500 text-white border-red-700' : isLow ? 'bg-yellow-400 text-black border-yellow-600' : 'bg-green-500 text-white border-green-700'}`}>
                                             {isCritical ? 'CRÍTICO' : isLow ? 'BAIXO' : 'NORMAL'}
                                         </span>
-                                        <span className="text-[9px] font-mono font-bold text-gray-500">R$ {material.costPerUnit.toFixed(2)} / {material.unit}</span>
+                                        {editingPriceId === material.id ? (
+                                            <input
+                                                autoFocus
+                                                type="number"
+                                                step="0.01"
+                                                className="w-20 bg-white dark:bg-black border-2 border-primary text-right px-1 text-[9px] font-mono font-bold text-black dark:text-white"
+                                                value={tempPrice}
+                                                onChange={e => setTempPrice(e.target.value)}
+                                                onBlur={() => handleQuickPrice(material, tempPrice)}
+                                                onKeyDown={e => {
+                                                    if (e.key === 'Enter') handleQuickPrice(material, tempPrice);
+                                                    if (e.key === 'Escape') setEditingPriceId(null);
+                                                }}
+                                            />
+                                        ) : (
+                                            <span className="text-[9px] font-mono font-bold text-gray-500 flex items-center gap-1 group/mprice">
+                                                R$ {material.costPerUnit.toFixed(2)} / {material.unit}
+                                                <span className="material-symbols-outlined text-[8px] opacity-0 group-hover/mprice:opacity-100">edit</span>
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
 
