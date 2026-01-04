@@ -107,8 +107,12 @@ export const Dashboard: React.FC = () => {
         orderList.forEach(order => {
             let orderCost = 0;
             order.items.forEach(item => {
-                const product = products.find(p => p.id === item.productId);
-                const unitCost = product ? product.cost : (item.unitPrice * 0.6);
+                // Tenta usar custo histórico (unitCost), senão busca produto atual, senão estima 60%
+                let unitCost = item.unitCost;
+                if (unitCost === undefined) {
+                    const product = products.find(p => p.id === item.productId);
+                    unitCost = product ? product.cost : (item.unitPrice * 0.6);
+                }
                 orderCost += (unitCost * item.quantity);
             });
             profit += (order.totalValue - (order.shippingCost || 0) - orderCost);
@@ -143,8 +147,11 @@ export const Dashboard: React.FC = () => {
 
             let orderCost = 0;
             order.items.forEach(item => {
-                const product = products.find(p => p.id === item.productId);
-                const unitCost = product ? product.cost : (item.unitPrice * 0.6);
+                let unitCost = item.unitCost;
+                if (unitCost === undefined) {
+                    const product = products.find(p => p.id === item.productId);
+                    unitCost = product ? product.cost : (item.unitPrice * 0.6);
+                }
                 orderCost += (unitCost * item.quantity);
             });
 
@@ -352,16 +359,15 @@ export const Dashboard: React.FC = () => {
                     </div>
                     <div className="h-48 w-full">
                         <ResponsiveContainer width="100%" height="100%">
-                            <ComposedChart data={chartData} margin={{ top: 10, right: 0, left: -25, bottom: 0 }}>
+                            <ComposedChart data={chartData} margin={{ top: 10, right: 0, left: -15, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
                                 <XAxis dataKey="name" stroke={chartAxisColor} tick={{ fill: chartAxisColor, fontSize: 8, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
                                 <YAxis stroke={chartAxisColor} tick={{ fill: chartAxisColor, fontSize: 8, fontWeight: 'bold' }} tickFormatter={formatCurrencyShort} axisLine={false} tickLine={false} />
                                 <Tooltip content={<FinancialTooltip />} />
-                                <Bar dataKey="faturamento" fill="#0000FF" barSize={12} radius={[2, 2, 0, 0]} />
-                                <Line type="monotone" dataKey="lucro" stroke="#00FF00" strokeWidth={3} dot={{ r: 3 }} />
-                                {chartData.length > 12 && (
-                                    <Brush dataKey="name" height={20} stroke="#0000FF" fill={isDark ? "#111" : "#fff"} />
-                                )}
+                                <Bar dataKey="custo" name="Custos" stackId="a" fill="#FF0000" barSize={20} radius={[0, 0, 4, 4]} fillOpacity={0.6} />
+                                <Bar dataKey="lucro" name="Lucro Líquido" stackId="a" fill="#00FF00" barSize={20} radius={[4, 4, 0, 0]} />
+                                {/* Linha de Faturamento Total para referência */}
+                                <Line type="monotone" dataKey="faturamento" name="Faturamento" stroke="#0000FF" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
                             </ComposedChart>
                         </ResponsiveContainer>
                     </div>

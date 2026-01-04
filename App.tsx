@@ -78,6 +78,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const AuthListener: React.FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
+    // Proactive check: if we started with a recovery hash, go there immediately
+    if (window.location.hash.includes('type=recovery')) {
+      console.log("Recovery hash detected, navigating to reset-password");
+      navigate('/reset-password');
+    }
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("Auth Event:", event);
       if (event === 'PASSWORD_RECOVERY') {

@@ -14,9 +14,10 @@ export const Login: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'error' | 'success', text: string } | null>(null);
 
-    // Redirect if already logged in
+    // Redirect if already logged in, but ignore if we are in recovery flow
     useEffect(() => {
-        if (isAuthenticated) {
+        const isRecovery = window.location.hash.includes('type=recovery');
+        if (isAuthenticated && !isRecovery) {
             navigate('/dashboard');
         }
     }, [isAuthenticated, navigate]);
