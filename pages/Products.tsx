@@ -198,7 +198,7 @@ export const Products: React.FC = () => {
                     return (
                         <div
                             key={product.id}
-                            className={`relative border-4 flex flex-col bg-white dark:bg-black overflow-hidden transition-all duration-300 group ${isCritical ? 'border-red-500 shadow-[8px_8px_0px_0px_#FF0000]' : 'border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)]'} hover:shadow-[12px_12px_0px_0px_#0000FF]`}
+                            className={`relative border-4 flex flex-col bg-white dark:bg-[#1A1A1A] overflow-hidden transition-all duration-300 group ${isCritical ? 'border-red-500 shadow-[8px_8px_0px_0px_#FF0000]' : 'border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)]'} hover:shadow-[12px_12px_0px_0px_#0000FF] hover:scale-[1.02]`}
                         >
                             {/* Header */}
                             <div className={`flex justify-between items-center p-3 border-b-4 ${isCritical ? 'bg-red-500 text-white border-red-500' : 'bg-gray-100 dark:bg-[#1A1A1A] text-black dark:text-white border-black dark:border-white'}`}>
@@ -212,32 +212,40 @@ export const Products: React.FC = () => {
                             </div>
 
                             {/* Image */}
-                            <div className="aspect-square bg-gray-50 dark:bg-black relative overflow-hidden">
+                            <div className="aspect-square bg-white dark:bg-[#0A0A0A] relative overflow-hidden border-b-4 border-black dark:border-white">
                                 <img
                                     src={product.image}
                                     alt={product.name}
-                                    className="w-full h-full object-contain p-4 grayscale group-hover:grayscale-0 transition-all duration-700"
-                                    onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x400/1a1a1a/FFF?text=${product.name.substring(0, 3).toUpperCase()}`; }}
+                                    className="w-full h-full object-contain p-6 grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                                    onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x400/EEEEEE/333?text=${product.name.substring(0, 3).toUpperCase()}`; }}
                                 />
-                                <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
-                                    <div className="bg-primary text-white text-[10px] font-black px-2 py-1 shadow-xl border border-black/10">R$ {product.cost.toFixed(2)}</div>
-                                    <div className="bg-black dark:bg-white text-white dark:text-black text-[10px] font-black px-2 py-1 shadow-xl">{product.stock} UN</div>
+                            </div>
+
+                            {/* Info Bar */}
+                            <div className="bg-gray-50 dark:bg-black p-3 border-b-4 border-black dark:border-white flex justify-between items-center">
+                                <div className="flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-primary text-sm">sell</span>
+                                    <span className="text-xl font-black text-primary font-mono">R$ {product.cost.toFixed(2)}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-gray-400 text-sm">inventory</span>
+                                    <span className="text-sm font-black text-black dark:text-white font-mono">{product.stock} UN</span>
                                 </div>
                             </div>
 
                             {/* Footer Actions */}
-                            <div className="border-t-4 border-black dark:border-white grid grid-cols-2 h-14">
-                                <div className="flex items-center justify-between px-3 border-r-4 border-black dark:border-white bg-gray-50 dark:bg-black/40">
+                            <div className="grid grid-cols-2 h-14 bg-white dark:bg-[#1A1A1A]">
+                                <div className="flex items-center justify-between px-3 border-r-4 border-black dark:border-white">
                                     <button
                                         onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, -1) }}
-                                        className="size-8 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary transition-colors text-lg font-black active:scale-90"
+                                        className="size-9 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-110 transition-all text-lg font-black rounded-sm"
                                     >
                                         -
                                     </button>
-                                    <span className="font-mono font-black text-sm">{product.stock}</span>
+                                    <span className="font-mono font-black text-base text-black dark:text-white">{product.stock}</span>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, 1) }}
-                                        className="size-8 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary transition-colors text-lg font-black active:scale-90"
+                                        className="size-9 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-110 transition-all text-lg font-black rounded-sm"
                                     >
                                         +
                                     </button>
@@ -245,14 +253,14 @@ export const Products: React.FC = () => {
                                 <div className="grid grid-cols-2">
                                     <button
                                         onClick={(e) => { e.stopPropagation(); setEditingProduct(product); }}
-                                        className="bg-white dark:bg-black text-black dark:text-white border-r-4 border-black dark:border-white flex items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+                                        className="bg-white dark:bg-black text-black dark:text-white border-r-4 border-black dark:border-white flex items-center justify-center hover:bg-primary hover:text-white transition-all"
                                         title="Editar Produto"
                                     >
                                         <span className="material-symbols-outlined text-xl">edit_note</span>
                                     </button>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); deleteProduct(product.id); }}
-                                        className="bg-red-500 text-white flex items-center justify-center hover:bg-black transition-all"
+                                        className="bg-red-500 text-white flex items-center justify-center hover:bg-red-700 hover:scale-110 transition-all"
                                         title="Remover"
                                     >
                                         <span className="material-symbols-outlined text-xl">delete_forever</span>
