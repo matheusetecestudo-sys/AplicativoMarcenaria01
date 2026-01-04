@@ -234,18 +234,18 @@ export const Products: React.FC = () => {
                             </div>
 
                             {/* Footer Actions */}
-                            <div className="grid grid-cols-2 h-14 bg-white dark:bg-[#1A1A1A]">
-                                <div className="flex items-center justify-between px-3 border-r-4 border-black dark:border-white">
+                            <div className="grid grid-cols-2 h-16 bg-white dark:bg-[#1A1A1A]">
+                                <div className="flex items-center justify-between px-4 border-r-4 border-black dark:border-white">
                                     <button
                                         onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, -1) }}
-                                        className="size-9 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-110 transition-all text-lg font-black rounded-sm"
+                                        className="size-10 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-110 transition-all text-xl font-black rounded-sm"
                                     >
                                         -
                                     </button>
-                                    <span className="font-mono font-black text-base text-black dark:text-white">{product.stock}</span>
+                                    <span className="font-mono font-black text-lg text-black dark:text-white">{product.stock}</span>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, 1) }}
-                                        className="size-9 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-110 transition-all text-lg font-black rounded-sm"
+                                        className="size-10 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-110 transition-all text-xl font-black rounded-sm"
                                     >
                                         +
                                     </button>
@@ -256,14 +256,14 @@ export const Products: React.FC = () => {
                                         className="bg-white dark:bg-black text-black dark:text-white border-r-4 border-black dark:border-white flex items-center justify-center hover:bg-primary hover:text-white transition-all"
                                         title="Editar Produto"
                                     >
-                                        <span className="material-symbols-outlined text-xl">edit_note</span>
+                                        <span className="material-symbols-outlined text-2xl">edit_note</span>
                                     </button>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); deleteProduct(product.id); }}
                                         className="bg-red-500 text-white flex items-center justify-center hover:bg-red-700 hover:scale-110 transition-all"
                                         title="Remover"
                                     >
-                                        <span className="material-symbols-outlined text-xl">delete_forever</span>
+                                        <span className="material-symbols-outlined text-2xl">delete_forever</span>
                                     </button>
                                 </div>
                             </div>
