@@ -90,10 +90,6 @@ export const Stock: React.FC = () => {
                         <p className="text-[8px] font-black uppercase tracking-widest opacity-70">Custo Total (Produtos Prontos)</p>
                         <p className="text-xl md:text-2xl font-black tabular-nums tracking-tighter text-blue-400 dark:text-blue-600">R$ {totalProductValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                     </div>
-                    <div className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] shrink-0 border-2 border-transparent">
-                        <p className="text-[8px] font-black uppercase tracking-widest opacity-70">Custo Total (Insumos)</p>
-                        <p className="text-xl md:text-2xl font-black tabular-nums tracking-tighter text-purple-400 dark:text-purple-600">R$ {totalMaterialValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-                    </div>
                 </div>
             </header>
 
