@@ -498,11 +498,35 @@ export const Orders: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="flex justify-between items-end mb-4 border-t-2 border-dashed border-gray-200 dark:border-gray-800 pt-2">
-                            <span className="text-xs font-black uppercase text-black dark:text-white tracking-widest">Total Geral</span>
-                            <span className="text-3xl font-black text-primary leading-none tracking-tighter">
-                                R$ {calculateCartTotal().toFixed(2)}
-                            </span>
+                        <div className="flex flex-col gap-1 mb-4 border-t-2 border-dashed border-gray-200 dark:border-gray-800 pt-2">
+                            {/* Breakdown */}
+                            <div className="grid grid-cols-3 gap-2 text-center mb-2">
+                                <div className="flex flex-col">
+                                    <span className="text-[8px] font-bold uppercase text-gray-400">Custo Est.</span>
+                                    <span className="text-xs font-mono font-bold text-gray-500">
+                                        R$ {(currentItems.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0) + (typeof shipping === 'number' ? shipping : parseFloat(shipping) || 0)).toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col border-x border-gray-200 dark:border-gray-800">
+                                    <span className="text-[8px] font-bold uppercase text-blue-400">Faturamento</span>
+                                    <span className="text-xs font-mono font-bold text-blue-500">
+                                        R$ {calculateCartTotal().toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[8px] font-bold uppercase text-green-500">Lucro Prev.</span>
+                                    <span className="text-xs font-mono font-bold text-green-500">
+                                        R$ {(calculateCartTotal() - (currentItems.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0) + (typeof shipping === 'number' ? shipping : parseFloat(shipping) || 0))).toFixed(2)}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between items-end bg-black dark:bg-white text-white dark:text-black p-2">
+                                <span className="text-xs font-black uppercase tracking-widest">Total Geral</span>
+                                <span className="text-xl font-black leading-none tracking-tighter">
+                                    R$ {calculateCartTotal().toFixed(2)}
+                                </span>
+                            </div>
                         </div>
 
                         <div className="flex gap-3 h-12">
@@ -644,32 +668,38 @@ export const Orders: React.FC = () => {
                                             )}
                                         </div>
 
-                                        {/* Financial Summary Block */}
-                                        <div className="grid grid-cols-2 gap-4 mb-4 bg-gray-50 dark:bg-black p-2 border-l-4 border-black dark:border-gray-700">
-                                            <div className="flex flex-col">
-                                                <span className="text-[9px] font-black uppercase text-gray-400">Total Pedido</span>
-                                                <span className="font-black text-xl text-primary leading-none">R$ {order.totalValue.toFixed(2)}</span>
+                                        {/* Financial Summary Block - Explicit Breakdown */}
+                                        <div className="grid grid-cols-3 gap-2 mb-4 bg-gray-50 dark:bg-black p-3 border-t-2 border-b-2 border-gray-200 dark:border-gray-800">
+                                            {/* Revenue */}
+                                            <div className="flex flex-col items-center border-r border-gray-200 dark:border-gray-800">
+                                                <span className="text-[8px] font-black uppercase text-blue-500 mb-1">Faturamento</span>
+                                                <span className="font-black text-sm text-blue-600 dark:text-blue-400">R$ {order.totalValue.toFixed(2)}</span>
                                             </div>
-                                            <div className="flex flex-col items-end">
-                                                {/* Calculate Profit on the fly for display */}
-                                                {(() => {
-                                                    const totalCost = order.items.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0);
-                                                    const profit = order.totalValue - (order.shippingCost || 0) - totalCost;
-                                                    const margin = order.totalValue > 0 ? (profit / order.totalValue) * 100 : 0;
 
-                                                    return (
-                                                        <>
-                                                            <span className="text-[9px] font-black uppercase text-gray-400">Lucro Líquido</span>
-                                                            <div className="flex items-center gap-2">
-                                                                <span className="font-mono font-bold text-sm text-green-600 dark:text-green-500">R$ {profit.toFixed(2)}</span>
-                                                                <span className="text-[8px] font-black bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1 rounded">
-                                                                    {margin.toFixed(0)}%
-                                                                </span>
+                                            {/* Cost (Calculated) */}
+                                            {(() => {
+                                                const totalCost = order.items.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0);
+                                                const finalCost = totalCost + (order.shippingCost || 0);
+                                                const profit = order.totalValue - finalCost;
+                                                const margin = order.totalValue > 0 ? (profit / order.totalValue) * 100 : 0;
+
+                                                return (
+                                                    <>
+                                                        <div className="flex flex-col items-center border-r border-gray-200 dark:border-gray-800">
+                                                            <span className="text-[8px] font-black uppercase text-red-400 mb-1">Custo Total</span>
+                                                            <span className="font-bold text-sm text-gray-500">R$ {finalCost.toFixed(2)}</span>
+                                                        </div>
+
+                                                        <div className="flex flex-col items-center">
+                                                            <span className="text-[8px] font-black uppercase text-green-500 mb-1">Lucro Real</span>
+                                                            <div className="flex flex-col items-center leading-none">
+                                                                <span className="font-black text-sm text-green-600 dark:text-green-500">R$ {profit.toFixed(2)}</span>
+                                                                <span className="text-[8px] font-bold text-green-400 mt-1">{margin.toFixed(0)}%</span>
                                                             </div>
-                                                        </>
-                                                    );
-                                                })()}
-                                            </div>
+                                                        </div>
+                                                    </>
+                                                );
+                                            })()}
                                         </div>
 
                                         {/* INDUSTRIAL CONTROL PANEL (STATUS BUTTONS) */}
