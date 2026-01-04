@@ -476,21 +476,23 @@ export const Settings: React.FC = () => {
                         <span className="material-symbols-outlined text-black dark:text-white text-2xl">database</span>
                         <h2 className="text-xl font-black uppercase text-black dark:text-white">Gestão de Dados</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <button onClick={exportData} className="py-4 px-3 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center justify-center gap-2">
-                            <span className="material-symbols-outlined text-xl">download</span>
-                            <span className="text-[10px] tracking-widest text-center">Backup (JSON)</span>
+                    <div className="flex flex-col md:grid md:grid-cols-3 gap-4">
+                        <button onClick={exportData} className="w-full py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase transition-all brutal-btn flex items-center justify-center gap-3">
+                            <span className="material-symbols-outlined shrink-0">download</span>
+                            <span className="text-[10px] tracking-widest uppercase">Backup dos Dados</span>
                         </button>
-                        <div className="relative">
+
+                        <div className="relative w-full">
                             <input type="file" accept=".json" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-                            <button onClick={() => fileInputRef.current?.click()} className="w-full py-4 px-3 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center justify-center gap-2">
-                                <span className="material-symbols-outlined text-xl">upload</span>
-                                <span className="text-[10px] tracking-widest text-center">Restaurar</span>
+                            <button onClick={() => fileInputRef.current?.click()} className="w-full py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase transition-all brutal-btn flex items-center justify-center gap-3">
+                                <span className="material-symbols-outlined shrink-0">upload</span>
+                                <span className="text-[10px] tracking-widest uppercase">Restaurar</span>
                             </button>
                         </div>
-                        <button onClick={handleReset} className="py-4 px-3 border-2 border-red-500 bg-red-50 dark:bg-red-900/10 text-red-600 font-bold uppercase hover:bg-red-500 hover:text-white transition-all brutal-btn flex flex-col items-center justify-center gap-2 focus:ring-4 focus:ring-red-500/20">
-                            <span className="material-symbols-outlined text-xl">delete_forever</span>
-                            <span className="text-[10px] tracking-widest text-center">Resetar Fábrica</span>
+
+                        <button onClick={handleReset} className="w-full py-4 px-4 border-2 border-red-500 bg-red-50 dark:bg-red-900/10 text-red-600 font-bold uppercase hover:bg-red-500 hover:text-white transition-all brutal-btn flex items-center justify-center gap-3 focus:ring-4 focus:ring-red-500/20">
+                            <span className="material-symbols-outlined shrink-0">delete_forever</span>
+                            <span className="text-[10px] tracking-widest uppercase">Resetar Fábrica</span>
                         </button>
                     </div>
                 </div>

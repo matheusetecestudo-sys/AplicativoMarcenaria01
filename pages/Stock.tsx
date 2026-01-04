@@ -3,7 +3,7 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 import {
     ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend,
-    AreaChart, Area, PieChart, Pie, Cell, ReferenceLine
+    AreaChart, Area, PieChart, Pie, Cell, ReferenceLine, CartesianGrid
 } from 'recharts';
 
 // Custom Brutalist Tooltip
@@ -48,10 +48,10 @@ export const Stock: React.FC = () => {
     ];
 
     // Material Levels vs Min Stock (Bar Chart)
-    const materialData = materials.slice(0, 8).map(m => ({ // Limit to 8 for cleanliness
-        name: m.name.split(' ')[0], // Short name
-        atual: m.stock,
-        minimo: m.minStock
+    const materialData = (materials || []).slice(0, 10).map(m => ({
+        name: (m.name || 'Item').split(' ')[0],
+        atual: m.stock || 0,
+        minimo: m.minStock || 0
     }));
 
     // Product Distribution (Pie Chart)
@@ -241,8 +241,8 @@ export const Stock: React.FC = () => {
                             />
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
                             <Legend verticalAlign="top" wrapperStyle={{ fontSize: '8px', fontWeight: 'bold', textTransform: 'uppercase', paddingBottom: '20px' }} />
-                            <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={window.innerWidth < 768 ? 15 : 30} radius={[2, 2, 0, 0]} />
-                            <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={window.innerWidth < 768 ? 5 : 10} radius={[2, 2, 0, 0]} fillOpacity={0.5} />
+                            <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={30} radius={[2, 2, 0, 0]} />
+                            <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={10} radius={[2, 2, 0, 0]} fillOpacity={0.5} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
