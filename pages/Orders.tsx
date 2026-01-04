@@ -291,75 +291,66 @@ export const Orders: React.FC = () => {
     }, [orders, filter, timeRange]);
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:h-full h-auto pb-8 items-start">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 lg:h-full h-auto pb-8 items-start">
 
             {/* LEFT COLUMN: ORDER BUILDER (PDV Style) - Sticky on Desktop */}
-            <div className={`lg:col-span-5 flex flex-col lg:h-[calc(100vh-10rem)] ${isBuilderExpanded ? 'h-[85vh]' : 'h-auto'} lg:sticky lg:top-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_#0000FF] transition-all relative`}>
+            <div className={`xl:col-span-6 flex flex-col lg:h-[calc(100vh-8rem)] ${isBuilderExpanded ? 'h-[85vh]' : 'h-auto'} lg:sticky lg:top-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white shadow-[12px_12px_0px_0px_#0000FF] transition-all relative overflow-hidden`}>
 
                 {/* 1. COMPACT HEADER (Client Info) */}
-                <div className="p-5 border-b-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] shrink-0 flex justify-between items-start">
-                    <div className="w-full">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-black dark:text-white text-lg font-black uppercase flex items-center gap-2 tracking-wide">
-                                <span className="material-symbols-outlined text-primary">shopping_cart_checkout</span>
-                                Novo Pedido
-                            </h2>
-                            {/* MOBILE TOGGLE BUTTON */}
-                            <button
-                                onClick={() => setIsBuilderExpanded(!isBuilderExpanded)}
-                                className="lg:hidden p-1 border-2 border-black dark:border-white rounded bg-gray-100 dark:bg-black"
-                            >
-                                <span className="material-symbols-outlined">{isBuilderExpanded ? 'expand_less' : 'expand_more'}</span>
-                            </button>
+                <div className="p-6 border-b-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] shrink-0">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-black dark:text-white text-xl md:text-2xl font-black uppercase flex items-center gap-3 tracking-tighter">
+                            <span className="material-symbols-outlined text-primary text-3xl">shopping_cart_checkout</span>
+                            Novo Pedido
+                        </h2>
+                        {/* MOBILE TOGGLE BUTTON */}
+                        <button
+                            onClick={() => setIsBuilderExpanded(!isBuilderExpanded)}
+                            className="lg:hidden p-2 border-2 border-black dark:border-white rounded bg-gray-100 dark:bg-black"
+                        >
+                            <span className="material-symbols-outlined">{isBuilderExpanded ? 'expand_less' : 'expand_more'}</span>
+                        </button>
+                    </div>
+
+                    <div className={`${isBuilderExpanded ? 'grid' : 'hidden'} lg:grid grid-cols-1 md:grid-cols-2 gap-6`}>
+                        {/* Client Name Input */}
+                        <div className="md:col-span-2 relative group">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-2xl">person</span>
+                            <input
+                                className="w-full bg-transparent text-black dark:text-white pl-12 pr-4 py-3 text-lg font-black border-b-4 border-gray-200 dark:border-gray-800 focus:border-primary focus:outline-none uppercase transition-colors placeholder:text-gray-300"
+                                placeholder="NOME DO CLIENTE..."
+                                value={clientName}
+                                onChange={e => setClientName(e.target.value)}
+                            />
                         </div>
 
-                        {/* Collapsible Header Content on Mobile? No, keep header inputs always visible? 
-                    Actually, if I collapse "Novo Pedido", I probably want to hide everything except the title. 
-                    Let's hide the inputs too if collapsed on mobile, for maximum space saving.
-                */}
-                        <div className={`${isBuilderExpanded ? 'flex' : 'hidden'} lg:flex flex-col gap-3`}>
-                            {/* Client Name Input */}
-                            <div className="relative group">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-lg">person</span>
-                                <input
-                                    className="w-full bg-transparent text-black dark:text-white pl-10 pr-3 py-2 text-sm font-bold border-b-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none uppercase transition-colors placeholder:text-gray-400"
-                                    placeholder="Nome do Cliente"
-                                    value={clientName}
-                                    onChange={e => setClientName(e.target.value)}
-                                />
-                            </div>
+                        {/* Date Picker */}
+                        <div className="flex flex-col">
+                            <label className="text-[10px] font-black uppercase text-gray-400 mb-1 tracking-[0.2em]">Data de Entrega</label>
+                            <BrutalistDatePicker value={deadline} onChange={setDeadline} />
+                        </div>
 
-                            <div className="grid grid-cols-2 gap-4 items-end">
-                                {/* Date Picker */}
-                                <div className="flex flex-col">
-                                    <label className="text-[10px] font-bold uppercase text-gray-500 mb-1 tracking-wider">Entrega</label>
-                                    <BrutalistDatePicker value={deadline} onChange={setDeadline} />
-                                </div>
+                        {/* Compact Origin Toggle */}
+                        <div className="flex flex-col">
+                            <label className="text-[10px] font-black uppercase text-gray-400 mb-1 tracking-[0.2em]">Canal de Venda</label>
+                            <div className="flex items-center bg-gray-100 dark:bg-black border-2 border-gray-300 dark:border-gray-700 h-12 p-1 relative">
+                                <div
+                                    className={`absolute top-1 bottom-1 w-[calc(50%-4px)] transition-all duration-300 ease-out border-2 border-black dark:border-white
+                            ${origin === 'ONLINE' ? 'left-1 bg-[#00FFFF]' : 'left-[calc(50%+2px)] bg-[#FFA500]'}`}
+                                ></div>
 
-                                {/* Compact Origin Toggle */}
-                                <div className="flex flex-col">
-                                    <label className="text-[10px] font-bold uppercase text-gray-500 mb-1 tracking-wider">Canal de Venda</label>
-                                    <div className="flex items-center bg-gray-100 dark:bg-black border-2 border-gray-300 dark:border-gray-700 h-12 p-1 relative">
-                                        {/* Sliding Background */}
-                                        <div
-                                            className={`absolute top-1 bottom-1 w-[calc(50%-4px)] transition-all duration-300 ease-out border-2 border-black dark:border-white
-                                    ${origin === 'ONLINE' ? 'left-1 bg-[#00FFFF]' : 'left-[calc(50%+2px)] bg-[#FFA500]'}`}
-                                        ></div>
-
-                                        <button
-                                            onClick={() => setOrigin('ONLINE')}
-                                            className={`flex-1 z-10 text-[10px] font-black uppercase text-center transition-colors ${origin === 'ONLINE' ? 'text-black' : 'text-gray-400 hover:text-black dark:hover:text-white'}`}
-                                        >
-                                            Online
-                                        </button>
-                                        <button
-                                            onClick={() => setOrigin('FISICO')}
-                                            className={`flex-1 z-10 text-[10px] font-black uppercase text-center transition-colors ${origin === 'FISICO' ? 'text-black' : 'text-gray-400 hover:text-black dark:hover:text-white'}`}
-                                        >
-                                            Loja
-                                        </button>
-                                    </div>
-                                </div>
+                                <button
+                                    onClick={() => setOrigin('ONLINE')}
+                                    className={`flex-1 z-10 text-[10px] font-black uppercase text-center transition-colors ${origin === 'ONLINE' ? 'text-black' : 'text-gray-400 hover:text-black dark:hover:text-white'}`}
+                                >
+                                    Online
+                                </button>
+                                <button
+                                    onClick={() => setOrigin('FISICO')}
+                                    className={`flex-1 z-10 text-[10px] font-black uppercase text-center transition-colors ${origin === 'FISICO' ? 'text-black' : 'text-gray-400 hover:text-black dark:hover:text-white'}`}
+                                >
+                                    Loja
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -367,50 +358,53 @@ export const Orders: React.FC = () => {
 
                 {/* BODY WRAPPER (Collapsible on Mobile) */}
                 <div className={`${isBuilderExpanded ? 'flex' : 'hidden'} lg:flex flex-col flex-1 overflow-hidden min-h-0`}>
-                    {/* 2. ITEM ENTRY TOOLBAR (Dark/Contrast) */}
-                    <div className="bg-black dark:bg-gray-800 p-3 flex flex-col gap-3 border-b-4 border-black dark:border-white shrink-0">
-                        <div className="flex gap-2">
-                            <div className="flex-1">
-                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Selecionar Produto</span>
+                    {/* 2. ITEM ENTRY TOOLBAR (Larger for Desktop) */}
+                    <div className="bg-gray-50 dark:bg-black p-6 flex flex-col gap-4 border-b-4 border-black dark:border-white shrink-0">
+                        <div className="grid grid-cols-12 gap-3">
+                            <div className="col-span-9 md:col-span-10">
+                                <span className="text-[10px] font-black uppercase text-gray-400 block mb-1 tracking-widest">Escolha o Produto</span>
                                 <select
-                                    className="w-full h-10 bg-white dark:bg-[#111] text-black dark:text-white px-2 font-black border-2 border-transparent focus:border-primary focus:outline-none text-xs uppercase"
+                                    className="w-full h-12 bg-white dark:bg-[#111] text-black dark:text-white px-4 font-black border-4 border-black dark:border-white focus:border-primary focus:outline-none text-base uppercase brutal-input"
                                     value={selectedProductId}
                                     onChange={e => setSelectedProductId(e.target.value)}
                                 >
-                                    <option value="">PRODUTO...</option>
+                                    <option value="">SELECIONAR PRODUTO...</option>
                                     {products.map(p => (
                                         <option key={p.id} value={p.id}>{p.name}</option>
                                     ))}
                                 </select>
                             </div>
-                            <div className="w-16">
-                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Qtd</span>
+                            <div className="col-span-3 md:col-span-2">
+                                <span className="text-[10px] font-black uppercase text-gray-400 block mb-1 tracking-widest">Qtd</span>
                                 <input
                                     type="number"
                                     min="1"
-                                    className="w-full h-10 bg-white dark:bg-[#111] text-black dark:text-white text-center font-black border-2 border-transparent focus:border-primary focus:outline-none text-xs"
+                                    className="w-full h-12 bg-white dark:bg-[#111] text-black dark:text-white text-center font-black border-4 border-black dark:border-white focus:border-primary focus:outline-none text-lg brutal-input"
                                     value={quantity}
                                     onChange={e => setQuantity(parseInt(e.target.value))}
                                 />
                             </div>
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-4">
                             <div className="flex-1">
-                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Preço Unitário (R$)</span>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    className="w-full h-10 bg-white dark:bg-black text-black dark:text-white px-2 font-black border-2 border-transparent focus:border-primary focus:outline-none text-sm text-right"
-                                    value={customUnitPrice}
-                                    onChange={e => setCustomUnitPrice(parseFloat(e.target.value) || '')}
-                                />
+                                <span className="text-[10px] font-black uppercase text-gray-400 block mb-1 tracking-widest">Ajuste de Preço (Opcional)</span>
+                                <div className="relative">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-black">R$</span>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        className="w-full h-12 bg-white dark:bg-[#111] text-black dark:text-white pl-12 pr-4 font-black border-4 border-black dark:border-white focus:border-primary focus:outline-none text-xl text-right brutal-input"
+                                        value={customUnitPrice}
+                                        onChange={e => setCustomUnitPrice(parseFloat(e.target.value) || '')}
+                                    />
+                                </div>
                                 {currentUnitCost > 0 && (
-                                    <div className="flex justify-between items-center mt-1 px-1">
-                                        <span className="text-[9px] font-mono text-gray-500">Custo: R$ {currentUnitCost.toFixed(2)}</span>
+                                    <div className="flex justify-between items-center mt-2 px-1">
+                                        <span className="text-[10px] font-black text-gray-400 uppercase">Custo Base: R$ {currentUnitCost.toFixed(2)}</span>
                                         {typeof customUnitPrice === 'number' && (
-                                            <span className={`text-[9px] font-mono font-bold ${customUnitPrice > currentUnitCost ? 'text-green-500' : 'text-red-500'}`}>
-                                                {((customUnitPrice - currentUnitCost) / customUnitPrice * 100).toFixed(0)}% Mg
+                                            <span className={`text-[10px] font-black px-2 py-0.5 border-2 ${customUnitPrice > currentUnitCost ? 'border-green-500 text-green-500 bg-green-500/10' : 'border-red-500 text-red-500 bg-red-500/10'}`}>
+                                                MARGEM: {((customUnitPrice - currentUnitCost) / customUnitPrice * 100).toFixed(0)}%
                                             </span>
                                         )}
                                     </div>
@@ -418,48 +412,48 @@ export const Orders: React.FC = () => {
                             </div>
                             <button
                                 onClick={addItemToCart}
-                                className="w-12 h-10 bg-primary text-white flex items-center justify-center hover:brightness-110 active:scale-95 transition-all self-end"
-                                title="Adicionar"
+                                className="w-16 h-12 bg-primary text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all self-end shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF] border-2 border-black dark:border-white"
+                                title="Adicionar ao Carrinho"
                             >
-                                <span className="material-symbols-outlined text-xl font-black">add</span>
+                                <span className="material-symbols-outlined text-3xl font-black">add</span>
                             </button>
                         </div>
                     </div>
 
                     {/* 3. CART LIST (Receipt Style) - Scrollable */}
-                    <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-[#111] p-0 relative min-h-0 custom-scrollbar">
+                    <div className="flex-1 overflow-y-auto bg-white dark:bg-[#0A0A0A] p-0 relative min-h-[200px] custom-scrollbar">
                         {currentItems.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center text-gray-400 opacity-40 h-full p-8">
-                                <span className="material-symbols-outlined text-5xl mb-2">shopping_bag</span>
-                                <p className="font-bold uppercase text-xs tracking-widest">Lista Vazia</p>
+                            <div className="flex flex-col items-center justify-center text-gray-300 h-full p-12">
+                                <span className="material-symbols-outlined text-6xl mb-4 opacity-20">shopping_cart</span>
+                                <p className="font-black uppercase text-sm tracking-[0.3em] opacity-30">Seu carrinho está vazio</p>
                             </div>
                         ) : (
                             <table className="w-full text-left border-collapse">
-                                <thead className="bg-gray-200 dark:bg-black/50 text-gray-500 text-[10px] uppercase font-bold sticky top-0 z-10">
+                                <thead className="bg-black dark:bg-white text-white dark:text-black text-[10px] uppercase font-black tracking-widest sticky top-0 z-10">
                                     <tr>
-                                        <th className="py-2 px-4">Item</th>
-                                        <th className="py-2 px-2 text-right">Subtotal</th>
-                                        <th className="py-2 px-2 w-8"></th>
+                                        <th className="py-3 px-6">Descrição do Produto</th>
+                                        <th className="py-3 px-4 text-right">Valor Total</th>
+                                        <th className="py-3 px-4 w-12"></th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
                                     {currentItems.map((item, idx) => (
-                                        <tr key={idx} className="border-b border-gray-200 dark:border-gray-800 hover:bg-white dark:hover:bg-black transition-colors group">
-                                            <td className="py-3 px-4">
-                                                <div className="font-bold text-black dark:text-white uppercase line-clamp-1">{item.productName}</div>
-                                                <div className="text-[10px] text-gray-500 font-mono mt-0.5">
-                                                    {item.quantity} x R$ {item.unitPrice.toFixed(2)}
+                                        <tr key={idx} className="border-b-2 border-gray-100 dark:border-gray-900 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
+                                            <td className="py-4 px-6">
+                                                <div className="font-black text-black dark:text-white uppercase text-base">{item.productName}</div>
+                                                <div className="text-[11px] text-gray-400 font-bold mt-1 tracking-wider uppercase">
+                                                    {item.quantity} UNIDADES <span className="mx-2 text-gray-200">|</span> PREÇO UN: R$ {item.unitPrice.toFixed(2)}
                                                 </div>
                                             </td>
-                                            <td className="py-3 px-2 text-right font-mono font-bold text-black dark:text-white">
+                                            <td className="py-4 px-4 text-right font-black text-lg text-black dark:text-white tracking-tighter">
                                                 R$ {item.total.toFixed(2)}
                                             </td>
-                                            <td className="py-3 px-2 text-right">
+                                            <td className="py-4 px-4 text-right">
                                                 <button
                                                     onClick={() => removeItemFromCart(idx)}
-                                                    className="size-6 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                                                    className="size-8 flex items-center justify-center text-gray-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 border-2 border-transparent hover:border-red-500 transition-all"
                                                 >
-                                                    <span className="material-symbols-outlined text-base">close</span>
+                                                    <span className="material-symbols-outlined text-lg">close</span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -470,36 +464,39 @@ export const Orders: React.FC = () => {
                     </div>
 
                     {/* 4. FOOTER (Total & Confirm) - Always visible in sticky container */}
-                    <div className="p-3 bg-white dark:bg-[#1A1A1A] border-t-4 border-black dark:border-white shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] z-50 shrink-0">
-                        {/* Shipping Input - Compact Row */}
-                        <div className="flex justify-between items-center mb-2">
-                            <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest flex items-center gap-1">
-                                <span className="material-symbols-outlined text-xs">local_shipping</span>
-                                Frete (Opcional)
-                            </label>
-                            <div className="relative w-24">
-                                <span className="absolute left-1 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-[10px]">R$</span>
+                    <div className="p-6 bg-white dark:bg-[#1A1A1A] border-t-8 border-black dark:border-white shadow-[0px_-8px_20px_rgba(0,0,0,0.1)] z-50 shrink-0">
+                        {/* Shipping Input - Wider for Desktop */}
+                        <div className="flex justify-between items-center mb-6">
+                            <div className="flex flex-col">
+                                <label className="text-[10px] font-black uppercase text-gray-500 tracking-[0.2em] flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-base">local_shipping</span>
+                                    Serviço de Frete / Entrega
+                                </label>
+                                <p className="text-[9px] text-gray-400 uppercase font-bold">Valor adicional ao faturamento total</p>
+                            </div>
+                            <div className="relative w-40">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-black text-sm">R$</span>
                                 <input
                                     type="number"
                                     placeholder="0.00"
-                                    className="w-full bg-gray-100 dark:bg-black border-b-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none py-0.5 pl-6 text-right font-mono font-bold text-xs"
+                                    className="w-full bg-gray-50 dark:bg-black border-2 border-gray-200 dark:border-gray-800 focus:border-primary focus:outline-none py-2 pl-10 text-right font-black text-lg brutal-input"
                                     value={shipping}
                                     onChange={e => setShipping(e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        {/* Total and Actions Row - Side by Side */}
-                        <div className="flex gap-2 items-stretch h-14">
+                        {/* Total and Actions Row - More breathing room */}
+                        <div className="flex gap-4 items-stretch h-20">
                             {/* Total Block */}
-                            <div className="flex-1 bg-black dark:bg-white text-white dark:text-black p-2 flex flex-col justify-center items-start pl-3 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 p-1">
-                                    <button onClick={() => { setCurrentItems([]); setShipping(''); }} title="Limpar Carrinho" className="text-white/30 dark:text-black/30 hover:text-red-500 dark:hover:text-red-500 transition-colors">
-                                        <span className="material-symbols-outlined text-sm">delete_sweep</span>
+                            <div className="flex-[1.5] bg-black dark:bg-white text-white dark:text-black p-4 flex flex-col justify-center items-start pl-6 relative overflow-hidden group border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_#0000FF]">
+                                <div className="absolute top-2 right-2">
+                                    <button onClick={() => { setCurrentItems([]); setShipping(''); }} title="Limpar Tudo" className="text-white/20 dark:text-black/20 hover:text-red-500 dark:hover:text-red-500 transition-colors">
+                                        <span className="material-symbols-outlined text-xl">delete_forever</span>
                                     </button>
                                 </div>
-                                <span className="text-[9px] font-black uppercase tracking-widest opacity-70">Total Geral</span>
-                                <span className="text-xl font-black leading-none tracking-tighter">
+                                <span className="text-[11px] font-black uppercase tracking-[0.3em] opacity-50 mb-1">Total do Pedido</span>
+                                <span className="text-3xl font-black leading-none tracking-tighter">
                                     R$ {calculateCartTotal().toFixed(2)}
                                 </span>
                             </div>
@@ -507,10 +504,10 @@ export const Orders: React.FC = () => {
                             {/* Confirm Button */}
                             <button
                                 onClick={handleFinalizeOrder}
-                                className="flex-1 bg-primary text-white font-black uppercase text-xs md:text-sm tracking-widest hover:brightness-110 active:scale-[0.98] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:shadow-none active:translate-y-[2px] border-2 border-transparent flex flex-col items-center justify-center leading-tight"
+                                className="flex-1 bg-primary text-white font-black uppercase text-lg tracking-widest hover:brightness-110 hover:translate-y-[-4px] active:translate-y-[2px] active:shadow-none transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.3)] border-4 border-black dark:border-white flex flex-col items-center justify-center leading-tight group"
                             >
-                                <span>Confirmar</span>
-                                <span className="text-[8px] opacity-80 font-normal">Finalizar Pedido</span>
+                                <span className="group-hover:scale-110 transition-transform">CONFIRMAR</span>
+                                <span className="text-[10px] opacity-70 font-bold mt-1 tracking-widest">FINALIZAR AGORA</span>
                             </button>
                         </div>
                     </div>
@@ -518,7 +515,7 @@ export const Orders: React.FC = () => {
             </div>
 
             {/* RIGHT COLUMN: ORDERS LIST */}
-            <div className="lg:col-span-7 bg-white dark:bg-[#1A1A1A] p-4 md:p-6 border-4 border-black dark:border-white flex flex-col h-auto min-h-[600px] transition-colors">
+            <div className="xl:col-span-6 bg-white dark:bg-[#1A1A1A] p-4 md:p-8 border-4 border-black dark:border-white flex flex-col h-auto min-h-[600px] transition-colors relative">
                 {/* HEADER WITH FILTERS */}
                 <div className="flex flex-col gap-4 mb-6">
                     <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
