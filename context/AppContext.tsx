@@ -426,6 +426,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             }
         }
         setMaterials(prev => prev.map(m => m.id === material.id ? material : m));
+
+        // Trigger Cost Recalculation if cost changed (Optimistic update)
+        // We don't await this to keep UI snappy, but it runs in background
+        recalculateAllProductCosts();
     };
 
     const deleteMaterial = async (id: string) => {

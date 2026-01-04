@@ -238,6 +238,20 @@ export const Calculator: React.FC = () => {
                                 </span>
                             </div>
 
+                            {/* Profit Analysis */}
+                            <div className="grid grid-cols-2 gap-2 mt-2">
+                                <div className="bg-gray-100 dark:bg-white/10 p-2 flex flex-col items-center">
+                                    <span className="text-[9px] font-black uppercase text-gray-500">Markup (Sobre Custo)</span>
+                                    <span className="font-mono font-bold text-sm text-black dark:text-white">{margin}%</span>
+                                </div>
+                                <div className="bg-green-100 dark:bg-green-900/20 p-2 flex flex-col items-center">
+                                    <span className="text-[9px] font-black uppercase text-green-600 dark:text-green-500">Margem Líquida (Real)</span>
+                                    <span className="font-mono font-bold text-sm text-green-700 dark:text-green-400">
+                                        {finalPrice > 0 ? ((profit / finalPrice) * 100).toFixed(1) : 0}%
+                                    </span>
+                                </div>
+                            </div>
+
                             {/* Fake Barcode */}
                             <div className="mt-4 flex justify-center opacity-40">
                                 <div className="h-8 w-48 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAYAAAD5PA/NAAAAFklEQVR42mN88P/TfwYGBgYGCAMBAwAWjQSA+F+hQwAAAABJRU5ErkJggg==')] bg-repeat-x bg-contain"></div>

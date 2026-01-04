@@ -127,28 +127,29 @@ export const Materials: React.FC = () => {
 
                 {/* Mini KPIs */}
                 <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-white dark:bg-[#1A1A1A] border-l-4 border-primary p-4 shadow-sm">
-                        <p className="text-[10px] font-black uppercase text-gray-400">Valor em Estoque</p>
-                        <p className="text-2xl font-black text-black dark:text-white truncate font-mono">
+                    <div className="bg-white dark:bg-[#1A1A1A] border-l-4 border-primary p-4 shadow-sm flex flex-col justify-between">
+                        <p className="text-[10px] font-black uppercase text-gray-400">Capital Imobilizado (Total)</p>
+                        <p className="text-2xl font-black text-black dark:text-white truncate font-mono tracking-tighter">
                             R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </p>
                     </div>
-                    <div className="bg-white dark:bg-[#1A1A1A] border-l-4 border-black dark:border-white p-4 shadow-sm">
-                        <p className="text-[10px] font-black uppercase text-gray-400">Total de Itens</p>
-                        <p className="text-2xl font-black text-black dark:text-white font-mono">{totalItems}</p>
-                    </div>
-                    <div className={`bg-white dark:bg-[#1A1A1A] border-l-4 p-4 shadow-sm ${criticalItems > 0 ? 'border-red-500 bg-red-50 dark:bg-red-900/10' : 'border-green-500'}`}>
-                        <div className="flex justify-between items-center">
-                            <div>
-                                <p className={`text-[10px] font-black uppercase ${criticalItems > 0 ? 'text-red-500' : 'text-gray-400'}`}>
-                                    Alertas de Reposição
-                                </p>
-                                <p className={`text-2xl font-black font-mono ${criticalItems > 0 ? 'text-red-600' : 'text-black dark:text-white'}`}>
-                                    {criticalItems}
-                                </p>
-                            </div>
-                            {criticalItems > 0 && <span className="material-symbols-outlined text-red-500 animate-pulse text-3xl">warning</span>}
+                    <div className="bg-white dark:bg-[#1A1A1A] border-l-4 border-black dark:border-white p-4 shadow-sm flex flex-col justify-between">
+                        <p className="text-[10px] font-black uppercase text-gray-400">Total de Itens Ativos</p>
+                        <div className="flex justify-between items-end">
+                            <p className="text-2xl font-black text-black dark:text-white font-mono">{totalItems}</p>
+                            <span className="text-[10px] font-bold uppercase text-gray-500">Unidades Distintas</span>
                         </div>
+                    </div>
+                    <div className={`bg-white dark:bg-[#1A1A1A] border-l-4 p-4 shadow-sm flex flex-col justify-between ${criticalItems > 0 ? 'border-red-500 bg-red-50 dark:bg-red-900/10' : 'border-green-500'}`}>
+                        <div className="flex justify-between items-center">
+                            <p className={`text-[10px] font-black uppercase ${criticalItems > 0 ? 'text-red-500' : 'text-gray-400'}`}>
+                                Itens Críticos
+                            </p>
+                            {criticalItems > 0 && <span className="material-symbols-outlined text-red-500 animate-pulse text-xl">warning</span>}
+                        </div>
+                        <p className={`text-2xl font-black font-mono ${criticalItems > 0 ? 'text-red-600' : 'text-black dark:text-white'}`}>
+                            {criticalItems} <span className="text-[10px] text-black dark:text-white">Abaixo do Mínimo</span>
+                        </p>
                     </div>
                 </div>
             </div>

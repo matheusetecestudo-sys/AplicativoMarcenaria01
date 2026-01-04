@@ -33,7 +33,9 @@ export const Stock: React.FC = () => {
 
     // 1. Data Processing
     const totalProductStock = products.reduce((acc, p) => acc + p.stock, 0);
-    const totalValue = products.reduce((acc, p) => acc + (p.cost * p.stock), 0);
+    const totalProductValue = products.reduce((acc, p) => acc + (p.cost * p.stock), 0);
+    const totalMaterialValue = materials.reduce((acc, m) => acc + (m.price * m.stock), 0); // Assuming 'price' is cost per unit for materials
+    const totalValue = totalProductValue + totalMaterialValue;
     const lowStockCount = materials.filter(m => m.stock <= m.minStock).length;
 
     // Mock data for "Stock Flow" (Area Chart) - More dynamic mock
@@ -83,9 +85,19 @@ export const Stock: React.FC = () => {
                         Inteligência de Armazenamento
                     </p>
                 </div>
-                <div className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 shadow-[4px_4px_0px_0px_#0000FF] shrink-0">
-                    <p className="text-[9px] font-black uppercase tracking-widest opacity-70">Valor Estimado</p>
-                    <p className="text-xl md:text-3xl font-black tabular-nums tracking-tighter">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                <div className="flex gap-4">
+                    <div className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] shrink-0 border-2 border-transparent">
+                        <p className="text-[8px] font-black uppercase tracking-widest opacity-70">Em Produtos (Custo)</p>
+                        <p className="text-lg md:text-xl font-black tabular-nums tracking-tighter text-blue-400 dark:text-blue-600">R$ {totalProductValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                    </div>
+                    <div className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] shrink-0 border-2 border-transparent">
+                        <p className="text-[8px] font-black uppercase tracking-widest opacity-70">Em Insumos</p>
+                        <p className="text-lg md:text-xl font-black tabular-nums tracking-tighter text-purple-400 dark:text-purple-600">R$ {totalMaterialValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                    </div>
+                    <div className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 shadow-[4px_4px_0px_0px_#0000FF] shrink-0 border-2 border-primary">
+                        <p className="text-[9px] font-black uppercase tracking-widest opacity-70">Valor Total Estimado</p>
+                        <p className="text-xl md:text-3xl font-black tabular-nums tracking-tighter">R$ {totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                    </div>
                 </div>
             </header>
 

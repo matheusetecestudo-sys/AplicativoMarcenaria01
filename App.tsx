@@ -17,6 +17,15 @@ import { Help } from './pages/Help';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useApp();
+  const location = useLocation();
+
+  // Special case: If we have a recovery hash, DO NOT redirect to login, let it fall through or handle it.
+  // Actually, ProtectedRoute is for /dashboard etc. If we are in recovery, we shouldn't be here.
+  // But if we ARE here with a hash, we should bounce to reset-password.
+  if (location.hash.includes('type=recovery')) {
+    return <Navigate to="/reset-password" replace />;
+  }
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -95,6 +104,16 @@ const AuthListener: React.FC = () => {
   return null;
 };
 
+const SmartRedirect: React.FC = () => {
+  const location = useLocation();
+
+  if (location.hash.includes('type=recovery')) {
+    return <Navigate to="/reset-password" replace />;
+  }
+
+  return <Navigate to="/dashboard" replace />;
+};
+
 const App: React.FC = () => {
   return (
     <AppProvider>
@@ -102,7 +121,7 @@ const App: React.FC = () => {
         <AuthListener />
         <Layout>
           <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/" element={<SmartRedirect />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
