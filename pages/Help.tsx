@@ -288,22 +288,22 @@ export const Help: React.FC = () => {
                 <HelpSection
                     id="auth"
                     title="Conta e Acesso"
-                    subtitle="Login, Cadastro e Nuvem"
+                    subtitle="Seu Espaço Digital"
                     icon="badge"
                     mockupType="LOGIN"
                     actionLabel="Ir para Login"
                 >
-                    <p><strong className="text-black dark:text-white">Seu passaporte para o RinoScore.</strong> O sistema utiliza autenticação moderna via Supabase para garantir que seus dados estejam seguros e acessíveis apenas por você.</p>
+                    <p><strong className="text-black dark:text-white">Bem-vindo ao seu escritório virtual.</strong> O sistema funciona na nuvem, igual ao seu e-mail ou redes sociais. Isso significa que você pode acessar de qualquer lugar.</p>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Funcionalidades:</h3>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Como funciona:</h3>
                     <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                        <li><strong>Cadastro (Sign Up):</strong> Crie uma conta gratuita usando seu e-mail. Uma conta permite sincronizar dados entre múltiplos dispositivos.</li>
-                        <li><strong>Login Seguro:</strong> Acesso criptografado. Seus dados são carregados automaticamente ao entrar.</li>
-                        <li><strong>Recuperação de Senha:</strong> Esqueceu a senha? Use a opção "Esqueci a Senha" na tela inicial para receber um link de redefinição no seu e-mail.</li>
+                        <li><strong>Criar Conta:</strong> Use seu e-mail para criar um acesso único e seguro.</li>
+                        <li><strong>Entrar (Login):</strong> Digite seu e-mail e senha para abrir a marcenaria.</li>
+                        <li><strong>Esqueci a Senha:</strong> Se tiver problemas, clique em "Esqueci a Senha" na tela de entrada para receber um link de ajuda no seu e-mail.</li>
                     </ul>
 
-                    <AlertBlock type="info" title="Sincronização na Nuvem">
-                        Ao estar logado, todas as suas ações (criar pedido, adicionar produto, alterar configurações) são salvas automaticamente na nuvem (Supabase). Se você usar outro computador e logar com a mesma conta, seus dados estarão lá.
+                    <AlertBlock type="info" title="Salvo Automaticamente">
+                        Você não precisa clicar em "Salvar" o tempo todo. O sistema guarda tudo na nuvem assim que você confirma uma ação. Se o computador desligar, seus dados estarão seguros.
                     </AlertBlock>
                 </HelpSection>
 
@@ -313,35 +313,35 @@ export const Help: React.FC = () => {
                 <HelpSection
                     id="dashboard"
                     title="Dashboard Geral"
-                    subtitle="Visão Panorâmica da Operação"
+                    subtitle="Painel de Controle"
                     icon="dashboard"
                     mockupType="CHART"
-                    actionLabel="Ir para Dashboard"
+                    actionLabel="Ver Resumo"
                     actionLink="/dashboard"
                 >
-                    <p><strong className="text-black dark:text-white">O Centro de Comando.</strong> Esta tela consolida todas as métricas vitais da sua marcenaria em tempo real, permitindo decisões rápidas baseadas em dados.</p>
+                    <p><strong className="text-black dark:text-white">O Raio-X da sua empresa.</strong> Assim que você entra, vê um resumo de tudo o que está acontecendo: quanto vendeu, o que precisa entregar e quanto dinheiro entrou.</p>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Indicadores (KPIs):</h3>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Entenda as Cores:</h3>
                     <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                        <li><strong>Fluxo Total:</strong> Volume absoluto de pedidos no período selecionado.</li>
-                        <li><strong>Em Aberto (Amarelo):</strong> Pedidos ativos que requerem atenção (produção ou entrega).</li>
-                        <li><strong>Crítico (Vermelho):</strong> Pedidos atrasados. O sistema alerta visualmente para priorização imediata.</li>
-                        <li><strong>Finalizados (Verde):</strong> Sucesso da operação. Pedidos entregues e faturados.</li>
+                        <li><strong>Cartões Grandes:</strong> Mostram o total de pedidos e o valor financeiro.</li>
+                        <li><strong>Amarelo (Atenção):</strong> Pedidos que estão em aberto. É o seu trabalho na fila.</li>
+                        <li><strong>Vermelho (Urgente):</strong> Pedidos atrasados. Resolva estes primeiro!</li>
+                        <li><strong>Verde (Concluído):</strong> Pedidos entregues e pagos.</li>
                     </ul>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div className="bg-gray-50 dark:bg-white/5 p-3 border-l-2 border-primary">
-                            <strong className="text-xs uppercase font-black block mb-1">Canais de Venda</strong>
-                            <p className="text-xs">As "Turbinas" mostram a proporção de vendas Físicas vs Online, ajudando a entender de onde vem seu lucro.</p>
+                            <strong className="text-xs uppercase font-black block mb-1">Vendas Online vs Loja</strong>
+                            <p className="text-xs">Veja se você vende mais pela internet (Whatsapp/Insta) ou presencialmente.</p>
                         </div>
                         <div className="bg-gray-50 dark:bg-white/5 p-3 border-l-2 border-green-500">
-                            <strong className="text-xs uppercase font-black block mb-1">Financeiro</strong>
-                            <p className="text-xs">Gráfico de barras combinando Faturamento e Custo para revelar o Lucro Líquido real do dia/mês.</p>
+                            <strong className="text-xs uppercase font-black block mb-1">Lucro Real</strong>
+                            <p className="text-xs">O sistema desconta os custos e mostra quanto dinheiro realmente sobrou no bolso.</p>
                         </div>
                     </div>
 
                     <ProTip>
-                        Utilize os filtros de tempo no topo (HOJE, 7D, MÊS) para isolar análises. O filtro afeta todos os números da tela instantaneamente.
+                        Use os botões <strong>HOJE, 7D, MÊS</strong> no topo da tela para filtrar. Ex: Quer saber quanto vendeu só hoje? Clique em "HOJE".
                     </ProTip>
                 </HelpSection>
 
@@ -350,24 +350,24 @@ export const Help: React.FC = () => {
                 {/* 2. PEDIDOS */}
                 <HelpSection
                     id="pedidos"
-                    title="Pedidos & PDV"
-                    subtitle="Gestão de Vendas e Produção"
+                    title="Pedidos & Vendas"
+                    subtitle="Anotando Serviços"
                     icon="shopping_cart"
                     mockupType="SIDEBAR"
                     actionLabel="Novo Pedido"
                     actionLink="/pedidos"
                 >
-                    <p>O coração operacional. O sistema conta com um **PDV (Ponto de Venda)** robusto para lançar vendas com precisão financeira.</p>
+                    <p>Aqui é onde você registra o trabalho. Em vez de usar um caderno, use esta tela para criar um pedido organizado.</p>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Novos Recursos de Precificação:</h3>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Criando um Pedido:</h3>
                     <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                        <li><strong>Margem de Lucro Sugerida:</strong> Você pode definir uma margem (ex: 50%) e o sistema calculará o preço de venda instantaneamente baseado no custo do produto.</li>
-                        <li><strong>Ajuste Manual de Preço:</strong> Caso precise fazer uma promoção ou preço diferenciado, você pode editar o valor unitário diretamente antes de adicionar ao carrinho.</li>
-                        <li><strong>Origem de Venda:</strong> Diferencie vendas físicas de vendas online para análise de rentabilidade no Dashboard.</li>
+                        <li><strong>Cliente e Prazo:</strong> Digite o nome do cliente e quando você promete entregar.</li>
+                        <li><strong>Adicionar Produtos:</strong> Escolha os móveis que ele comprou. O preço aparece automático (baseado no seu cadastro de produtos), mas você pode dar desconto ou aumentar na hora.</li>
+                        <li><strong>Status:</strong> Mude de "A Fazer" para "Entregue" conforme o trabalho anda.</li>
                     </ul>
 
-                    <AlertBlock type="danger" title="Impacto no Estoque">
-                        Ao criar um pedido, o sistema <strong>reserva</strong> automaticamente o estoque dos produtos acabado. Se o pedido for cancelado ou excluído, o estoque retorna ao saldo.
+                    <AlertBlock type="danger" title="Estoque Inteligente">
+                        Quando você coloca um produto no pedido, o sistema já "reserva" ele do estoque. Se você cancelar o pedido, o item volta para a prateleira virtual.
                     </AlertBlock>
                 </HelpSection>
 
@@ -376,28 +376,28 @@ export const Help: React.FC = () => {
                 {/* 3. PRODUTOS */}
                 <HelpSection
                     id="produtos"
-                    title="Produtos & Receitas"
-                    subtitle="Catálogo Inteligente"
+                    title="Seus Produtos"
+                    subtitle="O que você vende"
                     icon="inventory_2"
                     mockupType="GRID"
                     actionLabel="Ver Catálogo"
                     actionLink="/produtos"
                 >
-                    <p>Cadastre seus móveis com inteligência de engenharia. O sistema usa o conceito de <strong>B.O.M. (Bill of Materials)</strong> com suporte a custos operacionais.</p>
+                    <p>Cadastre aqui tudo o que a marcenaria faz. Pode ser "Armário Cozinha", "Mesa Jantar", etc. Uma vez cadastrado, fica fácil vender.</p>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Engenharia de Custo:</h3>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Calculando o Preço Certo:</h3>
                     <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                        <li><strong>Custo de Insumos:</strong> Soma automática de todos os materiais vinculados ao produto.</li>
-                        <li><strong>Mão de Obra (Labor):</strong> Agora você pode definir um custo de produção fixo para cada item, garantindo orçamentos mais realistas.</li>
-                        <li><strong>Custo Total:</strong> Calculado como <code>(Materiais + Mão de Obra)</code>. Este valor é a base para o cálculo de margem no PDV.</li>
+                        <li><strong>Materiais (Receita):</strong> Diga quais materiais vai nesse móvel (ex: 2 chapas MDF, 1 cola). O sistema soma o custo sozinho!</li>
+                        <li><strong>Mão de Obra:</strong> Coloque quanto custa o seu tempo ou do funcionário para fazer essa peça.</li>
+                        <li><strong>Preço de Venda:</strong> Defina por quanto vai vender. O sistema te avisa quanto você está ganhando de lucro em cada peça.</li>
                     </ul>
 
                     <div className="bg-black text-white p-4 font-mono text-xs my-4 border-l-4 border-primary shadow-lg relative overflow-hidden group hover:scale-[1.01] transition-transform">
                         <div className="absolute right-0 top-0 text-[100px] leading-none opacity-10 font-black pointer-events-none">BOM</div>
-                        <span className="text-gray-500 block mb-2">// Novo Cálculo de Custo</span>
-                        <span className="text-primary font-bold">PRODUTO:</span> Armário Cozinha<br />
-                        <span className="text-primary font-bold">INSUMOS:</span> R$ 450,00<br />
-                        <span className="text-primary font-bold">MÃO DE OBRA:</span> R$ 300,00<br />
+                        <span className="text-gray-500 block mb-2">// Exemplo de Custo</span>
+                        <span className="text-primary font-bold">MÓVEL:</span> Armário Cozinha<br />
+                        <span className="text-primary font-bold">GASTO DE MATERIAL:</span> R$ 450,00<br />
+                        <span className="text-primary font-bold">GASTO DE MÃO DE OBRA:</span> R$ 300,00<br />
                         <span className="border-t border-gray-700 block mt-1 pt-1 font-black">CUSTO FINAL: R$ 750,00</span>
                     </div>
                 </HelpSection>
@@ -408,23 +408,22 @@ export const Help: React.FC = () => {
                 <HelpSection
                     id="materiais"
                     title="Insumos & Estoque"
-                    subtitle="Almoxarifado"
+                    subtitle="Seu Almoxarifado"
                     icon="forest"
                     mockupType="GRID"
-                    actionLabel="Gerenciar Insumos"
+                    actionLabel="Gerenciar Estoque"
                     actionLink="/materias"
                 >
-                    <p>Controle rigoroso de matéria-prima. Agora com **Gestão Reativa** para ajustes rápidos no dia-a-dia.</p>
+                    <p>Controle do que você compra (MDF, Cola, Parafusos, Lixas). Manter isso atualizado evita parar a produção por falta de material.</p>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Gestão Dinâmica:</h3>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Facilidades:</h3>
                     <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                        <li><strong>Ajuste Rápido (+/-):</strong> Utilize os botões na tabela para adicionar ou remover itens do estoque sem precisar abrir o formulário de edição.</li>
-                        <li><strong>Alerta de Reposição:</strong> O sistema destaca em vermelho (Crítico) ou amarelo (Baixo) itens que precisam de atenção.</li>
-                        <li><strong>Feedback Visual:</strong> Animações de escala e brilho indicam quando uma atualização de estoque foi salva com sucesso.</li>
+                        <li><strong>Botões + e -:</strong> Chegou material? Clique no "+". Gastou? Clique no "-". Simples assim.</li>
+                        <li><strong>Alerta de Acabando:</strong> Se o material estiver acabando (abaixo do mínimo que você definiu), ele fica vermelho ou amarelo para te avisar que precisa comprar.</li>
                     </ul>
 
                     <ProTip>
-                        Mantenha o Custo Unitário atualizado para que o lucro de seus produtos seja calculado corretamente baseando-se nos preços de mercado atuais.
+                        Sempre atualize o <strong>Preço de Custo</strong> quando comprar material novo. Assim, o sistema recalcula o custo dos seus móveis automaticamente e você nunca perde dinheiro.
                     </ProTip>
                 </HelpSection>
 
@@ -433,19 +432,19 @@ export const Help: React.FC = () => {
                 {/* 5. CALCULADORA */}
                 <HelpSection
                     id="calculadora"
-                    title="Calculadora de Custo"
-                    subtitle="Orçamentos Rápidos"
+                    title="Calculadora Rápida"
+                    subtitle="Orçamento sem Compromisso"
                     icon="calculate"
                     mockupType="FORM"
                     actionLabel="Abrir Calculadora"
                     actionLink="/calculadora"
                 >
-                    <p>Ferramenta para orçar projetos personalizados (Bespoke) sem afetar seu banco de dados oficial.</p>
-                    <p><strong className="text-black dark:text-white">Orçamentos dinâmicos.</strong> Ferramenta para orçar projetos personalizados (Bespoke) sem afetar seu banco de dados oficial.</p>
-                    <p className="mt-2">Ideal para atendimentos rápidos via WhatsApp ou balcão. Adicione materiais, mão de obra e margem de lucro para gerar um preço de venda sugerido com base científica em seus custos.</p>
+                    <p>Cliente perguntou "quanto fica tal coisa?" no WhatsApp e você quer responder rápido sem cadastrar no sistema?</p>
+                    <p className="mt-2">Use a Calculadora. Você joga os materiais, coloca sua margem de lucro (quanto quer ganhar %) e ela te dá o preço de venda na hora.</p>
+
                     <div className="mt-4 p-4 glass border-2 border-primary glow-blue">
-                        <span className="text-[10px] font-black uppercase text-primary block mb-2">Engenharia de Preço</span>
-                        <p className="text-xs italic opacity-70">A calculadora utiliza a técnica de Markup sobre o Custo Variável Total (Insumos + Mão de Obra) para garantir que sua margem desejada seja atingida após todos os descontos.</p>
+                        <span className="text-[10px] font-black uppercase text-primary block mb-2">Para que serve?</span>
+                        <p className="text-xs italic opacity-70">Ideal para orçamentos de balcão ou projetos muito específicos que você não quer salvar no catálogo geral.</p>
                     </div>
                 </HelpSection>
 
@@ -454,25 +453,30 @@ export const Help: React.FC = () => {
                 {/* 6. CONFIGURAÇÕES */}
                 <HelpSection
                     id="config"
-                    title="Configurações & Dados"
-                    subtitle="Administração do Sistema"
+                    title="Ajustes e Relatórios"
+                    subtitle="Administração"
                     icon="settings"
                     mockupType="FORM"
-                    actionLabel="Ajustes"
+                    actionLabel="Configurar"
                     actionLink="/configuracoes"
                 >
-                    <p>Central de personalização e segurança dos dados.</p>
+                    <p>Aqui você deixa o sistema com a sua cara e tira relatórios para controlar o negócio.</p>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Identidade Visual:</h3>
-                    <p>Faça upload do seu logotipo para personalizar o sistema. A imagem aparecerá no topo do menu lateral e nos relatórios impressos.</p>
-                    <ProTip>Use imagens PNG com fundo transparente para melhor resultado.</ProTip>
-
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Gestão de Dados:</h3>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">O que fazer aqui:</h3>
                     <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                        <li><strong>Backup (Exportar):</strong> Baixa um arquivo <code>.json</code> com todos os seus dados.</li>
-                        <li><strong>Restaurar (Importar):</strong> Lê um arquivo de backup. Se estiver online, esses dados serão enviados para a nuvem, atualizando seu cadastro.</li>
-                        <li><strong>Resetar Fábrica:</strong> <span className="text-red-600 font-bold">PERIGO.</span> Apaga todos os pedidos, produtos e materiais do banco de dados (nuvem e local). Use com cautela.</li>
+                        <li><strong>Logo da Empresa:</strong> Coloque sua marca. Ela vai aparecer nos documentos impressos.</li>
+                        <li><strong>Tema Escuro/Claro:</strong> Escolha o visual que cansa menos a sua vista.</li>
                     </ul>
+
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Relatórios (Planilhas):</h3>
+                    <ul className="list-disc list-inside space-y-2 marker:text-primary">
+                        <li><strong>Baixar Pedidos, Produtos ou Materiais:</strong> Clique nos botões para baixar um arquivo do <strong>Excel</strong> todo bonitinho e organizado com seus dados. Ótimo para enviar pro contador ou guardar backup.</li>
+                        <li><strong>Sincronizar Custos:</strong> Se mudou o preço do MDF, clique aqui e o sistema atualiza o preço de custo de TODOS os móveis que usam MDF de uma vez só.</li>
+                    </ul>
+
+                    <AlertBlock type="danger" title="Zona de Perigo">
+                        O botão vermelho "Resetar Sistema" apaga TUDO. Só use se quiser começar do zero absoluto. Não tem volta!
+                    </AlertBlock>
                 </HelpSection>
 
                 {/* FOOTER */}
@@ -482,9 +486,9 @@ export const Help: React.FC = () => {
                             <span className="material-symbols-outlined text-3xl text-white dark:text-black">verified_user</span>
                         </div>
                     </div>
-                    <p className="font-black uppercase text-sm tracking-[0.2em] mb-2 text-black dark:text-white">RinoScore System v2.1</p>
-                    <p className="text-[10px] max-w-md mx-auto leading-relaxed mb-4">Desenvolvido com arquitetura reativa para máxima performance. Sincronização em tempo real habilitada.</p>
-                    <p className="text-[9px] uppercase font-bold text-gray-500">Documentação Atualizada: {new Date().toLocaleDateString()}</p>
+                    <p className="font-black uppercase text-sm tracking-[0.2em] mb-2 text-black dark:text-white">Sistema de Marcenaria v2.5</p>
+                    <p className="text-[10px] max-w-md mx-auto leading-relaxed mb-4">Feito para simplificar sua oficina e organizar seu lucro.</p>
+                    <p className="text-[9px] uppercase font-bold text-gray-500">Última atualização: {new Date().toLocaleDateString()}</p>
                 </div>
 
             </div>
