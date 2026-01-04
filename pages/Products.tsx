@@ -298,122 +298,106 @@ export const Products: React.FC = () => {
                                 </button>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto md:overflow-hidden flex flex-col md:grid md:grid-cols-2">
-
-                                {/* LEFT: IMAGE & IDENTITY */}
-                                <div className="p-6 md:p-8 flex flex-col gap-8 md:overflow-y-auto border-b-4 md:border-b-0 md:border-r-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111] shrink-0">
-
-                                    {/* Image Upload Area */}
-                                    <div className="flex flex-col gap-2">
-                                        <label className="text-xs font-black uppercase text-primary mb-1">Visualização do Produto</label>
-
-                                        {/* Hotlink Input */}
-                                        <input
-                                            type="text"
-                                            placeholder="URL da Imagem (Opcional)..."
-                                            className="w-full bg-gray-100 dark:bg-black p-3 text-xs border-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none font-bold text-black dark:text-white"
-                                            value={imageUrlInput}
-                                            onChange={handleImageUrlChange}
-                                        />
-
-                                        <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
-
-                                        {/* Preview Area */}
-                                        <div
-                                            onClick={() => fileInputRef.current?.click()}
-                                            className={`
-                                                relative w-full aspect-video border-4 border-dashed cursor-pointer group transition-all duration-300 overflow-hidden bg-gray-50 dark:bg-black
-                                                ${formData.image ? 'border-primary' : 'border-gray-300 dark:border-gray-700 hover:border-primary'}
-                                            `}
-                                        >
-                                            {formData.image ? (
-                                                <>
-                                                    <img src={formData.image} alt="Upload" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/400x400'; }} />
-                                                    <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <span className="material-symbols-outlined text-white text-3xl mb-2">edit</span>
-                                                        <span className="text-white text-[10px] font-bold uppercase">Trocar Imagem</span>
+                            <form onSubmit={handleSubmit} className="flex-1 overflow-hidden flex flex-col">
+                                <div className="flex-1 overflow-y-auto p-0 md:grid md:grid-cols-2">
+                                    {/* LEFT: IMAGE & IDENTITY */}
+                                    <div className="p-6 md:p-8 flex flex-col gap-8 border-b-4 md:border-b-0 md:border-r-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111]">
+                                        {/* Image Upload Area */}
+                                        <div className="flex flex-col gap-2">
+                                            <label className="text-xs font-black uppercase text-primary mb-1">Visualização do Produto</label>
+                                            <input
+                                                type="text"
+                                                placeholder="URL da Imagem (Opcional)..."
+                                                className="w-full bg-gray-100 dark:bg-black p-3 text-xs border-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none font-bold text-black dark:text-white"
+                                                value={imageUrlInput}
+                                                onChange={handleImageUrlChange}
+                                            />
+                                            <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+                                            <div
+                                                onClick={() => fileInputRef.current?.click()}
+                                                className={`relative w-full aspect-video border-4 border-dashed cursor-pointer group transition-all duration-300 overflow-hidden bg-gray-50 dark:bg-black ${formData.image ? 'border-primary' : 'border-gray-300 dark:border-gray-700 hover:border-primary'}`}
+                                            >
+                                                {formData.image ? (
+                                                    <>
+                                                        <img src={formData.image} alt="Upload" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/400x400'; }} />
+                                                        <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <span className="material-symbols-outlined text-white text-3xl mb-2">edit</span>
+                                                            <span className="text-white text-[10px] font-bold uppercase">Trocar Imagem</span>
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <div className="flex flex-col items-center justify-center h-full text-gray-400 group-hover:text-primary transition-colors p-4 text-center">
+                                                        <span className="material-symbols-outlined text-4xl mb-2">add_a_photo</span>
+                                                        <span className="text-xs font-black uppercase">Clique para Upload</span>
                                                     </div>
-                                                </>
-                                            ) : (
-                                                <div className="flex flex-col items-center justify-center h-full text-gray-400 group-hover:text-primary transition-colors p-4 text-center">
-                                                    <span className="material-symbols-outlined text-4xl mb-2">add_a_photo</span>
-                                                    <span className="text-xs font-black uppercase">Clique para Upload</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Main Info Inputs */}
-                                    <div className="flex flex-col gap-6">
-                                        <div className="flex flex-col gap-2">
-                                            <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Identificador (ID / Código)</label>
-                                            <input
-                                                className="w-full bg-gray-50 dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-3 text-sm font-mono font-bold text-black dark:text-white focus:border-primary focus:outline-none transition-colors uppercase"
-                                                placeholder="EX: PROD-001"
-                                                value={formData.sku}
-                                                onChange={e => setFormData({ ...formData, sku: e.target.value })}
-                                                required
-                                            />
+                                                )}
+                                            </div>
                                         </div>
 
-                                        <div className="flex flex-col gap-2">
-                                            <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Nome do Produto</label>
-                                            <input
-                                                className="w-full bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-4 text-lg font-black text-black dark:text-white placeholder:text-gray-400 focus:border-primary focus:outline-none transition-colors uppercase rounded-none"
-                                                placeholder="Nome do Produto..."
-                                                value={formData.name}
-                                                onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                                required
-                                            />
-                                        </div>
-
-                                        <div className="grid grid-cols-2 gap-4">
+                                        {/* Main Info Inputs */}
+                                        <div className="flex flex-col gap-6">
                                             <div className="flex flex-col gap-2">
-                                                <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Custo (R$)</label>
+                                                <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Identificador (ID / Código)</label>
                                                 <input
-                                                    type="number" step="0.01"
-                                                    className="w-full bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-3 text-sm font-mono font-bold focus:border-primary focus:outline-none rounded-none"
-                                                    value={formData.cost}
-                                                    onChange={e => setFormData({ ...formData, cost: e.target.value })}
+                                                    className="w-full bg-gray-50 dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-3 text-sm font-mono font-bold text-black dark:text-white focus:border-primary focus:outline-none transition-colors uppercase"
+                                                    placeholder="EX: PROD-001"
+                                                    value={formData.sku}
+                                                    onChange={e => setFormData({ ...formData, sku: e.target.value })}
                                                     required
                                                 />
                                             </div>
                                             <div className="flex flex-col gap-2">
-                                                <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Estoque Inicial</label>
+                                                <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Nome do Produto</label>
+                                                <input
+                                                    className="w-full bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-4 text-lg font-black text-black dark:text-white placeholder:text-gray-400 focus:border-primary focus:outline-none transition-colors uppercase rounded-none"
+                                                    placeholder="Nome do Produto..."
+                                                    value={formData.name}
+                                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div className="flex flex-col gap-2">
+                                                    <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Custo (R$)</label>
+                                                    <input
+                                                        type="number" step="0.01"
+                                                        className="w-full bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-3 text-sm font-mono font-bold focus:border-primary focus:outline-none"
+                                                        value={formData.cost}
+                                                        onChange={e => setFormData({ ...formData, cost: e.target.value })}
+                                                        required
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Estoque Inicial</label>
+                                                    <input
+                                                        type="number"
+                                                        className="w-full bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-3 text-sm font-mono font-bold focus:border-primary focus:outline-none"
+                                                        value={formData.stock}
+                                                        onChange={e => setFormData({ ...formData, stock: e.target.value })}
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col gap-2">
+                                                <label className="text-[10px] font-bold uppercase text-red-500 tracking-widest">Alerta de Estoque Mínimo</label>
                                                 <input
                                                     type="number"
-                                                    className="w-full bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-800 p-3 text-sm font-mono font-bold focus:border-primary focus:outline-none rounded-none"
-                                                    value={formData.stock}
-                                                    onChange={e => setFormData({ ...formData, stock: e.target.value })}
-                                                    required
+                                                    className="w-full bg-red-50 dark:bg-red-900/10 border-2 border-red-100 dark:border-red-900 p-3 text-sm font-mono font-bold text-red-600 focus:border-red-500 focus:outline-none"
+                                                    value={formData.minStock}
+                                                    onChange={e => setFormData({ ...formData, minStock: e.target.value })}
+                                                    placeholder="5"
                                                 />
                                             </div>
                                         </div>
-
-                                        <div className="flex flex-col gap-2">
-                                            <label className="text-[10px] font-bold uppercase text-red-500 tracking-widest">Alerta de Estoque Mínimo</label>
-                                            <input
-                                                type="number"
-                                                className="w-full bg-red-50 dark:bg-red-900/10 border-2 border-red-100 dark:border-red-900 p-3 text-sm font-mono font-bold text-red-600 focus:border-red-500 focus:outline-none rounded-none"
-                                                value={formData.minStock}
-                                                onChange={e => setFormData({ ...formData, minStock: e.target.value })}
-                                                placeholder="5"
-                                            />
-                                            <p className="text-[9px] text-gray-400">O sistema avisará quando o estoque atingir este valor.</p>
-                                        </div>
                                     </div>
-                                </div>
 
-                                {/* RIGHT: MATERIALS */}
-                                <div className="flex flex-col bg-gray-50 dark:bg-[#000] h-full overflow-hidden relative min-h-[400px]">
-                                    <div className="p-6 md:p-8 flex flex-col h-full">
-                                        <h3 className="text-sm font-black uppercase text-black dark:text-white mb-4 tracking-widest flex items-center gap-2">
+                                    {/* RIGHT: MATERIALS */}
+                                    <div className="flex flex-col bg-gray-50 dark:bg-[#000] p-6 md:p-8 gap-4">
+                                        <h3 className="text-sm font-black uppercase text-black dark:text-white tracking-widest flex items-center gap-2">
                                             <span className="size-2 bg-primary"></span>
                                             Insumos & Materiais
                                         </h3>
-
-                                        {/* Add Material Bar */}
-                                        <div className="flex gap-2 mb-4">
+                                        <div className="flex gap-2">
                                             <div className="flex-1">
                                                 <select
                                                     className="w-full h-10 bg-white dark:bg-[#111] border-2 border-gray-300 dark:border-gray-700 px-3 text-xs font-bold uppercase focus:border-primary focus:outline-none"
@@ -429,21 +413,14 @@ export const Products: React.FC = () => {
                                                 placeholder="Qtd"
                                                 value={tempMaterialQty}
                                                 onChange={e => setTempMaterialQty(e.target.value)}
-                                                onKeyPress={e => e.key === 'Enter' && addMaterialToBlueprint()}
                                             />
-                                            <button
-                                                type="button"
-                                                onClick={addMaterialToBlueprint}
-                                                className="size-10 bg-primary text-white flex items-center justify-center hover:brightness-110"
-                                            >
+                                            <button type="button" onClick={addMaterialToBlueprint} className="size-10 bg-primary text-white flex items-center justify-center hover:brightness-110">
                                                 <span className="material-symbols-outlined">add</span>
                                             </button>
                                         </div>
-
-                                        {/* Material List */}
-                                        <div className="flex-1 bg-white dark:bg-[#0A0A0A] border-2 border-dashed border-gray-300 dark:border-gray-800 p-2 overflow-y-auto custom-scrollbar">
+                                        <div className="flex-1 min-h-[200px] md:min-h-0 bg-white dark:bg-[#0A0A0A] border-2 border-dashed border-gray-300 dark:border-gray-800 p-2 overflow-y-auto">
                                             {(!formData.materials || formData.materials.length === 0) ? (
-                                                <div className="h-full flex flex-col items-center justify-center text-gray-400 opacity-50">
+                                                <div className="h-full flex flex-col items-center justify-center text-gray-400 opacity-50 p-4 text-center">
                                                     <span className="material-symbols-outlined text-4xl mb-2">playlist_add</span>
                                                     <span className="text-[10px] font-bold uppercase">Nenhum item adicionado</span>
                                                 </div>
@@ -452,16 +429,12 @@ export const Products: React.FC = () => {
                                                     {formData.materials.map((mat: string, idx: number) => {
                                                         const [name, qty] = mat.split(':');
                                                         return (
-                                                            <li key={idx} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-[#151515] border border-gray-100 dark:border-gray-800 group">
+                                                            <li key={idx} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-[#151515] border border-gray-100 dark:border-gray-800">
                                                                 <div className="flex flex-col">
-                                                                    <span className="text-xs font-bold text-black dark:text-white uppercase line-clamp-1">{name}</span>
+                                                                    <span className="text-xs font-bold text-black dark:text-white uppercase truncate max-w-[150px]">{name}</span>
                                                                     <span className="text-[10px] text-gray-500 font-mono">Qtd: {qty}</span>
                                                                 </div>
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => removeMaterialFromBlueprint(idx)}
-                                                                    className="text-gray-400 hover:text-red-500"
-                                                                >
+                                                                <button type="button" onClick={() => removeMaterialFromBlueprint(idx)} className="text-gray-400 hover:text-red-500">
                                                                     <span className="material-symbols-outlined text-sm">delete</span>
                                                                 </button>
                                                             </li>
@@ -470,38 +443,32 @@ export const Products: React.FC = () => {
                                                 </ul>
                                             )}
                                         </div>
-
-                                        {/* Footer Actions */}
-                                        <div className="mt-4 flex gap-3 pt-4 border-t-2 border-gray-200 dark:border-gray-800">
-                                            <button
-                                                type="button"
-                                                onClick={closeModal}
-                                                className="flex-1 py-3 text-black dark:text-white font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-xs border-2 border-transparent"
-                                            >
-                                                Cancelar
-                                            </button>
-                                            <button
-                                                type="submit"
-                                                disabled={isSaving}
-                                                className={`flex-[2] py-3 bg-primary text-white font-black uppercase hover:brightness-110 shadow-[4px_4px_0px_0px_black] active:translate-y-[2px] active:shadow-none transition-all text-xs tracking-widest border-2 border-black flex items-center justify-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}
-                                            >
-                                                {isSaving ? (
-                                                    <>
-                                                        <span className="size-4 border-2 border-white/30 border-t-white animate-spin rounded-full"></span>
-                                                        Salvando...
-                                                    </>
-                                                ) : (
-                                                    'Salvar Produto'
-                                                )}
-                                            </button>
-                                        </div>
                                     </div>
+                                </div>
+
+                                {/* PERSISTENT MODAL FOOTER */}
+                                <div className="p-4 md:p-6 bg-white dark:bg-[#0A0A0A] border-t-4 border-black dark:border-white flex gap-3 shrink-0">
+                                    <button
+                                        type="button"
+                                        onClick={closeModal}
+                                        className="flex-1 py-4 text-black dark:text-white font-black uppercase text-xs border-4 border-black dark:border-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all active:translate-y-1"
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={isSaving}
+                                        className="flex-[2] py-4 bg-primary text-white font-black uppercase text-xs border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none translate-x-[-2px] translate-y-[-2px] active:translate-x-0 active:translate-y-0 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        {isSaving ? 'Salvando...' : 'Salvar Produto'}
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 )
             }
+
         </div >
     );
 };

@@ -221,23 +221,27 @@ export const Stock: React.FC = () => {
                         Análise de Níveis de Insumo
                     </span>
                 </div>
-                <div className="min-h-[500px] md:h-[400px] w-full p-4 md:p-8 overflow-hidden">
-                    <div className="h-full w-full border-4 border-black dark:border-white p-2 md:p-4 bg-gray-50 dark:bg-black/20 shadow-inner">
+                <div className="h-[500px] md:h-[400px] w-full p-2 md:p-8">
+                    <div className="h-full w-full border-4 border-black dark:border-white p-2 md:p-4 bg-white dark:bg-[#0A0A0A] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] relative overflow-hidden">
+                        {/* Efeito de Grid Industrial de Fundo */}
+                        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
+                            style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart
                                 data={materialData}
-                                margin={{ top: 20, right: 30, left: -20, bottom: 120 }}
-                                barGap={0}
+                                margin={{ top: 40, right: 30, left: -20, bottom: 80 }}
+                                barGap={8}
                             >
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
                                 <XAxis
                                     dataKey="name"
                                     stroke={chartAxisColor}
-                                    tick={{ fill: chartTickColor, fontSize: 11, fontWeight: '900' }}
+                                    tick={{ fill: chartTickColor, fontSize: 10, fontWeight: '900' }}
                                     interval={0}
                                     angle={-45}
                                     textAnchor="end"
-                                    height={120}
+                                    height={80}
                                     axisLine={{ strokeWidth: 4 }}
                                     tickLine={false}
                                 />
@@ -248,9 +252,35 @@ export const Stock: React.FC = () => {
                                     tickLine={false}
                                 />
                                 <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
-                                <Legend verticalAlign="top" align="right" wrapperStyle={{ fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', paddingBottom: '40px' }} />
-                                <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={window.innerWidth < 768 ? 25 : 45} radius={[0, 0, 0, 0]} stroke={isDark ? '#FFF' : '#000'} strokeWidth={2} />
-                                <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={window.innerWidth < 768 ? 10 : 15} radius={[0, 0, 0, 0]} fillOpacity={0.4} stroke="#000" strokeWidth={1} />
+                                <Legend
+                                    verticalAlign="top"
+                                    align="right"
+                                    iconType="rect"
+                                    wrapperStyle={{
+                                        fontSize: '9px',
+                                        fontWeight: '900',
+                                        textTransform: 'uppercase',
+                                        paddingBottom: '20px',
+                                        letterSpacing: '0.1em'
+                                    }}
+                                />
+                                <Bar
+                                    dataKey="atual"
+                                    name="DISPONÍVEL"
+                                    fill="#00FFFF"
+                                    barSize={window.innerWidth < 768 ? 20 : 40}
+                                    stroke="#000"
+                                    strokeWidth={2}
+                                />
+                                <Bar
+                                    dataKey="minimo"
+                                    name="MÍNIMO"
+                                    fill="#FF0000"
+                                    barSize={window.innerWidth < 768 ? 10 : 15}
+                                    fillOpacity={0.6}
+                                    stroke="#000"
+                                    strokeWidth={1}
+                                />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
