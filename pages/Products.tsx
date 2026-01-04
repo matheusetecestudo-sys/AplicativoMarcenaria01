@@ -212,12 +212,12 @@ export const Products: React.FC = () => {
                             </div>
 
                             {/* Image */}
-                            <div className="aspect-square bg-white dark:bg-[#0A0A0A] relative overflow-hidden border-b-4 border-black dark:border-white">
+                            <div className="aspect-square bg-white relative overflow-hidden border-b-4 border-black dark:border-white">
                                 <img
                                     src={product.image}
                                     alt={product.name}
-                                    className="w-full h-full object-contain p-6 grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                                    onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x400/EEEEEE/333?text=${product.name.substring(0, 3).toUpperCase()}`; }}
+                                    className="w-full h-full object-cover p-0 group-hover:scale-105 transition-all duration-500"
+                                    onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x400/F5F5F5/333?text=${product.name.substring(0, 3).toUpperCase()}`; }}
                                 />
                             </div>
 
