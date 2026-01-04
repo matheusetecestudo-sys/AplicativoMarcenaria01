@@ -102,7 +102,7 @@ const HelpSection: React.FC<{
             {/* Header */}
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
                 <div className="flex items-start gap-4 flex-1">
-                    <div className="size-12 md:size-14 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] shrink-0">
+                    <div className="size-12 md:size-14 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] shrink-0 transition-transform group-hover:scale-110">
                         <span className="material-symbols-outlined text-2xl md:text-3xl">{icon}</span>
                     </div>
                     <div className="flex-1 min-w-0">
@@ -126,7 +126,7 @@ const HelpSection: React.FC<{
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-l-4 border-gray-200 dark:border-gray-800 pl-4 md:pl-6 ml-4 md:ml-7">
 
                 {/* Left: Text Explanation */}
-                <div className="lg:col-span-8 flex flex-col gap-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed text-justify">
+                <div className="lg:col-span-8 flex flex-col gap-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                     {children}
                 </div>
 
@@ -179,7 +179,7 @@ export const Help: React.FC = () => {
     // Auto-detect active section on scroll
     useEffect(() => {
         const handleScroll = () => {
-            const sections = ['auth', 'dashboard', 'pedidos', 'produtos', 'materias', 'calculadora', 'config'];
+            const sections = ['auth', 'dashboard', 'pedidos', 'produtos', 'materiais', 'calculadora', 'config'];
             for (const section of sections) {
                 const element = document.getElementById(section);
                 if (element) {
@@ -211,7 +211,7 @@ export const Help: React.FC = () => {
     );
 
     return (
-        <div className="w-full h-full pb-12 flex flex-col xl:flex-row gap-8 relative">
+        <div className="w-full h-full pb-20 flex flex-col xl:flex-row gap-8 relative">
 
             {/* BACKGROUND DECORATION */}
             <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[150px] rounded-full -z-10 pointer-events-none"></div>
@@ -282,7 +282,7 @@ export const Help: React.FC = () => {
             </aside>
 
             {/* MOBILE NAVIGATION BAR (Shown only on small screens) */}
-            <div className="md:hidden sticky top-[-1px] z-40 bg-white dark:bg-[#1A1A1A] border-b-4 border-black dark:border-white -mx-4 px-4 py-3 flex gap-3 overflow-x-auto no-scrollbar shadow-lg">
+            <div className="md:hidden sticky top-[-12px] z-40 bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-md border-b-4 border-black dark:border-white -mx-3 px-3 py-3 flex gap-3 overflow-x-auto no-scrollbar shadow-lg">
                 {navLinks.map(link => (
                     <button
                         key={link.id}
@@ -302,7 +302,7 @@ export const Help: React.FC = () => {
             </div>
 
             {/* RIGHT: CONTENT */}
-            <div className="flex-1 max-w-5xl pt-2 pr-2">
+            <div className="flex-1 max-w-5xl pt-2 lg:pr-2">
 
                 {/* 0. AUTH & ACCOUNT */}
                 <HelpSection
