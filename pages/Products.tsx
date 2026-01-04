@@ -222,30 +222,30 @@ export const Products: React.FC = () => {
                             </div>
 
                             {/* Info Bar */}
-                            <div className="bg-gray-50 dark:bg-black p-3 border-b-4 border-black dark:border-white flex justify-between items-center">
+                            <div className="bg-gray-50 dark:bg-black p-4 border-b-4 border-black dark:border-white flex justify-between items-center transition-colors group-hover:bg-white dark:group-hover:bg-[#111]">
                                 <div className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-primary text-sm">sell</span>
-                                    <span className="text-xl font-black text-primary font-mono">R$ {product.cost.toFixed(2)}</span>
+                                    <span className="material-symbols-outlined text-primary text-base">sell</span>
+                                    <span className="text-2xl font-black text-primary font-mono tracking-tighter">R$ {product.cost.toFixed(2)}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-gray-400 text-sm">inventory</span>
-                                    <span className="text-sm font-black text-black dark:text-white font-mono">{product.stock} UN</span>
+                                    <span className="material-symbols-outlined text-gray-400 text-base">inventory</span>
+                                    <span className="text-base font-black text-black dark:text-white font-mono">{product.stock} UN</span>
                                 </div>
                             </div>
 
                             {/* Footer Actions */}
-                            <div className="grid grid-cols-2 h-16 bg-white dark:bg-[#1A1A1A]">
+                            <div className="grid grid-cols-2 h-20 bg-white dark:bg-[#1A1A1A]">
                                 <div className="flex items-center justify-between px-4 border-r-4 border-black dark:border-white">
                                     <button
                                         onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, -1) }}
-                                        className="size-10 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-110 transition-all text-xl font-black rounded-sm"
+                                        className="size-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-105 transition-all text-2xl font-black rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] active:translate-y-px active:shadow-none"
                                     >
                                         -
                                     </button>
-                                    <span className="font-mono font-black text-lg text-black dark:text-white">{product.stock}</span>
+                                    <span className="font-mono font-black text-xl text-black dark:text-white">{product.stock}</span>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, 1) }}
-                                        className="size-10 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-110 transition-all text-xl font-black rounded-sm"
+                                        className="size-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:scale-105 transition-all text-2xl font-black rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] active:translate-y-px active:shadow-none"
                                     >
                                         +
                                     </button>
@@ -253,17 +253,17 @@ export const Products: React.FC = () => {
                                 <div className="grid grid-cols-2">
                                     <button
                                         onClick={(e) => { e.stopPropagation(); setEditingProduct(product); }}
-                                        className="bg-white dark:bg-black text-black dark:text-white border-r-4 border-black dark:border-white flex items-center justify-center hover:bg-primary hover:text-white transition-all"
+                                        className="bg-white dark:bg-black text-black dark:text-white border-r-4 border-black dark:border-white flex items-center justify-center hover:bg-primary hover:text-white transition-all group/edit"
                                         title="Editar Produto"
                                     >
-                                        <span className="material-symbols-outlined text-2xl">edit_note</span>
+                                        <span className="material-symbols-outlined text-3xl group-hover/edit:rotate-12 transition-transform">edit_note</span>
                                     </button>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); deleteProduct(product.id); }}
-                                        className="bg-red-500 text-white flex items-center justify-center hover:bg-red-700 hover:scale-110 transition-all"
+                                        className="bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-all group/del"
                                         title="Remover"
                                     >
-                                        <span className="material-symbols-outlined text-2xl">delete_forever</span>
+                                        <span className="material-symbols-outlined text-3xl group-hover/del:scale-110 transition-transform">delete_forever</span>
                                     </button>
                                 </div>
                             </div>
