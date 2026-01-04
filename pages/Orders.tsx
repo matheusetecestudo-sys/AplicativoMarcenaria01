@@ -158,9 +158,22 @@ export const Orders: React.FC = () => {
     // Item Entry State
     const [selectedProductId, setSelectedProductId] = useState('');
     const [quantity, setQuantity] = useState(1);
+    const [customUnitPrice, setCustomUnitPrice] = useState<number | ''>('');
+    const [currentMargin, setCurrentMargin] = useState(50); // Default 50% profit margin
 
     // Layout State (Mobile)
     const [isBuilderExpanded, setIsBuilderExpanded] = useState(true);
+
+    // Auto-update price when product or margin changes
+    useEffect(() => {
+        if (selectedProductId) {
+            const product = products.find(p => p.id === selectedProductId);
+            if (product) {
+                const calculatedPrice = product.cost * (1 + currentMargin / 100);
+                setCustomUnitPrice(Number(calculatedPrice.toFixed(2)));
+            }
+        }
+    }, [selectedProductId, currentMargin, products]);
 
     const addItemToCart = () => {
         if (!selectedProductId || quantity <= 0) return;
@@ -168,8 +181,7 @@ export const Orders: React.FC = () => {
         const productDetails = products.find(p => p.id === selectedProductId);
         if (!productDetails) return;
 
-        // Price calculation logic (Cost + Margin example)
-        const unitPrice = productDetails.cost * 1.5;
+        const unitPrice = typeof customUnitPrice === 'number' ? customUnitPrice : productDetails.cost * 1.5;
 
         const newItem: OrderItem = {
             productId: productDetails.id,
@@ -184,6 +196,7 @@ export const Orders: React.FC = () => {
         // Reset entry inputs
         setSelectedProductId('');
         setQuantity(1);
+        setCustomUnitPrice('');
     };
 
     const removeItemFromCart = (index: number) => {
@@ -359,36 +372,59 @@ export const Orders: React.FC = () => {
                 {/* BODY WRAPPER (Collapsible on Mobile) */}
                 <div className={`${isBuilderExpanded ? 'flex' : 'hidden'} lg:flex flex-col flex-1 overflow-hidden min-h-0`}>
                     {/* 2. ITEM ENTRY TOOLBAR (Dark/Contrast) */}
-                    <div className="bg-black dark:bg-gray-800 p-3 flex flex-col gap-2 border-b-4 border-black dark:border-white shrink-0">
-                        <div className="flex items-center gap-2">
-                            <span className="material-symbols-outlined text-white text-sm">barcode_reader</span>
-                            <span className="text-[10px] font-bold uppercase text-white/70 tracking-widest">Adicionar Produtos</span>
+                    <div className="bg-black dark:bg-gray-800 p-3 flex flex-col gap-3 border-b-4 border-black dark:border-white shrink-0">
+                        <div className="flex gap-2">
+                            <div className="flex-1">
+                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Selecionar Produto</span>
+                                <select
+                                    className="w-full h-10 bg-white dark:bg-[#111] text-black dark:text-white px-2 font-black border-2 border-transparent focus:border-primary focus:outline-none text-xs uppercase"
+                                    value={selectedProductId}
+                                    onChange={e => setSelectedProductId(e.target.value)}
+                                >
+                                    <option value="">PRODUTO...</option>
+                                    {products.map(p => (
+                                        <option key={p.id} value={p.id}>{p.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="w-16">
+                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Qtd</span>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    className="w-full h-10 bg-white dark:bg-[#111] text-black dark:text-white text-center font-black border-2 border-transparent focus:border-primary focus:outline-none text-xs"
+                                    value={quantity}
+                                    onChange={e => setQuantity(parseInt(e.target.value))}
+                                />
+                            </div>
                         </div>
-                        <div className="flex gap-2 h-10">
-                            <select
-                                className="flex-[3] bg-white dark:bg-[#111] text-black dark:text-white px-2 font-bold border-2 border-transparent focus:border-primary focus:outline-none text-xs uppercase"
-                                value={selectedProductId}
-                                onChange={e => setSelectedProductId(e.target.value)}
-                            >
-                                <option value="">Selecionar...</option>
-                                {products.map(p => (
-                                    <option key={p.id} value={p.id}>{p.name}</option>
-                                ))}
-                            </select>
-                            <input
-                                type="number"
-                                min="1"
-                                placeholder="QTD"
-                                className="w-14 bg-white dark:bg-[#111] text-black dark:text-white text-center font-bold border-2 border-transparent focus:border-primary focus:outline-none text-xs"
-                                value={quantity}
-                                onChange={e => setQuantity(parseInt(e.target.value))}
-                            />
+
+                        <div className="flex gap-2">
+                            <div className="w-24">
+                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Margem %</span>
+                                <input
+                                    type="number"
+                                    className="w-full h-10 bg-gray-900 text-primary px-2 font-black border-2 border-primary focus:outline-none text-xs text-center"
+                                    value={currentMargin}
+                                    onChange={e => setCurrentMargin(parseFloat(e.target.value) || 0)}
+                                />
+                            </div>
+                            <div className="flex-1">
+                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Preço Sugerido (R$)</span>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    className="w-full h-10 bg-white dark:bg-black text-black dark:text-white px-2 font-black border-2 border-transparent focus:border-primary focus:outline-none text-sm text-right"
+                                    value={customUnitPrice}
+                                    onChange={e => setCustomUnitPrice(parseFloat(e.target.value) || '')}
+                                />
+                            </div>
                             <button
                                 onClick={addItemToCart}
-                                className="w-12 bg-primary text-white flex items-center justify-center hover:brightness-110 active:scale-95 transition-all"
+                                className="w-12 h-10 bg-primary text-white flex items-center justify-center hover:brightness-110 active:scale-95 transition-all self-end"
                                 title="Adicionar"
                             >
-                                <span className="material-symbols-outlined text-xl">add</span>
+                                <span className="material-symbols-outlined text-xl font-black">add</span>
                             </button>
                         </div>
                     </div>

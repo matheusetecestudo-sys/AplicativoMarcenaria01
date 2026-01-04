@@ -26,6 +26,7 @@ export const Products: React.FC = () => {
         sku: '',
         materials: [],
         cost: '',
+        laborCost: '',
         stock: '',
         minStock: '5',
         image: ''
@@ -43,6 +44,7 @@ export const Products: React.FC = () => {
                 name: editingProduct.name,
                 sku: editingProduct.sku || '',
                 cost: editingProduct.cost.toString(),
+                laborCost: (editingProduct.laborCost || '').toString(),
                 stock: editingProduct.stock.toString(),
                 minStock: (editingProduct.minStock || 5).toString(),
                 materials: editingProduct.materials || [],
@@ -57,7 +59,7 @@ export const Products: React.FC = () => {
 
     const resetForm = () => {
         setFormData({
-            name: '', sku: '', cost: '', stock: '', minStock: '5', image: '', materials: []
+            name: '', sku: '', cost: '', laborCost: '', stock: '', minStock: '5', image: '', materials: []
         });
         setImageUrlInput('');
         setSelectedMaterialName('');
@@ -117,6 +119,7 @@ export const Products: React.FC = () => {
             const cleanData: Product = {
                 ...formData,
                 cost: parseFloat(formData.cost) || 0,
+                laborCost: parseFloat(formData.laborCost) || 0,
                 stock: parseInt(formData.stock) || 0,
                 minStock: parseInt(formData.minStock) || 5,
                 materials: formData.materials || [],
@@ -344,14 +347,29 @@ export const Products: React.FC = () => {
 
                                 {/* Financial / Inventory */}
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="flex flex-col gap-1.5">
-                                        <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Custo (R$)</label>
+                                    <div className="flex flex-col gap-1.5 h-full">
+                                        <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-1">
+                                            Custo Prod.
+                                            <span className="material-symbols-outlined text-[10px] cursor-help" title="Custo total de materiais + mão de obra">info</span>
+                                        </label>
                                         <input
                                             type="number" step="0.01"
                                             className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
                                             value={formData.cost}
                                             onChange={e => setFormData({ ...formData, cost: e.target.value })}
                                             required
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                        <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-1">
+                                            Mão de Obra
+                                            <span className="material-symbols-outlined text-[10px]" title="Custo fixo de tempo/trabalho">engineering</span>
+                                        </label>
+                                        <input
+                                            type="number" step="0.01"
+                                            className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
+                                            value={formData.laborCost}
+                                            onChange={e => setFormData({ ...formData, laborCost: e.target.value })}
                                         />
                                     </div>
                                     <div className="flex flex-col gap-1.5">

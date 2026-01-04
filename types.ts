@@ -25,6 +25,7 @@ export interface Product {
   sku: string;
   materials: string[];
   cost: number;
+  laborCost?: number; // Custo de mão de obra (opcional)
   stock: number;
   minStock: number;
   image: string;
@@ -37,6 +38,7 @@ export interface Material {
   costPerUnit: number;
   stock: number;
   minStock: number;
+  isExcluded?: boolean; // Se deve ser excluído de estatísticas/gráficos
 }
 
 export interface AppSettings {

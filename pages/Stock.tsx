@@ -222,7 +222,77 @@ export const Stock: React.FC = () => {
                 </div>
             </div>
 
-            {/* BOTTOM SECTION */}
+            {/* PRODUCTS ANALYSIS CHART */}
+            <div className="bg-white dark:bg-[#050505] border-4 border-black dark:border-white p-0 animate-fade-in-up stagger-4 mb-8">
+                <div className="bg-black dark:bg-white text-white dark:text-black p-3 flex justify-between items-center">
+                    <span className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
+                        <span className="material-symbols-outlined">analytics</span>
+                        Análise de Produtos Finalizados
+                    </span>
+                </div>
+                <div className="h-[400px] w-full p-2 md:p-8 overflow-x-auto custom-scrollbar">
+                    <div className="h-full border-4 border-black dark:border-white p-2 md:p-4 bg-white dark:bg-[#0A0A0A] shadow-[8px_8px_0px_0px_rgba(0,102,255,0.2)] relative"
+                        style={{ minWidth: Math.max(100, products.length * 10) + '%' }}>
+
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                                data={products.map(p => ({
+                                    name: p.name.toUpperCase().substring(0, 15),
+                                    atual: p.stock,
+                                    minimo: p.minStock || 5
+                                })).sort((a, b) => b.atual - a.atual)}
+                                margin={{ top: 40, right: 30, left: -20, bottom: 40 }}
+                                barGap={8}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
+                                <XAxis
+                                    dataKey="name"
+                                    stroke={chartAxisColor}
+                                    tick={{ fill: chartTickColor, fontSize: 10, fontWeight: '900' }}
+                                    interval={0}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    height={80}
+                                    axisLine={{ strokeWidth: 4 }}
+                                    tickLine={false}
+                                />
+                                <YAxis
+                                    stroke={chartAxisColor}
+                                    tick={{ fill: chartTickColor, fontSize: 10, fontWeight: 'bold' }}
+                                    axisLine={false}
+                                    tickLine={false}
+                                />
+                                <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
+                                <Legend
+                                    verticalAlign="top"
+                                    align="right"
+                                    iconType="rect"
+                                    wrapperStyle={{ fontSize: '9px', fontWeight: '900', textTransform: 'uppercase', paddingBottom: '20px' }}
+                                />
+                                <Bar
+                                    dataKey="atual"
+                                    name="ESTOQUE ATUAL"
+                                    fill="#0066FF"
+                                    barSize={40}
+                                    stroke="#000"
+                                    strokeWidth={2}
+                                />
+                                <Bar
+                                    dataKey="minimo"
+                                    name="ESTOQUE MÍN"
+                                    fill="#A020F0"
+                                    barSize={15}
+                                    fillOpacity={0.6}
+                                    stroke="#000"
+                                    strokeWidth={1}
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            </div>
+
+            {/* BOTTOM SECTION - MATERIALS */}
             <div className="bg-white dark:bg-[#050505] border-4 border-primary p-0 animate-fade-in-up stagger-4">
                 <div className="bg-primary text-white p-3 flex justify-between items-center">
                     <span className="text-sm font-black uppercase tracking-widest flex items-center gap-2">

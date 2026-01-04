@@ -25,6 +25,7 @@ interface AppContextType {
     addMaterial: (material: Material) => Promise<void>;
     updateMaterial: (material: Material) => Promise<void>;
     deleteMaterial: (id: string) => Promise<void>;
+    updateMaterialStock: (id: string, delta: number) => Promise<void>;
     updateSettings: (settings: Partial<AppSettings>) => Promise<void>;
     importData: (json: string) => boolean;
     exportData: () => void;
@@ -413,7 +414,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                     unit: material.unit,
                     cost_per_unit: material.costPerUnit,
                     stock: material.stock,
-                    min_stock: material.minStock
+                    min_stock: material.minStock,
+                    is_excluded: material.isExcluded
                 });
             } catch (e) {
                 console.error(e);
@@ -429,6 +431,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             try { await deleteRow('materials', id); } catch (e) { console.error(e); return; }
         }
         setMaterials(prev => prev.filter(m => m.id !== id));
+    };
+
+    const updateMaterialStock = async (id: string, delta: number) => {
+        const material = materials.find(m => m.id === id);
+        if (material) {
+            const newStock = Math.max(0, material.stock + delta);
+            if (isSupabaseConfigured && isAuthenticated) {
+                try {
+                    await updateRow('materials', id, { stock: newStock });
+                } catch (e) { console.error(e); }
+            }
+            setMaterials(prev => prev.map(m => m.id === id ? { ...m, stock: newStock } : m));
+        }
     };
 
     const updateSettings = async (newSettings: Partial<AppSettings>) => {
@@ -503,9 +518,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                         totalCost += (material.costPerUnit * qty);
                     }
                 });
+                // Adiciona o custo de mão de obra se existir
+                if (product.laborCost) {
+                    totalCost += product.laborCost;
+                }
             }
-            // If the product has a cost defined but no materials, we keep it. 
-            // If it has materials, we update it to the sum of materials.
+            // Se o produto tem materiais, atualizamos o custo para a soma.
+            // Caso contrário, mantemos o custo manual definido.
             return (product.materials && product.materials.length > 0) ? { ...product, cost: totalCost } : product;
         });
 
@@ -529,7 +548,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             orders, products, materials, settings, isAuthenticated, timeRange, setTimeRange,
             login, loginWithGitHub, logout, addOrder, deleteOrder, updateOrderStatus,
             addProduct, updateProduct, deleteProduct, updateProductStock,
-            addMaterial, updateMaterial, deleteMaterial,
+            addMaterial, updateMaterial, deleteMaterial, updateMaterialStock,
             updateSettings, importData, exportData, resetApp,
             recalculateAllProductCosts
         }}>

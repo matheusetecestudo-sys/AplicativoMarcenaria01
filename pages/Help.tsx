@@ -357,18 +357,17 @@ export const Help: React.FC = () => {
                     actionLabel="Novo Pedido"
                     actionLink="/pedidos"
                 >
-                    <p>O coração operacional. Aqui você lança vendas e acompanha o status de produção.</p>
+                    <p>O coração operacional. O sistema conta com um **PDV (Ponto de Venda)** robusto para lançar vendas com precisão financeira.</p>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Como criar um pedido:</h3>
-                    <ol className="list-decimal list-inside space-y-2 marker:font-black marker:text-black dark:marker:text-white">
-                        <li>Preencha os dados do <strong>Cliente</strong> e selecione a <strong>Data de Entrega</strong>.</li>
-                        <li>Na seção de itens, escolha os produtos. O preço unitário é puxado automaticamente do cadastro, mas pode ser editado.</li>
-                        <li>Defina o Canal (Online/Físico) e Frete se houver.</li>
-                        <li>Clique em <strong>LANÇAR PEDIDO</strong>.</li>
-                    </ol>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Novos Recursos de Precificação:</h3>
+                    <ul className="list-disc list-inside space-y-2 marker:text-primary">
+                        <li><strong>Margem de Lucro Sugerida:</strong> Você pode definir uma margem (ex: 50%) e o sistema calculará o preço de venda instantaneamente baseado no custo do produto.</li>
+                        <li><strong>Ajuste Manual de Preço:</strong> Caso precise fazer uma promoção ou preço diferenciado, você pode editar o valor unitário diretamente antes de adicionar ao carrinho.</li>
+                        <li><strong>Origem de Venda:</strong> Diferencie vendas físicas de vendas online para análise de rentabilidade no Dashboard.</li>
+                    </ul>
 
                     <AlertBlock type="danger" title="Impacto no Estoque">
-                        Ao criar um pedido, o sistema <strong>reserva</strong> automaticamente o estoque dos produtos acabados. Se você excluir um pedido pendente, o estoque é devolvido. Ao concluir, a baixa é definitiva.
+                        Ao criar um pedido, o sistema <strong>reserva</strong> automaticamente o estoque dos produtos acabado. Se o pedido for cancelado ou excluído, o estoque retorna ao saldo.
                     </AlertBlock>
                 </HelpSection>
 
@@ -384,20 +383,23 @@ export const Help: React.FC = () => {
                     actionLabel="Ver Catálogo"
                     actionLink="/produtos"
                 >
-                    <p>Cadastre seus móveis com inteligência de engenharia. O sistema usa o conceito de <strong>B.O.M. (Bill of Materials)</strong>.</p>
+                    <p>Cadastre seus móveis com inteligência de engenharia. O sistema usa o conceito de <strong>B.O.M. (Bill of Materials)</strong> com suporte a custos operacionais.</p>
+
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Engenharia de Custo:</h3>
+                    <ul className="list-disc list-inside space-y-2 marker:text-primary">
+                        <li><strong>Custo de Insumos:</strong> Soma automática de todos os materiais vinculados ao produto.</li>
+                        <li><strong>Mão de Obra (Labor):</strong> Agora você pode definir um custo de produção fixo para cada item, garantindo orçamentos mais realistas.</li>
+                        <li><strong>Custo Total:</strong> Calculado como <code>(Materiais + Mão de Obra)</code>. Este valor é a base para o cálculo de margem no PDV.</li>
+                    </ul>
 
                     <div className="bg-black text-white p-4 font-mono text-xs my-4 border-l-4 border-primary shadow-lg relative overflow-hidden group hover:scale-[1.01] transition-transform">
                         <div className="absolute right-0 top-0 text-[100px] leading-none opacity-10 font-black pointer-events-none">BOM</div>
-                        <span className="text-gray-500 block mb-2">// Exemplo de Receita</span>
-                        <span className="text-primary font-bold">PRODUTO:</span> Mesa Industrial<br />
-                        <span className="text-primary font-bold">PREÇO VENDA:</span> R$ 1.200,00<br />
-                        <span className="text-primary font-bold">INSUMOS (Custo Automático):</span><br />
-                        <span className="text-green-400 pl-4">+</span> Ferro Metalon (6m)<br />
-                        <span className="text-green-400 pl-4">+</span> Tábua Pinus (2m²)<br />
-                        <span className="text-green-400 pl-4">+</span> Verniz (0.5L)
+                        <span className="text-gray-500 block mb-2">// Novo Cálculo de Custo</span>
+                        <span className="text-primary font-bold">PRODUTO:</span> Armário Cozinha<br />
+                        <span className="text-primary font-bold">INSUMOS:</span> R$ 450,00<br />
+                        <span className="text-primary font-bold">MÃO DE OBRA:</span> R$ 300,00<br />
+                        <span className="border-t border-gray-700 block mt-1 pt-1 font-black">CUSTO FINAL: R$ 750,00</span>
                     </div>
-
-                    <p>Isso permite que o sistema calcule automaticamente o <strong>Custo de Produção</strong> baseando-se no preço atual dos insumos cadastrados.</p>
                 </HelpSection>
 
                 <hr className="border-t-2 border-dashed border-gray-300 dark:border-gray-800 mb-12 opacity-50" />
@@ -412,13 +414,18 @@ export const Help: React.FC = () => {
                     actionLabel="Gerenciar Insumos"
                     actionLink="/materias"
                 >
-                    <p>Controle rigoroso de matéria-prima. Evite paradas na produção por falta de material.</p>
+                    <p>Controle rigoroso de matéria-prima. Agora com **Gestão Reativa** para ajustes rápidos no dia-a-dia.</p>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Campos Vitais:</h3>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Gestão Dinâmica:</h3>
                     <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                        <li><strong>Custo Unitário:</strong> Atualize sempre que comprar material novo. Isso recalcula o lucro de todos os produtos que usam este material.</li>
-                        <li><strong>Estoque Mínimo:</strong> O "Gatilho de Compra". Se o estoque cair abaixo deste número, alertas visuais aparecerão no Dashboard.</li>
+                        <li><strong>Ajuste Rápido (+/-):</strong> Utilize os botões na tabela para adicionar ou remover itens do estoque sem precisar abrir o formulário de edição.</li>
+                        <li><strong>Alerta de Reposição:</strong> O sistema destaca em vermelho (Crítico) ou amarelo (Baixo) itens que precisam de atenção.</li>
+                        <li><strong>Feedback Visual:</strong> Animações de escala e brilho indicam quando uma atualização de estoque foi salva com sucesso.</li>
                     </ul>
+
+                    <ProTip>
+                        Mantenha o Custo Unitário atualizado para que o lucro de seus produtos seja calculado corretamente baseando-se nos preços de mercado atuais.
+                    </ProTip>
                 </HelpSection>
 
                 <hr className="border-t-2 border-dashed border-gray-300 dark:border-gray-800 mb-12 opacity-50" />

@@ -118,8 +118,10 @@ export const resetPassword = async (email: string) => {
     }
 
     try {
+        // Para HashRouter, o Supabase anexa os tokens após a URL. 
+        // Redirecionar para o root é o mais seguro, e o AuthListener no App.tsx cuidará do evento.
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin,
+            redirectTo: `${window.location.origin}/`,
         });
 
         if (error) return { error };

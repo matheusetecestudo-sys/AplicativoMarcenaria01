@@ -4,28 +4,40 @@ import { useApp } from '../context/AppContext';
 import { Material } from '../types';
 
 export const Materials: React.FC = () => {
-    const { materials, addMaterial, updateMaterial, deleteMaterial, settings } = useApp();
+    const { materials, addMaterial, updateMaterial, deleteMaterial, updateMaterialStock, settings } = useApp();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingMaterial, setEditingMaterial] = useState<Material | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState<'TODOS' | 'BAIXO' | 'CRITICO'>('TODOS');
 
+    // Estado para animação de atualização
+    const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+    const handleQuickStock = async (id: string, delta: number) => {
+        setUpdatingId(id);
+        await updateMaterialStock(id, delta);
+        setTimeout(() => setUpdatingId(null), 500);
+    };
+
     const [formData, setFormData] = useState<Partial<Material>>({
-        name: '', unit: 'un', costPerUnit: 0, stock: 0, minStock: 0
+        name: '', unit: 'un', costPerUnit: 0, stock: 0, minStock: 0, isExcluded: false
     });
 
     // --- STATS CALCULATION ---
-    const totalItems = materials.length;
-    const totalValue = materials.reduce((acc, m) => acc + (m.stock * m.costPerUnit), 0);
-    const criticalItems = materials.filter(m => m.stock <= m.minStock).length;
+    const activeMaterials = materials.filter(m => !m.isExcluded);
+    const totalItems = activeMaterials.length;
+    const totalValue = activeMaterials.reduce((acc, m) => acc + (m.stock * m.costPerUnit), 0);
+    const criticalItems = activeMaterials.filter(m => m.stock <= m.minStock).length;
 
     const openModal = (material?: Material) => {
         if (material) {
             setEditingMaterial(material);
-            setFormData(material);
+            setFormData({
+                ...material
+            });
         } else {
             setEditingMaterial(null);
-            setFormData({ name: '', unit: 'un', costPerUnit: 0, stock: 0, minStock: 0 });
+            setFormData({ name: '', unit: 'un', costPerUnit: 0, stock: 0, minStock: 5, isExcluded: false });
         }
         setIsModalOpen(true);
     };
@@ -178,11 +190,25 @@ export const Materials: React.FC = () => {
                             const percentage = Math.min((material.stock / (material.minStock * 2)) * 100, 100);
                             const isLow = material.stock <= material.minStock;
                             const isCritical = material.stock <= material.minStock / 2;
+                            const isUpdating = updatingId === material.id;
+                            const isExcluded = material.isExcluded;
+
                             return (
-                                <tr key={material.id} className="hover:bg-blue-50 dark:hover:bg-white/5 transition-colors group bg-white dark:bg-[#111]">
+                                <tr
+                                    key={material.id}
+                                    onDoubleClick={() => openModal(material)}
+                                    title="Clique duplo para editar"
+                                    className={`
+                                    hover:bg-blue-50 dark:hover:bg-white/5 transition-colors group bg-white dark:bg-[#111] cursor-pointer
+                                    ${isUpdating ? 'bg-blue-100/50 dark:bg-blue-900/20' : ''}
+                                    ${isExcluded ? 'opacity-40 grayscale' : ''}
+                                `}>
                                     <td className="p-5 border-r border-gray-100 dark:border-gray-800">
                                         <div className="flex flex-col gap-1">
-                                            <span className="text-base font-black text-black dark:text-white uppercase tracking-tight group-hover:text-primary transition-colors">{material.name}</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-base font-black text-black dark:text-white uppercase tracking-tight group-hover:text-primary transition-colors">{material.name}</span>
+                                                {isExcluded && <span className="bg-gray-500 text-white text-[8px] px-1 font-bold">EXCLUÍDO</span>}
+                                            </div>
                                             <span className="text-[10px] font-mono font-bold text-gray-400 uppercase">ID: {material.id.substring(0, 8).toUpperCase()}</span>
                                         </div>
                                     </td>
@@ -191,25 +217,64 @@ export const Materials: React.FC = () => {
                                     </td>
                                     <td className="p-5 border-r border-gray-100 dark:border-gray-800">
                                         <div className="flex flex-col gap-2">
-                                            <div className="flex justify-between text-[10px] font-black uppercase text-gray-400">
-                                                <span>{material.stock} {material.unit}</span>
-                                                <span>Min: {material.minStock}</span>
+                                            <div className="flex justify-between items-center text-[10px] font-black uppercase text-gray-400">
+                                                <div className="flex items-center gap-3">
+                                                    <button
+                                                        onClick={() => handleQuickStock(material.id, -1)}
+                                                        className="size-6 bg-gray-100 dark:bg-black border border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black flex items-center justify-center transition-all active:scale-90"
+                                                    >-</button>
+                                                    <span className={`text-sm font-black text-black dark:text-white transition-all ${isUpdating ? 'scale-125 text-primary' : ''}`}>
+                                                        {material.stock} {material.unit}
+                                                    </span>
+                                                    <button
+                                                        onClick={() => handleQuickStock(material.id, 1)}
+                                                        className="size-6 bg-gray-100 dark:bg-black border border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black flex items-center justify-center transition-all active:scale-90"
+                                                    >+</button>
+                                                </div>
+                                                <span>Alerta: {material.minStock}</span>
                                             </div>
-                                            <div className="w-full h-3 bg-gray-100 dark:bg-[#222] border border-black dark:border-white overflow-hidden">
-                                                <div className={`h-full transition-all duration-500 ${isCritical ? 'bg-red-500' : isLow ? 'bg-yellow-400' : 'bg-green-500'}`} style={{ width: `${percentage}%` }}></div>
+                                            <div className="w-full h-3 bg-gray-100 dark:bg-[#222] border border-black dark:border-white overflow-hidden relative">
+                                                <div className={`h-full transition-all duration-500 ${isCritical ? 'bg-red-500 shadow-[0_0_10px_rgba(255,0,0,0.5)]' : isLow ? 'bg-yellow-400 shadow-[0_0_10px_rgba(255,255,0,0.3)]' : 'bg-green-500'}`} style={{ width: `${percentage}%` }}></div>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="p-5 text-center border-r border-gray-100 dark:border-gray-800">
-                                        <span className={`px-2 py-1 text-[10px] font-black uppercase border-2 
-                                            ${isCritical ? 'bg-red-500 text-white border-red-700' : isLow ? 'bg-yellow-400 text-black border-yellow-600' : 'bg-green-500 text-white border-green-700'}`}>
-                                            {isCritical ? 'Crítico' : isLow ? 'Baixo' : 'Normal'}
+                                        <span className={`px-2 py-1 text-[10px] font-black uppercase border-2 shadow-[2px_2px_0px_#000]
+                                            ${isCritical ? 'bg-red-500 text-white border-red-700 pulse-red' : isLow ? 'bg-yellow-400 text-black border-yellow-600' : 'bg-green-500 text-white border-green-700'}`}>
+                                            {isCritical ? 'CRÍTICO' : isLow ? 'BAIXO' : 'NORMAL'}
                                         </span>
                                     </td>
                                     <td className="p-5 text-center">
                                         <div className="flex justify-center gap-2">
-                                            <button onClick={() => openModal(material)} className="size-8 flex items-center justify-center bg-gray-100 dark:bg-black border border-black dark:border-white hover:bg-primary hover:text-white transition-all"><span className="material-symbols-outlined text-sm">edit</span></button>
-                                            <button onClick={() => { if (window.confirm('Excluir definitivo?')) deleteMaterial(material.id) }} className="size-8 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white transition-all"><span className="material-symbols-outlined text-sm">delete</span></button>
+                                            <button
+                                                onClick={() => openModal(material)}
+                                                className="size-11 flex items-center justify-center bg-primary text-white border-2 border-black dark:border-white hover:scale-110 active:scale-95 transition-all shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#fff]"
+                                                title="Editar Técnica"
+                                            >
+                                                <span className="material-symbols-outlined text-xl">tune</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    const btn = document.getElementById(`del-btn-${material.id}`);
+                                                    if (btn?.classList.contains('confirm-mode')) {
+                                                        deleteMaterial(material.id);
+                                                    } else {
+                                                        btn?.classList.add('confirm-mode');
+                                                        if (btn) btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span>';
+                                                        setTimeout(() => {
+                                                            if (btn) {
+                                                                btn.classList.remove('confirm-mode');
+                                                                btn.innerHTML = '<span class="material-symbols-outlined text-sm">delete</span>';
+                                                            }
+                                                        }, 3000);
+                                                    }
+                                                }}
+                                                id={`del-btn-${material.id}`}
+                                                className="size-11 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 border-2 border-red-500 hover:bg-red-500 hover:text-white transition-all shadow-[4px_4px_0px_#FF0000] [&.confirm-mode]:bg-red-700 [&.confirm-mode]:text-white [&.confirm-mode]:animate-pulse"
+                                                title="Excluir"
+                                            >
+                                                <span className="material-symbols-outlined text-sm">delete</span>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -223,43 +288,65 @@ export const Materials: React.FC = () => {
                     {filteredMaterials.map((material) => {
                         const isLow = material.stock <= material.minStock;
                         const isCritical = material.stock <= material.minStock / 2;
+                        const isUpdating = updatingId === material.id;
+                        const isExcluded = material.isExcluded;
+
                         return (
-                            <div key={material.id} className="p-4 bg-white dark:bg-[#111] flex flex-col gap-4">
+                            <div
+                                key={material.id}
+                                onDoubleClick={() => openModal(material)}
+                                className={`p-4 bg-white dark:bg-[#111] flex flex-col gap-4 transform transition-all cursor-pointer ${isUpdating ? 'scale-[1.02] border-l-8 border-primary' : ''} ${isExcluded ? 'opacity-50' : ''}`}
+                            >
                                 <div className="flex justify-between items-start">
                                     <div className="flex-1 pr-2">
                                         <p className="text-[10px] font-black text-gray-400 uppercase">#{material.id.substring(0, 8)}</p>
                                         <h3 className="text-lg font-black text-black dark:text-white uppercase leading-tight">{material.name}</h3>
                                     </div>
-                                    <span className={`px-2 py-1 text-[9px] font-black uppercase border-2 shadow-[2px_2px_0px_#000]
-                                        ${isCritical ? 'bg-red-500 text-white border-red-700' : isLow ? 'bg-yellow-400 text-black border-yellow-600' : 'bg-green-500 text-white border-green-700'}`}>
-                                        {isCritical ? 'CRÍTICO' : isLow ? 'BAIXO' : 'NORMAL'}
-                                    </span>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4 bg-gray-50 dark:bg-white/5 p-3 border-2 border-dashed border-gray-300 dark:border-white/10">
-                                    <div className="flex flex-col">
-                                        <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Custo Un.</span>
-                                        <span className="font-mono font-black text-black dark:text-white">R$ {material.costPerUnit.toFixed(2)}</span>
-                                    </div>
-                                    <div className="flex flex-col text-right">
-                                        <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Em Estoque</span>
-                                        <span className={`font-mono font-black ${isLow ? 'text-red-500' : 'text-black dark:text-white'}`}>
-                                            {material.stock} {material.unit}
+                                    <div className="flex flex-col items-end gap-1">
+                                        <span className={`px-2 py-1 text-[9px] font-black uppercase border-2 shadow-[2px_2px_0px_#000]
+                                            ${isCritical ? 'bg-red-500 text-white border-red-700' : isLow ? 'bg-yellow-400 text-black border-yellow-600' : 'bg-green-500 text-white border-green-700'}`}>
+                                            {isCritical ? 'CRÍTICO' : isLow ? 'BAIXO' : 'NORMAL'}
                                         </span>
+                                        <span className="text-[9px] font-mono font-bold text-gray-500">R$ {material.costPerUnit.toFixed(2)} / {material.unit}</span>
                                     </div>
                                 </div>
 
-                                <div className="flex gap-2">
+                                <div className="grid grid-cols-1 gap-4 bg-gray-50 dark:bg-white/5 p-4 border-2 border-black">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Controle de Estoque</span>
+                                        <span className="text-[10px] font-black text-gray-500 uppercase">Min: {material.minStock}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <button
+                                            onClick={() => handleQuickStock(material.id, -1)}
+                                            className="size-12 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#fff] flex items-center justify-center active:translate-y-1 active:shadow-none"
+                                        ><span className="material-symbols-outlined">remove</span></button>
+
+                                        <div className="flex flex-col items-center">
+                                            <span className={`text-3xl font-black text-black dark:text-white transition-all ${isUpdating ? 'scale-150 text-primary' : ''}`}>
+                                                {material.stock}
+                                            </span>
+                                            <span className="text-[9px] font-black text-gray-400 uppercase">{material.unit}</span>
+                                        </div>
+
+                                        <button
+                                            onClick={() => handleQuickStock(material.id, 1)}
+                                            className="size-12 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#fff] flex items-center justify-center active:translate-y-1 active:shadow-none"
+                                        ><span className="material-symbols-outlined">add</span></button>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-3">
                                     <button
                                         onClick={() => openModal(material)}
-                                        className="flex-1 h-12 flex items-center justify-center bg-black dark:bg-white text-white dark:text-black font-black uppercase text-xs border-2 border-black dark:border-white hover:bg-primary transition-all gap-2"
+                                        className="flex-1 h-14 flex items-center justify-center bg-primary text-white font-black uppercase text-sm border-2 border-black dark:border-white shadow-[4px_4px_0px_#000] active:translate-y-1 active:shadow-none gap-2"
                                     >
-                                        <span className="material-symbols-outlined text-base">edit</span>
-                                        Editar
+                                        <span className="material-symbols-outlined">tune</span>
+                                        Configurar
                                     </button>
                                     <button
                                         onClick={() => { if (window.confirm('Excluir definitivo?')) deleteMaterial(material.id) }}
-                                        className="size-12 flex items-center justify-center bg-red-500 text-white border-2 border-black dark:border-white shadow-[4px_4px_0px_#000]"
+                                        className="size-14 flex items-center justify-center bg-red-500 text-white border-2 border-black dark:border-white shadow-[4px_4px_0px_#000]"
                                     >
                                         <span className="material-symbols-outlined">delete</span>
                                     </button>
@@ -346,8 +433,20 @@ export const Materials: React.FC = () => {
                                         />
                                     </label>
                                 </div>
-                            </div>
 
+                                <div className="mt-6 flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        id="isExcluded"
+                                        checked={formData.isExcluded}
+                                        onChange={e => setFormData({ ...formData, isExcluded: e.target.checked })}
+                                        className="size-5 accent-primary"
+                                    />
+                                    <label htmlFor="isExcluded" className="text-xs font-black uppercase text-gray-500 cursor-pointer">
+                                        Excluir das estatísticas globais
+                                    </label>
+                                </div>
+                            </div>
                             <div className="mt-auto pt-6 flex flex-col md:flex-row gap-4">
                                 <button
                                     type="button"
