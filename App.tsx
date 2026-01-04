@@ -23,7 +23,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   // Actually, ProtectedRoute is for /dashboard etc. If we are in recovery, we shouldn't be here.
   // But if we ARE here with a hash, we should bounce to reset-password.
   if (location.hash.includes('type=recovery')) {
-    return <Navigate to="/reset-password" replace />;
+    return <Navigate to={`/reset-password${location.hash}`} replace />;
   }
 
   if (!isAuthenticated) {
@@ -87,11 +87,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const AuthListener: React.FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    // Proactive check: if we started with a recovery hash, go there immediately
-    if (window.location.hash.includes('type=recovery')) {
-      console.log("Recovery hash detected, navigating to reset-password");
-      navigate('/reset-password');
-    }
+    // Proactive check removed to avoid race conditions with Router. 
+    // SmartRedirect handles the initial hash navigation.
+    // if (window.location.hash.includes('type=recovery')) { ... }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("Auth Event:", event);
@@ -108,7 +106,8 @@ const SmartRedirect: React.FC = () => {
   const location = useLocation();
 
   if (location.hash.includes('type=recovery')) {
-    return <Navigate to="/reset-password" replace />;
+    // CRITICAL: Must preserve the hash so Supabase can read the token on the destination page
+    return <Navigate to={`/reset-password${location.hash}`} replace />;
   }
 
   return <Navigate to="/dashboard" replace />;

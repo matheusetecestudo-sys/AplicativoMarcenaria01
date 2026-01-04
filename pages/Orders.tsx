@@ -479,68 +479,47 @@ export const Orders: React.FC = () => {
                     </div>
 
                     {/* 4. FOOTER (Total & Confirm) - Always visible in sticky container */}
-                    <div className="p-5 bg-white dark:bg-[#1A1A1A] border-t-4 border-black dark:border-white shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] z-50 shrink-0">
-                        {/* Shipping Input */}
-                        <div className="flex justify-between items-center mb-3">
-                            <label className="text-xs font-bold uppercase text-gray-500 tracking-widest flex items-center gap-1">
-                                <span className="material-symbols-outlined text-sm">local_shipping</span>
-                                Frete / Envio (Opcional)
+                    <div className="p-3 bg-white dark:bg-[#1A1A1A] border-t-4 border-black dark:border-white shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] z-50 shrink-0">
+                        {/* Shipping Input - Compact Row */}
+                        <div className="flex justify-between items-center mb-2">
+                            <label className="text-[10px] font-bold uppercase text-gray-500 tracking-widest flex items-center gap-1">
+                                <span className="material-symbols-outlined text-xs">local_shipping</span>
+                                Frete (Opcional)
                             </label>
-                            <div className="relative w-32">
-                                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-xs">R$</span>
+                            <div className="relative w-24">
+                                <span className="absolute left-1 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-[10px]">R$</span>
                                 <input
                                     type="number"
                                     placeholder="0.00"
-                                    className="w-full bg-gray-100 dark:bg-black border-b-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none py-1 pl-8 text-right font-mono font-bold text-sm"
+                                    className="w-full bg-gray-100 dark:bg-black border-b-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none py-0.5 pl-6 text-right font-mono font-bold text-xs"
                                     value={shipping}
                                     onChange={e => setShipping(e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-1 mb-4 border-t-2 border-dashed border-gray-200 dark:border-gray-800 pt-2">
-                            {/* Breakdown */}
-                            <div className="grid grid-cols-3 gap-2 text-center mb-2">
-                                <div className="flex flex-col">
-                                    <span className="text-[8px] font-bold uppercase text-gray-400">Custo Est.</span>
-                                    <span className="text-xs font-mono font-bold text-gray-500">
-                                        R$ {(currentItems.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0) + (typeof shipping === 'number' ? shipping : parseFloat(shipping) || 0)).toFixed(2)}
-                                    </span>
+                        {/* Total and Actions Row - Side by Side */}
+                        <div className="flex gap-2 items-stretch h-14">
+                            {/* Total Block */}
+                            <div className="flex-1 bg-black dark:bg-white text-white dark:text-black p-2 flex flex-col justify-center items-start pl-3 relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 p-1">
+                                    <button onClick={() => { setCurrentItems([]); setShipping(''); }} title="Limpar Carrinho" className="text-white/30 dark:text-black/30 hover:text-red-500 dark:hover:text-red-500 transition-colors">
+                                        <span className="material-symbols-outlined text-sm">delete_sweep</span>
+                                    </button>
                                 </div>
-                                <div className="flex flex-col border-x border-gray-200 dark:border-gray-800">
-                                    <span className="text-[8px] font-bold uppercase text-blue-400">Faturamento</span>
-                                    <span className="text-xs font-mono font-bold text-blue-500">
-                                        R$ {calculateCartTotal().toFixed(2)}
-                                    </span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="text-[8px] font-bold uppercase text-green-500">Lucro Prev.</span>
-                                    <span className="text-xs font-mono font-bold text-green-500">
-                                        R$ {(calculateCartTotal() - (currentItems.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0) + (typeof shipping === 'number' ? shipping : parseFloat(shipping) || 0))).toFixed(2)}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="flex justify-between items-end bg-black dark:bg-white text-white dark:text-black p-2">
-                                <span className="text-xs font-black uppercase tracking-widest">Total Geral</span>
+                                <span className="text-[9px] font-black uppercase tracking-widest opacity-70">Total Geral</span>
                                 <span className="text-xl font-black leading-none tracking-tighter">
                                     R$ {calculateCartTotal().toFixed(2)}
                                 </span>
                             </div>
-                        </div>
 
-                        <div className="flex gap-3 h-12">
-                            <button
-                                onClick={() => { setCurrentItems([]); setShipping(''); }}
-                                className="px-4 border-2 border-gray-300 dark:border-gray-700 text-gray-500 hover:text-red-500 hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 font-bold uppercase transition-all brutal-btn text-xs"
-                            >
-                                Limpar
-                            </button>
+                            {/* Confirm Button */}
                             <button
                                 onClick={handleFinalizeOrder}
-                                className="flex-1 bg-primary text-white font-black uppercase text-sm tracking-widest hover:brightness-110 active:scale-[0.98] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:shadow-none active:translate-y-[2px] border-2 border-transparent"
+                                className="flex-1 bg-primary text-white font-black uppercase text-xs md:text-sm tracking-widest hover:brightness-110 active:scale-[0.98] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:shadow-none active:translate-y-[2px] border-2 border-transparent flex flex-col items-center justify-center leading-tight"
                             >
-                                Confirmar Pedido
+                                <span>Confirmar</span>
+                                <span className="text-[8px] opacity-80 font-normal">Finalizar Pedido</span>
                             </button>
                         </div>
                     </div>
