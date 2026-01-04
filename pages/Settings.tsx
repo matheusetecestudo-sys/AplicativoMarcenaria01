@@ -105,27 +105,12 @@ export const Settings: React.FC = () => {
         const reader = new FileReader();
         reader.onload = async (e) => {
             const raw = e.target?.result as string;
-            const success = importData(raw);
+            setIsSyncing(true); // Reuse syncing state for visual feedback if desired
+            const success = await importData(raw);
+            setIsSyncing(false);
 
             if (success) {
-                alert('Dados carregados localmente! Se estiver online, os dados serão sincronizados com a nuvem em background.');
-                // Trigger a full page reload or a manual sync if we had a sync function.
-                // Our importData function updates React State.
-                // However, we also want to push this new state to Supabase if valid.
-                // This is complex because we need to clear old data and insert new.
-                // To keep it simple for now, we leave it as local state update + alert. 
-                // The user said "faca funcionar a opção de restaurar... com o supabase".
-                // So let's try to push the imported data to Supabase.
-
-                try {
-                    const data = JSON.parse(raw);
-                    if (data.settings && settings.company) {
-                        // Update Local Settings First
-                        await updateSettings(data.settings);
-                    }
-                } catch (err) {
-                    console.error("Erro ao sincronizar restore", err);
-                }
+                alert('Dados importados com sucesso!');
             } else {
                 alert('Erro ao importar arquivo. Verifique se o formato é válido.');
             }

@@ -25,6 +25,19 @@ export const insertRow = async <T>(table: string, row: any) => {
     return data as T;
 };
 
+export const bulkUpsert = async (table: string, rows: any[]) => {
+    const user = await getCurrentUser();
+    if (!user || rows.length === 0) return;
+
+    const payload = rows.map(r => ({ ...r, user_id: user.id }));
+
+    const { error } = await supabase.from(table).upsert(payload);
+    if (error) {
+        console.error(`Error bulk upserting to ${table}:`, error);
+        throw error;
+    }
+};
+
 export const updateRow = async <T>(table: string, id: string, updates: any) => {
     const { data, error } = await supabase
         .from(table)

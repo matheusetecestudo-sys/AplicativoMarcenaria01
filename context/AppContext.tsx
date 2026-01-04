@@ -27,7 +27,7 @@ interface AppContextType {
     deleteMaterial: (id: string) => Promise<void>;
     updateMaterialStock: (id: string, delta: number) => Promise<void>;
     updateSettings: (settings: Partial<AppSettings>) => Promise<void>;
-    importData: (json: string) => boolean;
+    importData: (json: string) => Promise<boolean>;
     exportData: () => void;
     resetApp: () => void;
     recalculateAllProductCosts: () => Promise<void>;
@@ -467,15 +467,81 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         }
     };
 
-    const importData = (json: string): boolean => {
+    const importData = async (json: string): Promise<boolean> => {
         try {
             const data = JSON.parse(json);
+
+            // 1. Update React State (UI Immediate feedback)
             if (data.orders) setOrders(data.orders);
             if (data.products) setProducts(data.products);
             if (data.materials) setMaterials(data.materials);
             if (data.settings) setSettings(data.settings);
+
+            // 2. Persist to Supabase if connected
+            if (isSupabaseConfigured && isAuthenticated) {
+                // We use dynamic imports to avoid circular dependency issues if any, 
+                // but here we already imported from database.ts
+                const { bulkUpsert, saveSettings } = await import('../database');
+
+                try {
+                    if (data.materials && data.materials.length > 0) {
+                        const matRows = data.materials.map((m: any) => ({
+                            id: m.id,
+                            name: m.name,
+                            unit: m.unit,
+                            cost_per_unit: m.costPerUnit,
+                            stock: m.stock,
+                            min_stock: m.minStock,
+                            is_excluded: m.isExcluded
+                        }));
+                        await bulkUpsert('materials', matRows);
+                    }
+
+                    if (data.products && data.products.length > 0) {
+                        const prodRows = data.products.map((p: any) => ({
+                            id: p.id,
+                            name: p.name,
+                            sku: p.sku,
+                            materials: p.materials,
+                            cost: p.cost,
+                            price: p.price,
+                            stock: p.stock,
+                            min_stock: p.minStock,
+                            image: p.image
+                        }));
+                        await bulkUpsert('products', prodRows);
+                    }
+
+                    if (data.orders && data.orders.length > 0) {
+                        const orderRows = data.orders.map((o: any) => ({
+                            id: o.id,
+                            client: o.client,
+                            deadline: o.deadline,
+                            created_at: o.createdAt,
+                            status: o.status,
+                            origin: o.origin,
+                            shipping_cost: o.shippingCost,
+                            total_value: o.totalValue,
+                            items: o.items
+                        }));
+                        await bulkUpsert('orders', orderRows);
+                    }
+
+                    if (data.settings) {
+                        await saveSettings(data.settings);
+                    }
+
+                } catch (dbError) {
+                    console.error("Error syncing import to Supabase:", dbError);
+                    alert("Dados importados localmente, mas houve erro ao salvar na nuvem.");
+                }
+            }
+
             return true;
-        } catch { return false; }
+        } catch (e) {
+            console.error("Import Error:", e);
+            return false;
+        }
     };
 
     const exportData = () => {
