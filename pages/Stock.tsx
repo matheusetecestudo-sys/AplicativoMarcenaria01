@@ -1,9 +1,9 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import {
     ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend,
-    AreaChart, Area, PieChart, Pie, Cell, ReferenceLine, CartesianGrid
+    AreaChart, Area, PieChart, Pie, Cell, ReferenceLine, CartesianGrid, Brush
 } from 'recharts';
 
 // Custom Brutalist Tooltip
@@ -47,21 +47,30 @@ export const Stock: React.FC = () => {
         { name: 'ATUAL', entrada: 34, saida: 43 },
     ];
 
-    // Material Levels vs Min Stock (Bar Chart)
-    const materialData = (materials || []).slice(0, 10).map(m => ({
-        name: (m.name || 'Item').split(' ')[0],
-        atual: m.stock || 0,
-        minimo: m.minStock || 0
-    }));
+    // 2. Material Levels vs Min Stock (Bar Chart) - Now handles all materials
+    const materialData = useMemo(() => {
+        return (materials || []).map(m => ({
+            name: (m.name || 'Item').toUpperCase().substring(0, 15),
+            atual: m.stock || 0,
+            minimo: m.minStock || 0
+        })).sort((a, b) => b.atual - a.atual);
+    }, [materials]);
 
-    // Product Distribution (Pie Chart)
-    const pieData = products.map(p => ({
-        name: p.name,
-        value: p.stock
-    }));
+    // 3. Product Distribution (Pie Chart) - Adaptive grouping
+    const pieData = useMemo(() => {
+        const sorted = [...products].sort((a, b) => b.stock - a.stock);
+        const topCount = 5;
+        const top = sorted.slice(0, topCount).map(p => ({ name: p.name.toUpperCase(), value: p.stock }));
+        const othersValue = sorted.slice(topCount).reduce((acc, p) => acc + p.stock, 0);
+
+        if (othersValue > 0) {
+            top.push({ name: 'DEMAIS', value: othersValue });
+        }
+        return top;
+    }, [products]);
 
     // Neon Brutalist Palette
-    const COLORS = ['#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF0000'];
+    const COLORS = ['#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF0000', '#FFFFFF'];
 
     return (
         <div className="w-full h-full flex flex-col pb-8">
@@ -200,7 +209,7 @@ export const Stock: React.FC = () => {
 
                     {/* Styled Grid Legend */}
                     <div className="mt-auto grid grid-cols-2 gap-px bg-gray-200 dark:bg-gray-800 border-t-2 border-gray-200 dark:border-gray-800">
-                        {pieData.slice(0, 4).map((entry, index) => (
+                        {pieData.map((entry, index) => (
                             <div key={index} className="bg-white dark:bg-[#111] p-2 flex items-center gap-2">
                                 <div className="size-2 shrink-0" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
                                 <div className="overflow-hidden">
@@ -221,8 +230,9 @@ export const Stock: React.FC = () => {
                         Análise de Níveis de Insumo
                     </span>
                 </div>
-                <div className="h-[500px] md:h-[400px] w-full p-2 md:p-8">
-                    <div className="h-full w-full border-4 border-black dark:border-white p-2 md:p-4 bg-white dark:bg-[#0A0A0A] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] relative overflow-hidden">
+                <div className="h-[500px] md:h-[400px] w-full p-2 md:p-8 overflow-x-auto custom-scrollbar">
+                    <div className="h-full border-4 border-black dark:border-white p-2 md:p-4 bg-white dark:bg-[#0A0A0A] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] relative"
+                        style={{ minWidth: Math.max(100, materialData.length * 6) + '%' }}>
                         {/* Efeito de Grid Industrial de Fundo */}
                         <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
                             style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
@@ -230,7 +240,7 @@ export const Stock: React.FC = () => {
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart
                                 data={materialData}
-                                margin={{ top: 40, right: 30, left: -20, bottom: 80 }}
+                                margin={{ top: 40, right: 30, left: -20, bottom: 40 }}
                                 barGap={8}
                             >
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
@@ -281,6 +291,9 @@ export const Stock: React.FC = () => {
                                     stroke="#000"
                                     strokeWidth={1}
                                 />
+                                {materialData.length > 15 && (
+                                    <Brush dataKey="name" height={20} stroke="#00FFFF" fill="#000" />
+                                )}
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

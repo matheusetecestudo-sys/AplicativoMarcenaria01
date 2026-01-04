@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { TimeRange } from '../types';
-import { ResponsiveContainer, BarChart, Bar, XAxis, Tooltip, LineChart, Line, Cell, Legend, YAxis, CartesianGrid, ComposedChart, PieChart, Pie } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, Tooltip, LineChart, Line, Cell, Legend, YAxis, CartesianGrid, ComposedChart, PieChart, Pie, Brush } from 'recharts';
 
 // Formatters
 const formatCurrencyShort = (value: number) => {
@@ -347,6 +347,9 @@ export const Dashboard: React.FC = () => {
                                 <Tooltip content={<FinancialTooltip />} />
                                 <Bar dataKey="faturamento" fill="#0000FF" barSize={12} radius={[2, 2, 0, 0]} />
                                 <Line type="monotone" dataKey="lucro" stroke="#00FF00" strokeWidth={3} dot={{ r: 3 }} />
+                                {chartData.length > 12 && (
+                                    <Brush dataKey="name" height={20} stroke="#0000FF" fill={isDark ? "#111" : "#fff"} />
+                                )}
                             </ComposedChart>
                         </ResponsiveContainer>
                     </div>
