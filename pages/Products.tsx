@@ -275,7 +275,7 @@ export const Products: React.FC = () => {
             {/* MODAL */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-fade-in-up p-0 sm:p-4" onClick={() => setIsModalOpen(false)}>
-                    <div className="bg-white dark:bg-[#0A0A0A] w-full h-full sm:w-auto sm:h-auto sm:max-w-2xl sm:max-h-[90vh] border-0 sm:border-4 border-primary shadow-none sm:shadow-[12px_12px_0px_0px_rgba(0,0,255,0.3)] flex flex-col" onClick={e => e.stopPropagation()}>
+                    <div className="bg-white dark:bg-[#0A0A0A] w-full h-[100dvh] sm:h-auto sm:max-w-2xl sm:max-h-[90vh] border-0 sm:border-4 border-primary shadow-none sm:shadow-[12px_12px_0px_0px_rgba(0,0,255,0.3)] flex flex-col" onClick={e => e.stopPropagation()}>
 
                         {/* Modal Header */}
                         <div className="bg-primary p-4 flex justify-between items-center border-b-4 border-black dark:border-white shrink-0">
@@ -297,7 +297,7 @@ export const Products: React.FC = () => {
                                     <label className="text-[10px] font-black uppercase text-primary tracking-widest">Imagem do Produto</label>
                                     <div
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="relative w-full aspect-square border-4 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-black/40 flex items-center justify-center cursor-pointer group hover:border-primary transition-all overflow-hidden"
+                                        className="relative w-full aspect-video sm:aspect-square border-4 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-black/40 flex items-center justify-center cursor-pointer group hover:border-primary transition-all overflow-hidden"
                                     >
                                         {formData.image ? (
                                             <img src={formData.image} alt="Preview" className="w-full h-full object-contain p-2" />
