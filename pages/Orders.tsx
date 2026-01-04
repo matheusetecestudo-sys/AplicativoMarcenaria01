@@ -9,7 +9,6 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
     const [viewDate, setViewDate] = useState(new Date());
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    // Close on click outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -20,7 +19,6 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Initialize viewDate based on value
     useEffect(() => {
         if (value) {
             const [y, m, d] = value.split('-').map(Number);
@@ -28,14 +26,10 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
         }
     }, [isOpen, value]);
 
-    const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
-    const getFirstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
-
     const currentYear = viewDate.getFullYear();
     const currentMonth = viewDate.getMonth();
-
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-    const startDay = getFirstDayOfMonth(currentYear, currentMonth); // 0 = Sunday
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const startDay = new Date(currentYear, currentMonth, 1).getDay();
 
     const days = [];
     for (let i = 0; i < startDay; i++) days.push(null);
@@ -58,9 +52,9 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
             {/* Input Trigger */}
             <div
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full bg-white dark:bg-black text-black dark:text-white p-2 md:p-3 font-bold border-2 border-gray-300 dark:border-gray-700 focus:border-primary cursor-pointer flex justify-between items-center brutal-input hover:border-primary transition-colors group h-12"
+                className="w-full bg-white dark:bg-black text-black dark:text-white p-2 md:p-3 h-12 font-bold border-2 border-gray-300 dark:border-gray-700 focus:border-primary cursor-pointer flex justify-between items-center transition-all hover:border-primary group"
             >
-                <span className={`text-sm ${value ? "" : "text-gray-400"}`}>
+                <span className={`text-xs md:text-sm ${value ? "opacity-100" : "opacity-40"}`}>
                     {value ? new Date(value + 'T12:00:00').toLocaleDateString('pt-BR') : "SELECIONAR DATA..."}
                 </span>
                 <span className="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors text-lg">calendar_month</span>
@@ -68,32 +62,32 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
 
             {/* Calendar Popup */}
             {isOpen && (
-                <div className="absolute top-full left-0 w-full md:w-80 mt-2 bg-white dark:bg-[#111] border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)] z-50 animate-fade-in-up">
+                <div className="absolute top-full left-0 w-[280px] mt-1 bg-white dark:bg-[#0A0A0A] border-4 border-black dark:border-white shadow-[10px_10px_0px_0px_#0000FF] z-[100] animate-fade-in-up">
 
                     {/* Header */}
-                    <div className="bg-primary p-3 flex justify-between items-center text-white">
-                        <button type="button" onClick={(e) => { e.stopPropagation(); changeMonth(-1); }} className="hover:bg-black/20 p-1 rounded">
-                            <span className="material-symbols-outlined text-xl">chevron_left</span>
+                    <div className="bg-black dark:bg-white text-white dark:text-black flex items-center justify-between p-2">
+                        <button type="button" onClick={(e) => { e.stopPropagation(); changeMonth(-1); }} className="hover:bg-primary p-1 transition-colors">
+                            <span className="material-symbols-outlined text-base">chevron_left</span>
                         </button>
-                        <span className="font-black uppercase tracking-wider text-sm">
+                        <span className="font-black uppercase text-[10px] tracking-widest">
                             {monthNames[currentMonth]} {currentYear}
                         </span>
-                        <button type="button" onClick={(e) => { e.stopPropagation(); changeMonth(1); }} className="hover:bg-black/20 p-1 rounded">
-                            <span className="material-symbols-outlined text-xl">chevron_right</span>
+                        <button type="button" onClick={(e) => { e.stopPropagation(); changeMonth(1); }} className="hover:bg-primary p-1 transition-colors">
+                            <span className="material-symbols-outlined text-base">chevron_right</span>
                         </button>
                     </div>
 
                     {/* Weekdays */}
-                    <div className="grid grid-cols-7 gap-1 p-2 border-b-2 border-gray-200 dark:border-gray-800">
-                        {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(d => (
-                            <div key={d} className="text-center text-[10px] font-black text-gray-400 uppercase">{d}</div>
+                    <div className="grid grid-cols-7 bg-gray-100 dark:bg-white/5 py-2">
+                        {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((d, i) => (
+                            <div key={i} className="text-center text-[9px] font-black text-gray-400">{d}</div>
                         ))}
                     </div>
 
                     {/* Days Grid */}
-                    <div className="grid grid-cols-7 gap-1 p-2">
+                    <div className="grid grid-cols-7 gap-px bg-gray-200 dark:bg-gray-800 p-px">
                         {days.map((day, idx) => {
-                            if (!day) return <div key={idx}></div>;
+                            if (!day) return <div key={idx} className="bg-white dark:bg-[#0A0A0A] h-9"></div>;
 
                             const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                             const isSelected = value === dateStr;
@@ -105,12 +99,12 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
                                     key={idx}
                                     onClick={(e) => { e.stopPropagation(); handleDateClick(day); }}
                                     className={`
-                                        h-8 w-full flex items-center justify-center font-bold text-xs border-2 transition-all duration-100
+                                        h-9 w-full flex items-center justify-center font-bold text-xs transition-all relative
                                         ${isSelected
-                                            ? 'bg-primary text-white border-black dark:border-white shadow-[2px_2px_0px_0px_#000]'
+                                            ? 'bg-primary text-white z-10 scale-105 shadow-lg'
                                             : isToday
-                                                ? 'bg-transparent text-primary border-primary'
-                                                : 'bg-gray-50 dark:bg-[#222] text-black dark:text-gray-300 border-transparent hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-black'
+                                                ? 'bg-white dark:bg-[#0A0A0A] text-primary border-2 border-primary'
+                                                : 'bg-white dark:bg-[#0A0A0A] text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black'
                                         }
                                     `}
                                 >
@@ -121,21 +115,18 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
                     </div>
 
                     {/* Footer */}
-                    <div className="p-2 border-t-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-black flex justify-center">
-                        <button
-                            type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                const today = new Date();
-                                const str = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-                                onChange(str);
-                                setIsOpen(false);
-                            }}
-                            className="text-[10px] font-bold uppercase text-primary hover:underline"
-                        >
-                            Hoje
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            const today = new Date();
+                            onChange(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`);
+                            setIsOpen(false);
+                        }}
+                        className="w-full py-2 bg-gray-50 dark:bg-black/50 text-[9px] font-black uppercase text-gray-400 hover:text-primary transition-colors border-t-2 border-gray-100 dark:border-gray-900"
+                    >
+                        Pular para Hoje
+                    </button>
                 </div>
             )}
         </div>
