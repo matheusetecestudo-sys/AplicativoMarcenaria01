@@ -294,30 +294,30 @@ export const Orders: React.FC = () => {
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 lg:h-full h-auto pb-8 items-start">
 
             {/* LEFT COLUMN: ORDER BUILDER (PDV Style) - Sticky on Desktop */}
-            <div className={`xl:col-span-6 flex flex-col lg:h-[calc(100vh-2rem)] ${isBuilderExpanded ? 'h-[85vh]' : 'h-auto'} lg:sticky lg:top-1 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white shadow-[12px_12px_0px_0px_#0000FF] transition-all relative overflow-hidden`}>
+            <div className={`xl:col-span-6 flex flex-col lg:h-[calc(100vh-3rem)] ${isBuilderExpanded ? 'h-[85vh]' : 'h-auto'} lg:sticky lg:top-1 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white shadow-[12px_12px_0px_0px_#0000FF] transition-all relative`}>
 
                 {/* 1. COMPACT HEADER (Client Info) */}
-                <div className="p-3 lg:p-4 border-b-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] shrink-0">
-                    <div className="flex justify-between items-center mb-2 lg:mb-3">
-                        <h2 className="text-black dark:text-white text-lg md:text-xl font-black uppercase flex items-center gap-2 tracking-tighter">
-                            <span className="material-symbols-outlined text-primary text-2xl">shopping_cart_checkout</span>
+                <div className="p-2 lg:p-3 border-b-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] shrink-0">
+                    <div className="flex justify-between items-center mb-1 lg:mb-2">
+                        <h2 className="text-black dark:text-white text-base md:text-lg font-black uppercase flex items-center gap-2 tracking-tighter">
+                            <span className="material-symbols-outlined text-primary text-xl">shopping_cart_checkout</span>
                             Novo Pedido
                         </h2>
                         {/* MOBILE TOGGLE BUTTON */}
                         <button
                             onClick={() => setIsBuilderExpanded(!isBuilderExpanded)}
-                            className="lg:hidden p-1.5 border-2 border-black dark:border-white rounded bg-gray-100 dark:bg-black"
+                            className="lg:hidden p-1 border-2 border-black dark:border-white rounded bg-gray-100 dark:bg-black"
                         >
-                            <span className="material-symbols-outlined text-sm">{isBuilderExpanded ? 'expand_less' : 'expand_more'}</span>
+                            <span className="material-symbols-outlined text-xs">{isBuilderExpanded ? 'expand_less' : 'expand_more'}</span>
                         </button>
                     </div>
 
-                    <div className={`${isBuilderExpanded ? 'grid' : 'hidden'} lg:grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-3`}>
+                    <div className={`${isBuilderExpanded ? 'grid' : 'hidden'} lg:grid grid-cols-1 md:grid-cols-2 gap-2`}>
                         {/* Client Name Input */}
                         <div className="md:col-span-2 relative group">
-                            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-xl">person</span>
+                            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-base">person</span>
                             <input
-                                className="w-full bg-transparent text-black dark:text-white pl-10 pr-4 py-1.5 text-base font-black border-b-2 border-gray-200 dark:border-gray-800 focus:border-primary focus:outline-none uppercase transition-colors placeholder:text-gray-300"
+                                className="w-full bg-transparent text-black dark:text-white pl-8 pr-3 py-1 text-sm font-black border-b-2 border-gray-200 dark:border-gray-800 focus:border-primary focus:outline-none uppercase transition-colors placeholder:text-gray-300"
                                 placeholder="CLIENTE..."
                                 value={clientName}
                                 onChange={e => setClientName(e.target.value)}
@@ -326,28 +326,28 @@ export const Orders: React.FC = () => {
 
                         {/* Date Picker */}
                         <div className="flex flex-col">
-                            <label className="text-[8px] font-black uppercase text-gray-400 mb-0.5 tracking-widest">Entrega</label>
+                            <label className="text-[8px] font-black uppercase text-gray-400 mb-0.5">Entrega</label>
                             <BrutalistDatePicker value={deadline} onChange={setDeadline} />
                         </div>
 
                         {/* Compact Origin Toggle */}
                         <div className="flex flex-col">
-                            <label className="text-[8px] font-black uppercase text-gray-400 mb-0.5 tracking-widest">Canal</label>
-                            <div className="flex items-center bg-gray-100 dark:bg-black border-2 border-gray-300 dark:border-gray-700 h-9 p-1 relative">
+                            <label className="text-[8px] font-black uppercase text-gray-400 mb-0.5">Canal</label>
+                            <div className="flex items-center bg-gray-100 dark:bg-black border-2 border-gray-300 dark:border-gray-700 h-8 p-0.5 relative">
                                 <div
-                                    className={`absolute top-0.5 bottom-0.5 w-[calc(50%-4px)] transition-all duration-300 ease-out border-2 border-black dark:border-white
-                            ${origin === 'ONLINE' ? 'left-1 bg-[#00FFFF]' : 'left-[calc(50%+2px)] bg-[#FFA500]'}`}
+                                    className={`absolute top-0.5 bottom-0.5 w-[calc(50%-2px)] transition-all duration-300 ease-out border border-black dark:border-white
+                            ${origin === 'ONLINE' ? 'left-0.5 bg-[#00FFFF]' : 'left-[calc(50%+0.5px)] bg-[#FFA500]'}`}
                                 ></div>
 
                                 <button
                                     onClick={() => setOrigin('ONLINE')}
-                                    className={`flex-1 z-10 text-[8px] font-black uppercase text-center transition-colors ${origin === 'ONLINE' ? 'text-black' : 'text-gray-400 hover:text-black dark:hover:text-white'}`}
+                                    className={`flex-1 z-10 text-[7px] font-black uppercase text-center transition-colors ${origin === 'ONLINE' ? 'text-black' : 'text-gray-400'}`}
                                 >
                                     Online
                                 </button>
                                 <button
                                     onClick={() => setOrigin('FISICO')}
-                                    className={`flex-1 z-10 text-[8px] font-black uppercase text-center transition-colors ${origin === 'FISICO' ? 'text-black' : 'text-gray-400 hover:text-black dark:hover:text-white'}`}
+                                    className={`flex-1 z-10 text-[7px] font-black uppercase text-center transition-colors ${origin === 'FISICO' ? 'text-black' : 'text-gray-400'}`}
                                 >
                                     Loja
                                 </button>
@@ -358,43 +358,43 @@ export const Orders: React.FC = () => {
 
                 {/* BODY WRAPPER (Collapsible on Mobile) */}
                 <div className={`${isBuilderExpanded ? 'flex' : 'hidden'} lg:flex flex-col flex-1 overflow-hidden min-h-0`}>
-                    {/* 2. ITEM ENTRY TOOLBAR (Larger for Desktop) */}
-                    <div className="bg-gray-50 dark:bg-black p-3 lg:p-4 flex flex-col gap-2 border-b-4 border-black dark:border-white shrink-0">
-                        <div className="grid grid-cols-12 gap-2">
+                    {/* 2. ITEM ENTRY TOOLBAR */}
+                    <div className="bg-gray-50 dark:bg-black p-2 flex flex-col gap-1.5 border-b-4 border-black dark:border-white shrink-0">
+                        <div className="grid grid-cols-12 gap-1.5">
                             <div className="col-span-9 md:col-span-10">
-                                <span className="text-[9px] font-black uppercase text-gray-400 block mb-0.5 tracking-widest">Produto</span>
+                                <span className="text-[8px] font-black uppercase text-gray-400 mb-0.5 block">Produto</span>
                                 <select
-                                    className="w-full h-10 bg-white dark:bg-[#111] text-black dark:text-white px-3 font-black border-2 border-black dark:border-white focus:border-primary focus:outline-none text-xs uppercase"
+                                    className="w-full h-8 bg-white dark:bg-[#111] text-black dark:text-white px-2 font-black border-2 border-black dark:border-white focus:border-primary focus:outline-none text-[10px] uppercase"
                                     value={selectedProductId}
                                     onChange={e => setSelectedProductId(e.target.value)}
                                 >
-                                    <option value="">SELECIONAR PRODUTO...</option>
+                                    <option value="">SELECIONAR...</option>
                                     {products.map(p => (
                                         <option key={p.id} value={p.id}>{p.name}</option>
                                     ))}
                                 </select>
                             </div>
                             <div className="col-span-3 md:col-span-2">
-                                <span className="text-[9px] font-black uppercase text-gray-400 block mb-0.5 tracking-widest">Qtd</span>
+                                <span className="text-[8px] font-black uppercase text-gray-400 mb-0.5 block">Qtd</span>
                                 <input
                                     type="number"
                                     min="1"
-                                    className="w-full h-10 bg-white dark:bg-[#111] text-black dark:text-white text-center font-black border-2 border-black dark:border-white focus:border-primary focus:outline-none text-base"
+                                    className="w-full h-8 bg-white dark:bg-[#111] text-black dark:text-white text-center font-black border-2 border-black dark:border-white focus:border-primary focus:outline-none text-xs"
                                     value={quantity}
                                     onChange={e => setQuantity(parseInt(e.target.value))}
                                 />
                             </div>
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-1.5">
                             <div className="flex-1">
-                                <span className="text-[9px] font-black uppercase text-gray-400 block mb-0.5 tracking-widest">Valor Venda Unitário</span>
+                                <span className="text-[8px] font-black uppercase text-gray-400 mb-0.5 block">Preço Unitário</span>
                                 <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">R$</span>
+                                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-[10px]">R$</span>
                                     <input
                                         type="number"
                                         step="0.01"
-                                        className="w-full h-10 bg-white dark:bg-[#111] text-black dark:text-white pl-9 pr-3 font-black border-2 border-black dark:border-white focus:border-primary focus:outline-none text-base text-right"
+                                        className="w-full h-8 bg-white dark:bg-[#111] text-black dark:text-white pl-7 pr-2 font-black border-2 border-black dark:border-white focus:border-primary focus:outline-none text-xs text-right"
                                         value={customUnitPrice}
                                         onChange={e => setCustomUnitPrice(parseFloat(e.target.value) || '')}
                                     />
@@ -402,49 +402,39 @@ export const Orders: React.FC = () => {
                             </div>
                             <button
                                 onClick={addItemToCart}
-                                className="w-12 h-10 bg-primary text-white flex items-center justify-center hover:brightness-110 active:scale-95 transition-all self-end shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#FFF] border-2 border-black dark:border-white"
-                                title="Adicionar"
+                                className="w-10 h-8 bg-primary text-white flex items-center justify-center hover:brightness-110 active:scale-95 transition-all self-end border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#FFF]"
                             >
-                                <span className="material-symbols-outlined text-2xl font-black">add</span>
+                                <span className="material-symbols-outlined text-lg font-black">add</span>
                             </button>
                         </div>
                     </div>
 
-                    {/* 3. CART LIST (Receipt Style) - Scrollable */}
-                    <div className="flex-1 overflow-y-auto bg-white dark:bg-[#0A0A0A] p-0 relative min-h-[150px] lg:min-h-[200px] custom-scrollbar">
+                    {/* 3. CART LIST - Scrollable */}
+                    <div className="flex-1 overflow-y-auto bg-white dark:bg-[#0A0A0A] p-0 relative min-h-0 custom-scrollbar">
                         {currentItems.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center text-gray-300 h-full p-6">
-                                <span className="material-symbols-outlined text-5xl mb-2 opacity-5">shopping_cart</span>
-                                <p className="font-black uppercase text-[9px] tracking-[0.3em] opacity-10 text-center">Nenhum item adicionado ao pedido</p>
+                            <div className="flex flex-col items-center justify-center text-gray-300 h-full p-4">
+                                <span className="material-symbols-outlined text-4xl mb-1 opacity-5">shopping_cart</span>
+                                <p className="font-black uppercase text-[7px] tracking-widest opacity-10 text-center">Nenhum item adicionado</p>
                             </div>
                         ) : (
                             <table className="w-full text-left border-collapse">
-                                <thead className="bg-black dark:bg-white text-white dark:text-black text-[8px] uppercase font-black tracking-widest sticky top-0 z-10">
+                                <thead className="bg-black dark:bg-white text-white dark:text-black text-[7px] uppercase font-black tracking-widest sticky top-0 z-10">
                                     <tr>
-                                        <th className="py-2 px-6">Descrição</th>
-                                        <th className="py-2 px-4 text-right">Faturamento</th>
-                                        <th className="py-2 px-4 w-10"></th>
+                                        <th className="py-1 px-4">Descrição</th>
+                                        <th className="py-1 px-3 text-right">Total</th>
+                                        <th className="py-1 px-3 w-8"></th>
                                     </tr>
                                 </thead>
-                                <tbody className="text-sm">
+                                <tbody className="text-[10px]">
                                     {currentItems.map((item, idx) => (
-                                        <tr key={idx} className="border-b border-gray-100 dark:border-gray-900 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
-                                            <td className="py-2 px-6 text-black dark:text-white font-black text-xs uppercase">
+                                        <tr key={idx} className="border-b border-gray-100 dark:border-gray-900 hover:bg-gray-50 dark:hover:bg-white/5 group">
+                                            <td className="py-1.5 px-4 text-black dark:text-white font-black uppercase leading-tight">
                                                 {item.productName}
-                                                <div className="text-[9px] text-gray-400 font-bold mt-0.5">
-                                                    {item.quantity} UN x R$ {item.unitPrice.toFixed(2)}
-                                                </div>
+                                                <div className="text-[7px] text-gray-400 font-bold">{item.quantity} UN @ {item.unitPrice.toFixed(2)}</div>
                                             </td>
-                                            <td className="py-2 px-4 text-right font-black text-xs text-black dark:text-white">
-                                                R$ {item.total.toFixed(2)}
-                                            </td>
-                                            <td className="py-2 px-4 text-right">
-                                                <button
-                                                    onClick={() => removeItemFromCart(idx)}
-                                                    className="size-6 flex items-center justify-center text-gray-300 hover:text-red-500 transition-colors"
-                                                >
-                                                    <span className="material-symbols-outlined text-sm">close</span>
-                                                </button>
+                                            <td className="py-1.5 px-3 text-right font-black">R$ {item.total.toFixed(2)}</td>
+                                            <td className="py-1.5 px-3 text-right">
+                                                <button onClick={() => removeItemFromCart(idx)} className="text-gray-300 hover:text-red-500"><span className="material-symbols-outlined text-xs">close</span></button>
                                             </td>
                                         </tr>
                                     ))}
@@ -453,269 +443,257 @@ export const Orders: React.FC = () => {
                         )}
                     </div>
 
-                    {/* 4. FOOTER (Total & Confirm) - Always visible in sticky container */}
-                    <div className="p-3 lg:p-4 bg-white dark:bg-[#1A1A1A] border-t-8 border-black dark:border-white shadow-[0px_-8px_20px_rgba(0,0,0,0.1)] z-50 shrink-0">
-                        {/* Shipping Input - Compact for safety */}
-                        <div className="flex justify-between items-center mb-3">
-                            <label className="text-[9px] font-black uppercase text-gray-500 tracking-widest flex items-center gap-1.5">
-                                <span className="material-symbols-outlined text-sm">local_shipping</span>
-                                Entrega
+                    {/* 4. FOOTER */}
+                    <div className="p-2 lg:p-3 bg-white dark:bg-[#1A1A1A] border-t-8 border-black dark:border-white shrink-0">
+                        <div className="flex justify-between items-center mb-2">
+                            <label className="text-[8px] font-black uppercase text-gray-500 flex items-center gap-1">
+                                <span className="material-symbols-outlined text-xs">local_shipping</span> Entrega
                             </label>
-                            <div className="relative w-28">
-                                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-[10px]">R$</span>
+                            <div className="relative w-24">
+                                <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-[8px]">R$</span>
                                 <input
                                     type="number"
-                                    placeholder="0.00"
-                                    className="w-full bg-gray-50 dark:bg-black border-2 border-gray-200 dark:border-gray-800 focus:border-primary focus:outline-none py-1 pl-7 text-right font-black text-sm"
+                                    className="w-full bg-gray-50 dark:bg-black border-2 border-gray-200 dark:border-gray-800 focus:border-primary py-0.5 pl-5 text-right font-black text-xs"
                                     value={shipping}
                                     onChange={e => setShipping(e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        {/* Total and Actions Row */}
-                        <div className="flex gap-2 items-stretch h-14">
-                            {/* Total Block */}
-                            <div className="flex-[1.2] bg-black dark:bg-white text-white dark:text-black p-2 flex flex-col justify-center items-start pl-4 relative overflow-hidden border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_#0000FF]">
-                                <div className="absolute top-1 right-1">
-                                    <button onClick={() => { setCurrentItems([]); setShipping(''); }} title="Limpar" className="text-white/20 dark:text-black/20 hover:text-red-500 transition-colors">
-                                        <span className="material-symbols-outlined text-sm">delete_forever</span>
-                                    </button>
-                                </div>
-                                <span className="text-[8px] font-black uppercase tracking-widest opacity-50">Total Geral</span>
-                                <span className="text-xl font-black leading-none tracking-tighter">
-                                    R$ {calculateCartTotal().toFixed(2)}
-                                </span>
+                        <div className="flex gap-2 items-stretch h-12">
+                            <div className="flex-[1.2] bg-black dark:bg-white text-white dark:text-black p-1.5 flex flex-col justify-center items-start pl-3 border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_#0000FF]">
+                                <span className="text-[7px] font-black uppercase opacity-50">Total</span>
+                                <span className="text-base font-black leading-none">R$ {calculateCartTotal().toFixed(2)}</span>
                             </div>
 
-                            {/* Confirm Button */}
                             <button
                                 onClick={handleFinalizeOrder}
-                                className="flex-1 bg-primary text-white font-black uppercase text-xs tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] border-4 border-black dark:border-white flex flex-col items-center justify-center leading-tight"
+                                className="flex-1 bg-primary text-white font-black uppercase text-[10px] tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.2)] border-2 border-black dark:border-white flex flex-col items-center justify-center leading-tight"
                             >
-                                <span className="text-sm">CONFIRMAR</span>
-                                <span className="text-[7px] opacity-70 font-bold mt-0.5 tracking-tighter">GRAVAR NO SISTEMA</span>
+                                <span className="text-xs">CONFIRMAR</span>
+                                <span className="text-[6px] opacity-70">FINALIZAR AGORA</span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            {/* RIGHT COLUMN: ORDERS LIST */}
-            <div className="xl:col-span-6 bg-white dark:bg-[#1A1A1A] p-4 md:p-8 border-4 border-black dark:border-white flex flex-col h-auto min-h-[600px] transition-colors relative">
-                {/* HEADER WITH FILTERS */}
-                <div className="flex flex-col gap-4 mb-6">
-                    <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                        <h2 className="text-black dark:text-white text-2xl font-bold tracking-tighter uppercase">Pedidos Recentes</h2>
+            {/* RIGHT COLUMN: ORDERS LIST */ }
+    <div className="xl:col-span-6 bg-white dark:bg-[#1A1A1A] p-4 md:p-8 border-4 border-black dark:border-white flex flex-col h-auto min-h-[600px] transition-colors relative">
+        {/* HEADER WITH FILTERS */}
+        <div className="flex flex-col gap-4 mb-6">
+            <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <h2 className="text-black dark:text-white text-2xl font-bold tracking-tighter uppercase">Pedidos Recentes</h2>
 
-                        {/* Timeframe Selector (Copied from Dashboard) */}
-                        <div className="flex bg-gray-100 dark:bg-[#111] p-1 border-2 border-black dark:border-white self-start md:self-auto overflow-x-auto max-w-full">
-                            {(['HOJE', '7D', 'MES', 'ANO', 'TUDO'] as TimeRange[]).map((range) => (
-                                <button
-                                    key={range}
-                                    onClick={() => setTimeRange(range)}
-                                    className={`
+                {/* Timeframe Selector (Copied from Dashboard) */}
+                <div className="flex bg-gray-100 dark:bg-[#111] p-1 border-2 border-black dark:border-white self-start md:self-auto overflow-x-auto max-w-full">
+                    {(['HOJE', '7D', 'MES', 'ANO', 'TUDO'] as TimeRange[]).map((range) => (
+                        <button
+                            key={range}
+                            onClick={() => setTimeRange(range)}
+                            className={`
                                 px-2 md:px-3 py-1 text-[10px] md:text-xs font-black uppercase transition-all duration-200 whitespace-nowrap
                                 ${timeRange === range
-                                            ? 'bg-black dark:bg-white text-white dark:text-black shadow-[2px_2px_0px_#0000FF]'
-                                            : 'text-gray-500 hover:text-black dark:hover:text-white'}
+                                    ? 'bg-black dark:bg-white text-white dark:text-black shadow-[2px_2px_0px_#0000FF]'
+                                    : 'text-gray-500 hover:text-black dark:hover:text-white'}
                             `}
-                                >
-                                    {range}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <input
-                        className="w-full bg-white dark:bg-black text-black dark:text-white p-2 text-base font-bold border-4 border-black dark:border-white focus:outline-none focus:border-primary brutal-input uppercase placeholder:text-gray-500"
-                        placeholder="BUSCAR CLIENTE OU ID..."
-                        value={filter}
-                        onChange={e => setFilter(e.target.value)}
-                    />
+                        >
+                            {range}
+                        </button>
+                    ))}
                 </div>
+            </div>
 
-                <div className="flex-1 overflow-auto custom-scrollbar">
-                    <div className="flex flex-col gap-6">
-                        {filteredOrders.length === 0 ? (
-                            <div className="text-center p-8 text-gray-500 font-bold uppercase border-2 border-dashed border-gray-300 dark:border-gray-800 flex flex-col items-center">
-                                <span className="material-symbols-outlined text-4xl mb-2 opacity-50">search_off</span>
-                                <span>Nenhum pedido encontrado.</span>
-                                <span className="text-xs font-normal mt-1 opacity-70">Tente ajustar o filtro de data.</span>
-                            </div>
-                        ) : filteredOrders.map((order) => {
-                            const isLate = order.status === 'ATRASADO';
-                            const isDone = order.status === 'CONCLUÍDO';
-                            const isPending = order.status === 'PENDENTE';
-                            const isOnline = order.origin === 'ONLINE';
+            <input
+                className="w-full bg-white dark:bg-black text-black dark:text-white p-2 text-base font-bold border-4 border-black dark:border-white focus:outline-none focus:border-primary brutal-input uppercase placeholder:text-gray-500"
+                placeholder="BUSCAR CLIENTE OU ID..."
+                value={filter}
+                onChange={e => setFilter(e.target.value)}
+            />
+        </div>
 
-                            return (
-                                <div key={order.id} className={`
+        <div className="flex-1 overflow-auto custom-scrollbar">
+            <div className="flex flex-col gap-6">
+                {filteredOrders.length === 0 ? (
+                    <div className="text-center p-8 text-gray-500 font-bold uppercase border-2 border-dashed border-gray-300 dark:border-gray-800 flex flex-col items-center">
+                        <span className="material-symbols-outlined text-4xl mb-2 opacity-50">search_off</span>
+                        <span>Nenhum pedido encontrado.</span>
+                        <span className="text-xs font-normal mt-1 opacity-70">Tente ajustar o filtro de data.</span>
+                    </div>
+                ) : filteredOrders.map((order) => {
+                    const isLate = order.status === 'ATRASADO';
+                    const isDone = order.status === 'CONCLUÍDO';
+                    const isPending = order.status === 'PENDENTE';
+                    const isOnline = order.origin === 'ONLINE';
+
+                    return (
+                        <div key={order.id} className={`
                             relative border-4 transition-all duration-300
                             ${isLate
-                                        ? 'border-red-500 bg-red-50 dark:bg-red-950/10'
-                                        : isDone
-                                            ? 'border-green-500 bg-green-50 dark:bg-green-900/10'
-                                            : isPending
-                                                ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-900/10'
-                                                : 'border-black dark:border-white bg-white dark:bg-black'
-                                    } 
+                                ? 'border-red-500 bg-red-50 dark:bg-red-950/10'
+                                : isDone
+                                    ? 'border-green-500 bg-green-50 dark:bg-green-900/10'
+                                    : isPending
+                                        ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-900/10'
+                                        : 'border-black dark:border-white bg-white dark:bg-black'
+                            } 
                             p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]
                         `}>
 
-                                    {/* "Mechanical" Header */}
-                                    <div className={`flex justify-between items-center p-3 border-b-4 
+                            {/* "Mechanical" Header */}
+                            <div className={`flex justify-between items-center p-3 border-b-4 
                                 ${isLate
-                                            ? 'border-red-500 bg-red-500 text-white'
-                                            : isDone
-                                                ? 'border-green-500 bg-green-500 text-black'
-                                                : isPending
-                                                    ? 'border-yellow-400 bg-yellow-400 text-black'
-                                                    : 'border-black dark:border-white bg-gray-100 dark:bg-[#222]'
-                                        }`}>
-                                        <div className="flex flex-col">
-                                            <span className={`font-black text-lg uppercase ${isLate ? 'text-white' : isDone || isPending ? 'text-black' : 'text-black dark:text-white'}`}>{order.client}</span>
-                                            <span className={`text-xs font-bold uppercase ${isLate ? 'text-white/80' : isDone || isPending ? 'text-black/70' : 'text-gray-500'}`}>
-                                                {order.id} • {new Date(order.deadline).toLocaleDateString()}
-                                            </span>
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <div
-                                                className={`h-10 px-3 flex items-center justify-center border-2 font-black uppercase text-xs tracking-wider 
+                                    ? 'border-red-500 bg-red-500 text-white'
+                                    : isDone
+                                        ? 'border-green-500 bg-green-500 text-black'
+                                        : isPending
+                                            ? 'border-yellow-400 bg-yellow-400 text-black'
+                                            : 'border-black dark:border-white bg-gray-100 dark:bg-[#222]'
+                                }`}>
+                                <div className="flex flex-col">
+                                    <span className={`font-black text-lg uppercase ${isLate ? 'text-white' : isDone || isPending ? 'text-black' : 'text-black dark:text-white'}`}>{order.client}</span>
+                                    <span className={`text-xs font-bold uppercase ${isLate ? 'text-white/80' : isDone || isPending ? 'text-black/70' : 'text-gray-500'}`}>
+                                        {order.id} • {new Date(order.deadline).toLocaleDateString()}
+                                    </span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <div
+                                        className={`h-10 px-3 flex items-center justify-center border-2 font-black uppercase text-xs tracking-wider 
                                             ${isOnline ? 'bg-[#00FFFF] text-black border-black' : 'bg-[#FFA500] text-black border-black'}`}
-                                                title={isOnline ? "Pedido via Internet" : "Pedido em Loja Física"}
-                                            >
-                                                {isOnline ? 'ONLINE' : 'LOJA'}
-                                            </div>
-
-                                            <button
-                                                onClick={(e) => handleDeleteOrder(e, order.id)}
-                                                className={`size-10 flex items-center justify-center bg-transparent border-2 border-black/30 dark:border-white/30 text-black/50 dark:text-white/50 hover:text-white hover:bg-black hover:border-black transition-all brutal-btn ${isLate || isDone || isPending ? 'border-black/50 text-black/50 hover:bg-white hover:text-red-500' : ''}`}
-                                                title="Excluir Pedido"
-                                            >
-                                                <span className="material-symbols-outlined">delete</span>
-                                            </button>
-                                        </div>
+                                        title={isOnline ? "Pedido via Internet" : "Pedido em Loja Física"}
+                                    >
+                                        {isOnline ? 'ONLINE' : 'LOJA'}
                                     </div>
 
-                                    <div className="p-4">
-                                        {/* Order Items Summary */}
-                                        <div className="mb-4 space-y-2 border-b-2 border-dashed border-gray-200 dark:border-gray-800 pb-2">
-                                            {order.items.map((item, idx) => (
-                                                <div key={idx} className="flex justify-between text-sm">
-                                                    <span className="text-gray-800 dark:text-gray-200 font-bold uppercase flex items-center gap-2">
-                                                        <span className="size-2 bg-primary"></span>
-                                                        {item.quantity}x {item.productName}
-                                                    </span>
-                                                    <span className="text-gray-500 font-mono font-bold">R$ {item.total.toFixed(2)}</span>
-                                                </div>
-                                            ))}
+                                    <button
+                                        onClick={(e) => handleDeleteOrder(e, order.id)}
+                                        className={`size-10 flex items-center justify-center bg-transparent border-2 border-black/30 dark:border-white/30 text-black/50 dark:text-white/50 hover:text-white hover:bg-black hover:border-black transition-all brutal-btn ${isLate || isDone || isPending ? 'border-black/50 text-black/50 hover:bg-white hover:text-red-500' : ''}`}
+                                        title="Excluir Pedido"
+                                    >
+                                        <span className="material-symbols-outlined">delete</span>
+                                    </button>
+                                </div>
+                            </div>
 
-                                            {order.shippingCost > 0 && (
-                                                <div className="flex justify-between text-sm py-1 text-gray-400">
-                                                    <span className="font-bold uppercase flex items-center gap-2">
-                                                        <span className="material-symbols-outlined text-sm">local_shipping</span>
-                                                        Frete
-                                                    </span>
-                                                    <span className="font-mono font-bold">R$ {order.shippingCost.toFixed(2)}</span>
-                                                </div>
-                                            )}
+                            <div className="p-4">
+                                {/* Order Items Summary */}
+                                <div className="mb-4 space-y-2 border-b-2 border-dashed border-gray-200 dark:border-gray-800 pb-2">
+                                    {order.items.map((item, idx) => (
+                                        <div key={idx} className="flex justify-between text-sm">
+                                            <span className="text-gray-800 dark:text-gray-200 font-bold uppercase flex items-center gap-2">
+                                                <span className="size-2 bg-primary"></span>
+                                                {item.quantity}x {item.productName}
+                                            </span>
+                                            <span className="text-gray-500 font-mono font-bold">R$ {item.total.toFixed(2)}</span>
                                         </div>
+                                    ))}
 
-                                        {/* Financial Summary Block - Explicit Breakdown */}
-                                        <div className="grid grid-cols-3 gap-2 mb-4 bg-gray-50 dark:bg-black p-3 border-t-2 border-b-2 border-gray-200 dark:border-gray-800">
-                                            {/* Revenue */}
-                                            <div className="flex flex-col items-center border-r border-gray-200 dark:border-gray-800">
-                                                <span className="text-[8px] font-black uppercase text-blue-500 mb-1">Faturamento</span>
-                                                <span className="font-black text-sm text-blue-600 dark:text-blue-400">R$ {order.totalValue.toFixed(2)}</span>
-                                            </div>
-
-                                            {/* Cost (Calculated) */}
-                                            {(() => {
-                                                const totalCost = order.items.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0);
-                                                const finalCost = totalCost + (order.shippingCost || 0);
-                                                const profit = order.totalValue - finalCost;
-                                                const margin = order.totalValue > 0 ? (profit / order.totalValue) * 100 : 0;
-
-                                                return (
-                                                    <>
-                                                        <div className="flex flex-col items-center border-r border-gray-200 dark:border-gray-800">
-                                                            <span className="text-[8px] font-black uppercase text-red-400 mb-1">Custo Total</span>
-                                                            <span className="font-bold text-sm text-gray-500">R$ {finalCost.toFixed(2)}</span>
-                                                        </div>
-
-                                                        <div className="flex flex-col items-center">
-                                                            <span className="text-[8px] font-black uppercase text-green-500 mb-1">Lucro Real</span>
-                                                            <div className="flex flex-col items-center leading-none">
-                                                                <span className="font-black text-sm text-green-600 dark:text-green-500">R$ {profit.toFixed(2)}</span>
-                                                                <span className="text-[8px] font-bold text-green-400 mt-1">{margin.toFixed(0)}%</span>
-                                                            </div>
-                                                        </div>
-                                                    </>
-                                                );
-                                            })()}
+                                    {order.shippingCost > 0 && (
+                                        <div className="flex justify-between text-sm py-1 text-gray-400">
+                                            <span className="font-bold uppercase flex items-center gap-2">
+                                                <span className="material-symbols-outlined text-sm">local_shipping</span>
+                                                Frete
+                                            </span>
+                                            <span className="font-mono font-bold">R$ {order.shippingCost.toFixed(2)}</span>
                                         </div>
+                                    )}
+                                </div>
 
-                                        {/* INDUSTRIAL CONTROL PANEL (STATUS BUTTONS) */}
-                                        <div className="mt-4 p-3 bg-gray-100 dark:bg-[#111] border-2 border-gray-300 dark:border-gray-800">
-                                            <p className="text-[10px] font-black uppercase text-gray-500 mb-2 tracking-widest flex items-center gap-2">
-                                                <span className="material-symbols-outlined text-sm">settings_input_component</span>
-                                                Painel de Controle de Status
-                                            </p>
+                                {/* Financial Summary Block - Explicit Breakdown */}
+                                <div className="grid grid-cols-3 gap-2 mb-4 bg-gray-50 dark:bg-black p-3 border-t-2 border-b-2 border-gray-200 dark:border-gray-800">
+                                    {/* Revenue */}
+                                    <div className="flex flex-col items-center border-r border-gray-200 dark:border-gray-800">
+                                        <span className="text-[8px] font-black uppercase text-blue-500 mb-1">Faturamento</span>
+                                        <span className="font-black text-sm text-blue-600 dark:text-blue-400">R$ {order.totalValue.toFixed(2)}</span>
+                                    </div>
 
-                                            <div className="grid grid-cols-3 gap-2">
+                                    {/* Cost (Calculated) */}
+                                    {(() => {
+                                        const totalCost = order.items.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0);
+                                        const finalCost = totalCost + (order.shippingCost || 0);
+                                        const profit = order.totalValue - finalCost;
+                                        const margin = order.totalValue > 0 ? (profit / order.totalValue) * 100 : 0;
 
-                                                {/* PENDENTE BUTTON */}
-                                                <button
-                                                    onClick={() => setStatus(order.id, 'PENDENTE')}
-                                                    className={`
+                                        return (
+                                            <>
+                                                <div className="flex flex-col items-center border-r border-gray-200 dark:border-gray-800">
+                                                    <span className="text-[8px] font-black uppercase text-red-400 mb-1">Custo Total</span>
+                                                    <span className="font-bold text-sm text-gray-500">R$ {finalCost.toFixed(2)}</span>
+                                                </div>
+
+                                                <div className="flex flex-col items-center">
+                                                    <span className="text-[8px] font-black uppercase text-green-500 mb-1">Lucro Real</span>
+                                                    <div className="flex flex-col items-center leading-none">
+                                                        <span className="font-black text-sm text-green-600 dark:text-green-500">R$ {profit.toFixed(2)}</span>
+                                                        <span className="text-[8px] font-bold text-green-400 mt-1">{margin.toFixed(0)}%</span>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        );
+                                    })()}
+                                </div>
+
+                                {/* INDUSTRIAL CONTROL PANEL (STATUS BUTTONS) */}
+                                <div className="mt-4 p-3 bg-gray-100 dark:bg-[#111] border-2 border-gray-300 dark:border-gray-800">
+                                    <p className="text-[10px] font-black uppercase text-gray-500 mb-2 tracking-widest flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-sm">settings_input_component</span>
+                                        Painel de Controle de Status
+                                    </p>
+
+                                    <div className="grid grid-cols-3 gap-2">
+
+                                        {/* PENDENTE BUTTON */}
+                                        <button
+                                            onClick={() => setStatus(order.id, 'PENDENTE')}
+                                            className={`
                                                 relative h-10 border-2 font-black uppercase text-[10px] md:text-xs tracking-wider transition-all duration-75
                                                 ${isPending
-                                                            ? 'bg-[#FFFF00] text-black border-black shadow-[2px_2px_0px_black] dark:shadow-[2px_2px_0px_white] translate-x-[-2px] translate-y-[-2px] active:translate-x-0 active:translate-y-0 active:shadow-none'
-                                                            : 'bg-transparent text-gray-400 border-gray-300 dark:border-gray-700 hover:border-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 active:scale-95'}
+                                                    ? 'bg-[#FFFF00] text-black border-black shadow-[2px_2px_0px_black] dark:shadow-[2px_2px_0px_white] translate-x-[-2px] translate-y-[-2px] active:translate-x-0 active:translate-y-0 active:shadow-none'
+                                                    : 'bg-transparent text-gray-400 border-gray-300 dark:border-gray-700 hover:border-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 active:scale-95'}
                                             `}
-                                                >
-                                                    Pendente
-                                                    {isPending && <span className="absolute top-1 right-1 size-1.5 bg-black rounded-full animate-ping"></span>}
-                                                </button>
+                                        >
+                                            Pendente
+                                            {isPending && <span className="absolute top-1 right-1 size-1.5 bg-black rounded-full animate-ping"></span>}
+                                        </button>
 
-                                                {/* CONCLUÍDO BUTTON */}
-                                                <button
-                                                    onClick={() => setStatus(order.id, 'CONCLUÍDO')}
-                                                    className={`
+                                        {/* CONCLUÍDO BUTTON */}
+                                        <button
+                                            onClick={() => setStatus(order.id, 'CONCLUÍDO')}
+                                            className={`
                                                 relative h-10 border-2 font-black uppercase text-[10px] md:text-xs tracking-wider transition-all duration-75
                                                 ${isDone
-                                                            ? 'bg-[#00FF00] text-black border-black shadow-[2px_2px_0px_black] dark:shadow-[2px_2px_0px_white] translate-x-[-2px] translate-y-[-2px] active:translate-x-0 active:translate-y-0 active:shadow-none'
-                                                            : 'bg-transparent text-gray-400 border-gray-300 dark:border-gray-700 hover:border-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 active:scale-95'}
+                                                    ? 'bg-[#00FF00] text-black border-black shadow-[2px_2px_0px_black] dark:shadow-[2px_2px_0px_white] translate-x-[-2px] translate-y-[-2px] active:translate-x-0 active:translate-y-0 active:shadow-none'
+                                                    : 'bg-transparent text-gray-400 border-gray-300 dark:border-gray-700 hover:border-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 active:scale-95'}
                                             `}
-                                                >
-                                                    Concluído
-                                                    {isDone && <span className="absolute top-1 right-1 size-1.5 bg-black rounded-full"></span>}
-                                                </button>
+                                        >
+                                            Concluído
+                                            {isDone && <span className="absolute top-1 right-1 size-1.5 bg-black rounded-full"></span>}
+                                        </button>
 
-                                                {/* ATRASADO ALERT (Read Only) */}
-                                                <div
-                                                    className={`
+                                        {/* ATRASADO ALERT (Read Only) */}
+                                        <div
+                                            className={`
                                                 relative h-10 border-2 font-black uppercase text-[10px] md:text-xs tracking-wider transition-all duration-200 flex items-center justify-center cursor-default
                                                 ${isLate
-                                                            ? 'bg-[#FF0000] text-white border-black shadow-[2px_2px_0px_black] dark:shadow-[2px_2px_0px_white] translate-x-[-2px] translate-y-[-2px] animate-pulse'
-                                                            : 'bg-transparent text-gray-300 border-gray-200 dark:border-gray-800 opacity-50'}
+                                                    ? 'bg-[#FF0000] text-white border-black shadow-[2px_2px_0px_black] dark:shadow-[2px_2px_0px_white] translate-x-[-2px] translate-y-[-2px] animate-pulse'
+                                                    : 'bg-transparent text-gray-300 border-gray-200 dark:border-gray-800 opacity-50'}
                                             `}
-                                                    title="Automático: O sistema detectou atraso na entrega"
-                                                >
-                                                    Atrasado
-                                                    {isLate && <span className="absolute top-1 right-1 size-1.5 bg-white rounded-full animate-ping"></span>}
-                                                </div>
-
-                                            </div>
+                                            title="Automático: O sistema detectou atraso na entrega"
+                                        >
+                                            Atrasado
+                                            {isLate && <span className="absolute top-1 right-1 size-1.5 bg-white rounded-full animate-ping"></span>}
                                         </div>
+
                                     </div>
                                 </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
+    </div>
+        </div >
     );
 };
