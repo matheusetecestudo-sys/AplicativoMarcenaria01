@@ -65,6 +65,12 @@ export const ResetPassword: React.FC = () => {
                         </p>
                     </div>
 
+                    {!isAuthenticated && (
+                        <div className="mb-6 p-4 bg-yellow-100 dark:bg-yellow-900/20 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-500 text-xs font-bold animate-pulse">
+                            Verificando sessão de segurança... Aguarde um momento.
+                        </div>
+                    )}
+
                     {message && (
                         <div className={`mb-6 p-3 text-xs font-black uppercase tracking-wide border-l-4 animate-fade-in-up
                             ${message.type === 'error' ? 'bg-red-50 dark:bg-red-900/20 border-red-500 text-red-600' : 'bg-green-50 dark:bg-green-900/20 border-green-500 text-green-600'}

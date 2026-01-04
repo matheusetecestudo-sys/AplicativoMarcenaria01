@@ -303,7 +303,7 @@ export const Orders: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:h-full h-auto pb-8 items-start">
 
             {/* LEFT COLUMN: ORDER BUILDER (PDV Style) - Sticky on Desktop */}
-            <div className={`lg:col-span-5 flex flex-col lg:h-[calc(100vh-8rem)] ${isBuilderExpanded ? 'h-[85vh]' : 'h-auto'} lg:sticky lg:top-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_#0000FF] transition-all relative`}>
+            <div className={`lg:col-span-5 flex flex-col lg:h-[calc(100vh-10rem)] ${isBuilderExpanded ? 'h-[85vh]' : 'h-auto'} lg:sticky lg:top-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_#0000FF] transition-all relative`}>
 
                 {/* 1. COMPACT HEADER (Client Info) */}
                 <div className="p-5 border-b-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] shrink-0 flex justify-between items-start">
@@ -479,7 +479,7 @@ export const Orders: React.FC = () => {
                     </div>
 
                     {/* 4. FOOTER (Total & Confirm) - Always visible in sticky container */}
-                    <div className="p-5 bg-white dark:bg-[#1A1A1A] border-t-4 border-black dark:border-white shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] z-20 shrink-0">
+                    <div className="p-5 bg-white dark:bg-[#1A1A1A] border-t-4 border-black dark:border-white shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] z-50 shrink-0">
                         {/* Shipping Input */}
                         <div className="flex justify-between items-center mb-3">
                             <label className="text-xs font-bold uppercase text-gray-500 tracking-widest flex items-center gap-1">
