@@ -622,9 +622,9 @@ export const Orders: React.FC = () => {
 
                                     <div className="p-4">
                                         {/* Order Items Summary */}
-                                        <div className="mb-6 space-y-2">
+                                        <div className="mb-4 space-y-2 border-b-2 border-dashed border-gray-200 dark:border-gray-800 pb-2">
                                             {order.items.map((item, idx) => (
-                                                <div key={idx} className="flex justify-between text-sm border-b border-dashed border-gray-300 dark:border-gray-700 pb-1">
+                                                <div key={idx} className="flex justify-between text-sm">
                                                     <span className="text-gray-800 dark:text-gray-200 font-bold uppercase flex items-center gap-2">
                                                         <span className="size-2 bg-primary"></span>
                                                         {item.quantity}x {item.productName}
@@ -634,17 +634,41 @@ export const Orders: React.FC = () => {
                                             ))}
 
                                             {order.shippingCost > 0 && (
-                                                <div className="flex justify-between text-sm border-b border-dashed border-gray-300 dark:border-gray-700 pb-1 pt-1">
-                                                    <span className="text-gray-500 font-bold uppercase flex items-center gap-2">
+                                                <div className="flex justify-between text-sm py-1 text-gray-400">
+                                                    <span className="font-bold uppercase flex items-center gap-2">
                                                         <span className="material-symbols-outlined text-sm">local_shipping</span>
                                                         Frete
                                                     </span>
-                                                    <span className="text-gray-500 font-mono font-bold">R$ {order.shippingCost.toFixed(2)}</span>
+                                                    <span className="font-mono font-bold">R$ {order.shippingCost.toFixed(2)}</span>
                                                 </div>
                                             )}
+                                        </div>
 
-                                            <div className="flex justify-end pt-2">
-                                                <span className="font-black text-xl text-primary">TOTAL: R$ {order.totalValue.toFixed(2)}</span>
+                                        {/* Financial Summary Block */}
+                                        <div className="grid grid-cols-2 gap-4 mb-4 bg-gray-50 dark:bg-black p-2 border-l-4 border-black dark:border-gray-700">
+                                            <div className="flex flex-col">
+                                                <span className="text-[9px] font-black uppercase text-gray-400">Total Pedido</span>
+                                                <span className="font-black text-xl text-primary leading-none">R$ {order.totalValue.toFixed(2)}</span>
+                                            </div>
+                                            <div className="flex flex-col items-end">
+                                                {/* Calculate Profit on the fly for display */}
+                                                {(() => {
+                                                    const totalCost = order.items.reduce((acc, item) => acc + ((item.unitCost || 0) * item.quantity), 0);
+                                                    const profit = order.totalValue - (order.shippingCost || 0) - totalCost;
+                                                    const margin = order.totalValue > 0 ? (profit / order.totalValue) * 100 : 0;
+
+                                                    return (
+                                                        <>
+                                                            <span className="text-[9px] font-black uppercase text-gray-400">Lucro Líquido</span>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="font-mono font-bold text-sm text-green-600 dark:text-green-500">R$ {profit.toFixed(2)}</span>
+                                                                <span className="text-[8px] font-black bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1 rounded">
+                                                                    {margin.toFixed(0)}%
+                                                                </span>
+                                                            </div>
+                                                        </>
+                                                    );
+                                                })()}
                                             </div>
                                         </div>
 

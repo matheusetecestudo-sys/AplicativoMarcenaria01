@@ -229,18 +229,41 @@ export const Products: React.FC = () => {
 
                             {/* Info Bar */}
                             {/* Info Bar */}
-                            <div className="bg-gray-50 dark:bg-black p-4 border-b-4 border-black dark:border-white flex justify-between items-center transition-colors group-hover:bg-white dark:group-hover:bg-[#111]">
+                            <div className="bg-gray-50 dark:bg-black p-3 border-b-4 border-black dark:border-white grid grid-cols-2 gap-2 transition-colors group-hover:bg-white dark:group-hover:bg-[#111]">
+                                {/* Preço / Venda */}
                                 <div className="flex flex-col">
-                                    <span className="text-[10px] font-black uppercase text-gray-400">Preço</span>
-                                    <div className="flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-primary text-sm">sell</span>
-                                        <span className="text-xl font-black text-primary font-mono tracking-tighter">R$ {(product.price || 0).toFixed(2)}</span>
-                                    </div>
-                                    <span className="text-[9px] font-mono text-gray-400 mt-1">Custo: R$ {product.cost.toFixed(2)}</span>
+                                    <span className="text-[9px] font-black uppercase text-gray-400">Venda</span>
+                                    <span className="text-lg font-black text-primary font-mono tracking-tighter">R$ {(product.price || 0).toFixed(2)}</span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-gray-400 text-base">inventory</span>
-                                    <span className="text-base font-black text-black dark:text-white font-mono">{product.stock} UN</span>
+
+                                {/* Estoque (Movido para alinhar melhor) */}
+                                <div className="flex flex-col items-end">
+                                    <span className="text-[9px] font-black uppercase text-gray-400">Estoque</span>
+                                    <div className="flex items-center gap-1">
+                                        <span className="text-lg font-black text-black dark:text-white font-mono">{product.stock}</span>
+                                        <span className="text-[9px] font-bold uppercase">UN</span>
+                                    </div>
+                                </div>
+
+                                {/* Custo e Lucro - Linha de Baixo */}
+                                <div className="col-span-2 grid grid-cols-2 gap-2 pt-2 border-t border-dashed border-gray-300 dark:border-gray-800">
+                                    <div className="flex flex-col">
+                                        <span className="text-[8px] font-black uppercase text-gray-400">Custo</span>
+                                        <span className="text-xs font-bold font-mono text-gray-600 dark:text-gray-400">R$ {product.cost.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex flex-col items-end">
+                                        <span className="text-[8px] font-black uppercase text-gray-400">Lucro Estimado</span>
+                                        <div className="flex items-center gap-1">
+                                            <span className="text-xs font-bold font-mono text-green-600 dark:text-green-500">
+                                                R$ {((product.price || 0) - product.cost).toFixed(2)}
+                                            </span>
+                                            {(product.price || 0) > 0 && (
+                                                <span className="text-[8px] font-black bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1 rounded">
+                                                    {(((product.price || 0) - product.cost) / (product.price || 1) * 100).toFixed(0)}%
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -308,7 +331,7 @@ export const Products: React.FC = () => {
                                     <label className="text-[10px] font-black uppercase text-primary tracking-widest">Imagem do Produto</label>
                                     <div
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="relative w-full aspect-video sm:aspect-square border-4 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-black/40 flex items-center justify-center cursor-pointer group hover:border-primary transition-all overflow-hidden"
+                                        className="relative w-full h-48 md:h-56 border-4 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-black/40 flex items-center justify-center cursor-pointer group hover:border-primary transition-all overflow-hidden"
                                     >
                                         {formData.image ? (
                                             <img src={formData.image} alt="Preview" className="w-full h-full object-contain p-2" />
