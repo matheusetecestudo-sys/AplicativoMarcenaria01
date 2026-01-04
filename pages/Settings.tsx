@@ -476,21 +476,21 @@ export const Settings: React.FC = () => {
                         <span className="material-symbols-outlined text-black dark:text-white text-2xl">database</span>
                         <h2 className="text-xl font-black uppercase text-black dark:text-white">Gestão de Dados</h2>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <button onClick={exportData} className="py-3 px-2 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2">
-                            <span className="material-symbols-outlined">download</span>
-                            <span className="text-[10px] md:text-xs tracking-widest text-center">Backup (JSON)</span>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onClick={exportData} className="py-4 px-3 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-xl">download</span>
+                            <span className="text-[10px] tracking-widest text-center">Backup (JSON)</span>
                         </button>
                         <div className="relative">
                             <input type="file" accept=".json" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-                            <button onClick={() => fileInputRef.current?.click()} className="w-full h-full py-3 px-2 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center gap-2">
-                                <span className="material-symbols-outlined">upload</span>
-                                <span className="text-[10px] md:text-xs tracking-widest text-center">Restaurar</span>
+                            <button onClick={() => fileInputRef.current?.click()} className="w-full py-4 px-3 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all brutal-btn flex flex-col items-center justify-center gap-2">
+                                <span className="material-symbols-outlined text-xl">upload</span>
+                                <span className="text-[10px] tracking-widest text-center">Restaurar</span>
                             </button>
                         </div>
-                        <button onClick={handleReset} className="py-3 px-2 border-2 border-red-500 bg-red-50 dark:bg-red-900/10 text-red-600 font-bold uppercase hover:bg-red-500 hover:text-white transition-all brutal-btn flex flex-col items-center gap-2">
-                            <span className="material-symbols-outlined">delete_forever</span>
-                            <span className="text-[10px] md:text-xs tracking-widest text-center">Resetar Fábrica</span>
+                        <button onClick={handleReset} className="py-4 px-3 border-2 border-red-500 bg-red-50 dark:bg-red-900/10 text-red-600 font-bold uppercase hover:bg-red-500 hover:text-white transition-all brutal-btn flex flex-col items-center justify-center gap-2 focus:ring-4 focus:ring-red-500/20">
+                            <span className="material-symbols-outlined text-xl">delete_forever</span>
+                            <span className="text-[10px] tracking-widest text-center">Resetar Fábrica</span>
                         </button>
                     </div>
                 </div>

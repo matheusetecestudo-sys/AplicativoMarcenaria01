@@ -215,19 +215,34 @@ export const Stock: React.FC = () => {
                         Análise de Níveis de Insumo
                     </span>
                 </div>
-                <div className="h-[300px] w-full p-2 md:p-6">
+                <div className="h-[350px] md:h-[300px] w-full p-2 md:p-6">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                             data={materialData}
-                            margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
+                            margin={{ top: 20, right: 10, left: -25, bottom: 40 }}
                             barGap={0}
                         >
-                            <XAxis dataKey="name" stroke={chartAxisColor} tick={{ fill: chartTickColor, fontSize: 9, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
-                            <YAxis stroke={chartAxisColor} tick={{ fill: chartTickColor, fontSize: 9, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
+                            <XAxis
+                                dataKey="name"
+                                stroke={chartAxisColor}
+                                tick={{ fill: chartTickColor, fontSize: 8, fontWeight: 'bold' }}
+                                interval={0}
+                                angle={-45}
+                                textAnchor="end"
+                                axisLine={false}
+                                tickLine={false}
+                            />
+                            <YAxis
+                                stroke={chartAxisColor}
+                                tick={{ fill: chartTickColor, fontSize: 8, fontWeight: 'bold' }}
+                                axisLine={false}
+                                tickLine={false}
+                            />
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
-                            <Legend wrapperStyle={{ fontSize: '9px', fontWeight: 'bold', textTransform: 'uppercase', paddingTop: '10px' }} />
-                            <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={window.innerWidth < 768 ? 20 : 30} radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={window.innerWidth < 768 ? 6 : 10} radius={[4, 4, 0, 0]} fillOpacity={0.5} />
+                            <Legend verticalAlign="top" wrapperStyle={{ fontSize: '8px', fontWeight: 'bold', textTransform: 'uppercase', paddingBottom: '20px' }} />
+                            <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={window.innerWidth < 768 ? 15 : 30} radius={[2, 2, 0, 0]} />
+                            <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={window.innerWidth < 768 ? 5 : 10} radius={[2, 2, 0, 0]} fillOpacity={0.5} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

@@ -159,15 +159,17 @@ export const Materials: React.FC = () => {
                 </div>
             </div>
 
-            {/* 3. HIGH DENSITY TABLE - IMPROVED READABILITY */}
-            <div className="w-full overflow-x-auto border-4 border-black dark:border-white bg-white dark:bg-[#0A0A0A] shadow-lg">
-                <table className="w-full text-left min-w-[900px] border-collapse">
+            {/* 3. RESPONSIVE VIEW: TABLE (DESKTOP) / LIST (MOBILE) */}
+            <div className="w-full border-4 border-black dark:border-white bg-white dark:bg-[#0A0A0A] shadow-lg overflow-hidden">
+
+                {/* TABLE FOR DESKTOP */}
+                <table className="hidden lg:table w-full text-left border-collapse">
                     <thead className="bg-black dark:bg-white text-white dark:text-black">
                         <tr>
                             <th className="p-4 text-[11px] font-black uppercase w-[30%] tracking-widest border-r border-gray-700 dark:border-gray-300">Especificação Técnica</th>
                             <th className="p-4 text-[11px] font-black uppercase w-[15%] tracking-widest border-r border-gray-700 dark:border-gray-300 text-right">Custo / UN</th>
-                            <th className="p-4 text-[11px] font-black uppercase w-[35%] tracking-widest border-r border-gray-700 dark:border-gray-300">Nível de Estoque</th>
-                            <th className="p-4 text-[11px] font-black uppercase w-[10%] text-center tracking-widest border-r border-gray-700 dark:border-gray-300">Estado</th>
+                            <th className="p-4 text-[11px] font-black uppercase w-[30%] tracking-widest border-r border-gray-700 dark:border-gray-300">Nível de Estoque</th>
+                            <th className="p-4 text-[11px] font-black uppercase w-[15%] text-center tracking-widest border-r border-gray-700 dark:border-gray-300">Estado</th>
                             <th className="p-4 text-[11px] font-black uppercase w-[10%] text-center tracking-widest">Controle</th>
                         </tr>
                     </thead>
@@ -176,103 +178,38 @@ export const Materials: React.FC = () => {
                             const percentage = Math.min((material.stock / (material.minStock * 2)) * 100, 100);
                             const isLow = material.stock <= material.minStock;
                             const isCritical = material.stock <= material.minStock / 2;
-
                             return (
-                                <tr
-                                    key={material.id}
-                                    className="hover:bg-blue-50 dark:hover:bg-white/5 transition-colors group bg-white dark:bg-[#111]"
-                                >
-                                    {/* NAME & ID */}
+                                <tr key={material.id} className="hover:bg-blue-50 dark:hover:bg-white/5 transition-colors group bg-white dark:bg-[#111]">
                                     <td className="p-5 border-r border-gray-100 dark:border-gray-800">
                                         <div className="flex flex-col gap-1">
-                                            <span className="text-base font-black text-black dark:text-white uppercase tracking-tight leading-none group-hover:text-primary transition-colors">
-                                                {material.name}
-                                            </span>
-                                            <div className="flex items-center gap-2 mt-1">
-                                                <span className="text-[10px] font-mono font-bold text-gray-400 uppercase bg-gray-100 dark:bg-black px-1.5 py-0.5 border border-gray-200 dark:border-gray-800">
-                                                    ID: {material.id.substring(0, 6).toUpperCase()}
-                                                </span>
-                                                <span className="text-[10px] font-mono font-bold text-gray-500 dark:text-gray-400">
-                                                    UN: {material.unit}
-                                                </span>
+                                            <span className="text-base font-black text-black dark:text-white uppercase tracking-tight group-hover:text-primary transition-colors">{material.name}</span>
+                                            <span className="text-[10px] font-mono font-bold text-gray-400 uppercase">ID: {material.id.substring(0, 8).toUpperCase()}</span>
+                                        </div>
+                                    </td>
+                                    <td className="p-5 text-right border-r border-gray-100 dark:border-gray-800 font-mono font-bold text-black dark:text-white">
+                                        R$ {material.costPerUnit.toFixed(2)}
+                                    </td>
+                                    <td className="p-5 border-r border-gray-100 dark:border-gray-800">
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex justify-between text-[10px] font-black uppercase text-gray-400">
+                                                <span>{material.stock} {material.unit}</span>
+                                                <span>Min: {material.minStock}</span>
+                                            </div>
+                                            <div className="w-full h-3 bg-gray-100 dark:bg-[#222] border border-black dark:border-white overflow-hidden">
+                                                <div className={`h-full transition-all duration-500 ${isCritical ? 'bg-red-500' : isLow ? 'bg-yellow-400' : 'bg-green-500'}`} style={{ width: `${percentage}%` }}></div>
                                             </div>
                                         </div>
                                     </td>
-
-                                    {/* COST */}
-                                    <td className="p-5 text-right border-r border-gray-100 dark:border-gray-800 align-middle">
-                                        <span className="text-sm font-mono font-bold text-gray-800 dark:text-gray-200 block">
-                                            R$ {material.costPerUnit.toFixed(2)}
+                                    <td className="p-5 text-center border-r border-gray-100 dark:border-gray-800">
+                                        <span className={`px-2 py-1 text-[10px] font-black uppercase border-2 
+                                            ${isCritical ? 'bg-red-500 text-white border-red-700' : isLow ? 'bg-yellow-400 text-black border-yellow-600' : 'bg-green-500 text-white border-green-700'}`}>
+                                            {isCritical ? 'Crítico' : isLow ? 'Baixo' : 'Normal'}
                                         </span>
-                                        <span className="text-[9px] text-gray-400 uppercase font-bold">Por Unidade</span>
                                     </td>
-
-                                    {/* STOCK LEVEL (Industrial Bar) */}
-                                    <td className="p-5 border-r border-gray-100 dark:border-gray-800 align-middle">
-                                        <div className="flex flex-col gap-2 w-full max-w-[280px]">
-                                            <div className="flex justify-between items-end">
-                                                <span className="text-sm font-mono font-bold text-black dark:text-white">
-                                                    {material.stock} <span className="text-xs text-gray-500">{material.unit}</span>
-                                                </span>
-                                                <span className="text-[10px] font-bold uppercase text-gray-400">
-                                                    Min: {material.minStock}
-                                                </span>
-                                            </div>
-
-                                            {/* Industrial Bar Container */}
-                                            <div className="w-full h-5 bg-gray-100 dark:bg-[#222] border-2 border-black dark:border-white relative p-[2px] overflow-hidden">
-                                                {/* Background Hatch Pattern */}
-                                                <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%)', backgroundSize: '10px 10px' }}></div>
-
-                                                {/* Fill Bar */}
-                                                <div
-                                                    className={`h-full transition-all duration-500 relative z-10
-                                                ${isCritical
-                                                            ? 'bg-[#FF0000]'
-                                                            : isLow
-                                                                ? 'bg-[#FFA500]'
-                                                                : 'bg-[#00FF00]'
-                                                        }`}
-                                                    style={{ width: `${percentage}%` }}
-                                                ></div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    {/* STATUS BADGE */}
-                                    <td className="p-5 text-center border-r border-gray-100 dark:border-gray-800 align-middle">
-                                        {isCritical ? (
-                                            <span className="inline-block px-2 py-1 bg-[#FF0000] text-white text-[10px] font-black uppercase tracking-wider border-2 border-[#990000] shadow-[2px_2px_0px_#990000]">
-                                                Crítico
-                                            </span>
-                                        ) : isLow ? (
-                                            <span className="inline-block px-2 py-1 bg-[#FFFF00] text-black text-[10px] font-black uppercase tracking-wider border-2 border-[#bbaa00] shadow-[2px_2px_0px_#bbaa00]">
-                                                Baixo
-                                            </span>
-                                        ) : (
-                                            <span className="inline-block px-2 py-1 bg-[#00FF00] text-black text-[10px] font-black uppercase tracking-wider border-2 border-[#009900] shadow-[2px_2px_0px_#009900]">
-                                                Normal
-                                            </span>
-                                        )}
-                                    </td>
-
-                                    {/* ACTIONS */}
-                                    <td className="p-5 text-center align-middle">
+                                    <td className="p-5 text-center">
                                         <div className="flex justify-center gap-2">
-                                            <button
-                                                onClick={() => openModal(material)}
-                                                className="size-9 flex items-center justify-center bg-gray-100 dark:bg-[#222] text-black dark:text-gray-300 border-2 border-transparent hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-black transition-all shadow-sm"
-                                                title="Editar Ficha"
-                                            >
-                                                <span className="material-symbols-outlined text-lg">edit_square</span>
-                                            </button>
-                                            <button
-                                                onClick={() => { if (window.confirm('Confirmar exclusão definitiva deste insumo?')) deleteMaterial(material.id) }}
-                                                className="size-9 flex items-center justify-center bg-red-50 dark:bg-red-900/10 text-red-500 border-2 border-transparent hover:border-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                                                title="Remover do Inventário"
-                                            >
-                                                <span className="material-symbols-outlined text-lg">delete</span>
-                                            </button>
+                                            <button onClick={() => openModal(material)} className="size-8 flex items-center justify-center bg-gray-100 dark:bg-black border border-black dark:border-white hover:bg-primary hover:text-white transition-all"><span className="material-symbols-outlined text-sm">edit</span></button>
+                                            <button onClick={() => { if (window.confirm('Excluir definitivo?')) deleteMaterial(material.id) }} className="size-8 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white transition-all"><span className="material-symbols-outlined text-sm">delete</span></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -280,6 +217,57 @@ export const Materials: React.FC = () => {
                         })}
                     </tbody>
                 </table>
+
+                {/* LIST FOR MOBILE */}
+                <div className="lg:hidden flex flex-col divide-y-4 divide-black dark:divide-white">
+                    {filteredMaterials.map((material) => {
+                        const isLow = material.stock <= material.minStock;
+                        const isCritical = material.stock <= material.minStock / 2;
+                        return (
+                            <div key={material.id} className="p-4 bg-white dark:bg-[#111] flex flex-col gap-4">
+                                <div className="flex justify-between items-start">
+                                    <div className="flex-1 pr-2">
+                                        <p className="text-[10px] font-black text-gray-400 uppercase">#{material.id.substring(0, 8)}</p>
+                                        <h3 className="text-lg font-black text-black dark:text-white uppercase leading-tight">{material.name}</h3>
+                                    </div>
+                                    <span className={`px-2 py-1 text-[9px] font-black uppercase border-2 shadow-[2px_2px_0px_#000]
+                                        ${isCritical ? 'bg-red-500 text-white border-red-700' : isLow ? 'bg-yellow-400 text-black border-yellow-600' : 'bg-green-500 text-white border-green-700'}`}>
+                                        {isCritical ? 'CRÍTICO' : isLow ? 'BAIXO' : 'NORMAL'}
+                                    </span>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 bg-gray-50 dark:bg-white/5 p-3 border-2 border-dashed border-gray-300 dark:border-white/10">
+                                    <div className="flex flex-col">
+                                        <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Custo Un.</span>
+                                        <span className="font-mono font-black text-black dark:text-white">R$ {material.costPerUnit.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex flex-col text-right">
+                                        <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Em Estoque</span>
+                                        <span className={`font-mono font-black ${isLow ? 'text-red-500' : 'text-black dark:text-white'}`}>
+                                            {material.stock} {material.unit}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => openModal(material)}
+                                        className="flex-1 h-12 flex items-center justify-center bg-black dark:bg-white text-white dark:text-black font-black uppercase text-xs border-2 border-black dark:border-white hover:bg-primary transition-all gap-2"
+                                    >
+                                        <span className="material-symbols-outlined text-base">edit</span>
+                                        Editar
+                                    </button>
+                                    <button
+                                        onClick={() => { if (window.confirm('Excluir definitivo?')) deleteMaterial(material.id) }}
+                                        className="size-12 flex items-center justify-center bg-red-500 text-white border-2 border-black dark:border-white shadow-[4px_4px_0px_#000]"
+                                    >
+                                        <span className="material-symbols-outlined">delete</span>
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
 
             {/* BRUTALIST MODAL (Technical Blueprint Style) */}
