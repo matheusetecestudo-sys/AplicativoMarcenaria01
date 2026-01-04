@@ -82,44 +82,50 @@ export const Stock: React.FC = () => {
 
             {/* KPI MODULES */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
-                <div className="bg-white dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 relative overflow-hidden group animate-fade-in-up stagger-1">
-                    <div className="absolute right-[-10px] top-[-10px] size-20 bg-gray-100 dark:bg-[#222] rounded-full z-0 group-hover:scale-150 transition-transform duration-500"></div>
-                    <div className="relative z-10">
-                        <div className="flex justify-between items-start mb-2">
-                            <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-500">Acabados</span>
-                            <span className="material-symbols-outlined text-primary">inventory_2</span>
+                <div className="bg-white dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] animate-fade-in-up stagger-1">
+                    <div className="flex justify-between items-start mb-4">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Produtos Acabados</span>
+                        <div className="size-10 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">
+                            <span className="material-symbols-outlined text-xl">inventory_2</span>
                         </div>
-                        <p className="text-4xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{totalProductStock}</p>
-                        <p className="text-[10px] md:text-xs font-bold uppercase text-primary mt-2">Unidades Prontas</p>
                     </div>
+                    <p className="text-5xl font-black text-black dark:text-white leading-none tracking-tighter mb-2">{totalProductStock}</p>
+                    <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800">
+                        <div className="h-full bg-primary" style={{ width: '100%' }}></div>
+                    </div>
+                    <p className="text-[10px] font-bold uppercase text-primary mt-2">Unidades em Pronta Entrega</p>
                 </div>
 
-                <div className="bg-white dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 relative overflow-hidden group animate-fade-in-up stagger-2">
-                    <div className="absolute right-[-10px] top-[-10px] size-20 bg-gray-100 dark:bg-[#222] rounded-full z-0 group-hover:scale-150 transition-transform duration-500"></div>
-                    <div className="relative z-10">
-                        <div className="flex justify-between items-start mb-2">
-                            <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-500">Insumos</span>
-                            <span className="material-symbols-outlined text-black dark:text-white">forest</span>
+                <div className="bg-white dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] animate-fade-in-up stagger-2">
+                    <div className="flex justify-between items-start mb-4">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Variedade de Insumos</span>
+                        <div className="size-10 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">
+                            <span className="material-symbols-outlined text-xl">forest</span>
                         </div>
-                        <p className="text-4xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{materials.length}</p>
-                        <p className="text-[10px] md:text-xs font-bold uppercase text-gray-500 mt-2">Tipos Cadastrados</p>
                     </div>
+                    <p className="text-5xl font-black text-black dark:text-white leading-none tracking-tighter mb-2">{materials.length}</p>
+                    <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800">
+                        <div className="h-full bg-black dark:bg-white" style={{ width: '100%' }}></div>
+                    </div>
+                    <p className="text-[10px] font-bold uppercase text-gray-500 mt-2">Matérias-Primas Ativas</p>
                 </div>
 
-                <div className={`bg-white dark:bg-[#111] border-4 ${lowStockCount > 0 ? 'border-red-500' : 'border-green-500'} p-4 md:p-6 relative overflow-hidden group animate-fade-in-up stagger-3`}>
-                    <div className={`absolute right-[-10px] top-[-10px] size-20 rounded-full z-0 group-hover:scale-150 transition-transform duration-500 ${lowStockCount > 0 ? 'bg-red-900/10' : 'bg-green-900/10'}`}></div>
-                    <div className="relative z-10">
-                        <div className="flex justify-between items-start mb-2">
-                            <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest ${lowStockCount > 0 ? 'text-red-500' : 'text-green-500'}`}>Status</span>
-                            <span className={`material-symbols-outlined ${lowStockCount > 0 ? 'text-red-500 animate-pulse' : 'text-green-500'}`}>
+                <div className={`bg-white dark:bg-[#111] border-4 ${lowStockCount > 0 ? 'border-red-500 shadow-[6px_6px_0px_0px_#EF4444]' : 'border-green-500 shadow-[6px_6px_0px_0px_#22C55E]'} p-4 md:p-6 animate-fade-in-up stagger-3`}>
+                    <div className="flex justify-between items-start mb-4">
+                        <span className={`text-[10px] font-black uppercase tracking-widest ${lowStockCount > 0 ? 'text-red-500' : 'text-green-500'}`}>Status Crítico</span>
+                        <div className={`size-10 flex items-center justify-center ${lowStockCount > 0 ? 'bg-red-500 text-white animate-pulse' : 'bg-green-500 text-white'}`}>
+                            <span className="material-symbols-outlined text-xl">
                                 {lowStockCount > 0 ? 'warning' : 'check_circle'}
                             </span>
                         </div>
-                        <p className={`text-4xl md:text-5xl font-black leading-none tracking-tighter ${lowStockCount > 0 ? 'text-red-500' : 'text-green-500'}`}>{lowStockCount}</p>
-                        <p className={`text-[10px] md:text-xs font-bold uppercase mt-2 ${lowStockCount > 0 ? 'text-red-500' : 'text-green-500'}`}>
-                            {lowStockCount > 0 ? 'Itens Críticos' : 'Operação Normal'}
-                        </p>
                     </div>
+                    <p className={`text-5xl font-black leading-none tracking-tighter mb-2 ${lowStockCount > 0 ? 'text-red-500' : 'text-green-500'}`}>{lowStockCount}</p>
+                    <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800">
+                        <div className={`h-full ${lowStockCount > 0 ? 'bg-red-500' : 'bg-green-500'}`} style={{ width: '100%' }}></div>
+                    </div>
+                    <p className={`text-[10px] font-bold uppercase mt-2 ${lowStockCount > 0 ? 'text-red-500' : 'text-green-500'}`}>
+                        {lowStockCount > 0 ? 'Reposição Necessária' : 'Estoque Saudável'}
+                    </p>
                 </div>
             </div>
 
@@ -215,36 +221,39 @@ export const Stock: React.FC = () => {
                         Análise de Níveis de Insumo
                     </span>
                 </div>
-                <div className="h-[350px] md:h-[300px] w-full p-2 md:p-6">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart
-                            data={materialData}
-                            margin={{ top: 20, right: 10, left: -25, bottom: 40 }}
-                            barGap={0}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
-                            <XAxis
-                                dataKey="name"
-                                stroke={chartAxisColor}
-                                tick={{ fill: chartTickColor, fontSize: 8, fontWeight: 'bold' }}
-                                interval={0}
-                                angle={-45}
-                                textAnchor="end"
-                                axisLine={false}
-                                tickLine={false}
-                            />
-                            <YAxis
-                                stroke={chartAxisColor}
-                                tick={{ fill: chartTickColor, fontSize: 8, fontWeight: 'bold' }}
-                                axisLine={false}
-                                tickLine={false}
-                            />
-                            <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
-                            <Legend verticalAlign="top" wrapperStyle={{ fontSize: '8px', fontWeight: 'bold', textTransform: 'uppercase', paddingBottom: '20px' }} />
-                            <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={30} radius={[2, 2, 0, 0]} />
-                            <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={10} radius={[2, 2, 0, 0]} fillOpacity={0.5} />
-                        </BarChart>
-                    </ResponsiveContainer>
+                <div className="min-h-[500px] md:h-[400px] w-full p-4 md:p-8 overflow-hidden">
+                    <div className="h-full w-full border-4 border-black dark:border-white p-2 md:p-4 bg-gray-50 dark:bg-black/20 shadow-inner">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                                data={materialData}
+                                margin={{ top: 20, right: 30, left: -20, bottom: 120 }}
+                                barGap={0}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#333' : '#e5e5e5'} />
+                                <XAxis
+                                    dataKey="name"
+                                    stroke={chartAxisColor}
+                                    tick={{ fill: chartTickColor, fontSize: 11, fontWeight: '900' }}
+                                    interval={0}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    height={120}
+                                    axisLine={{ strokeWidth: 4 }}
+                                    tickLine={false}
+                                />
+                                <YAxis
+                                    stroke={chartAxisColor}
+                                    tick={{ fill: chartTickColor, fontSize: 10, fontWeight: 'bold' }}
+                                    axisLine={false}
+                                    tickLine={false}
+                                />
+                                <Tooltip content={<CustomTooltip />} cursor={{ fill: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
+                                <Legend verticalAlign="top" align="right" wrapperStyle={{ fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', paddingBottom: '40px' }} />
+                                <Bar dataKey="atual" name="ESTOQUE ATUAL" fill="#00FFFF" barSize={window.innerWidth < 768 ? 25 : 45} radius={[0, 0, 0, 0]} stroke={isDark ? '#FFF' : '#000'} strokeWidth={2} />
+                                <Bar dataKey="minimo" name="NÍVEL MÍNIMO" fill="#FF0000" barSize={window.innerWidth < 768 ? 10 : 15} radius={[0, 0, 0, 0]} fillOpacity={0.4} stroke="#000" strokeWidth={1} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
         </div>

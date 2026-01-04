@@ -202,114 +202,79 @@ export const Products: React.FC = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 pb-8">
                     {filteredProducts.map(product => (
-                        <div key={product.id} className="group flex flex-col bg-white dark:bg-[#1a1a1a] border-4 border-black dark:border-white hover:border-primary dark:hover:border-primary transition-all duration-300 relative overflow-hidden shadow-sm hover:shadow-[8px_8px_0px_0px_rgba(0,0,255,0.2)]">
+                        <div key={product.id} className="group flex flex-col bg-white dark:bg-[#1a1a1a] border-4 border-black dark:border-white transition-all duration-300 relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#0000FF]">
 
-                            {/* IMAGE SECTION - Big & Clear */}
-                            <div className="relative w-full aspect-[3/2] border-b-4 border-black dark:border-white bg-gray-50 dark:bg-black overflow-hidden flex flex-col justify-center">
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-full h-full object-contain p-2 filter grayscale group-hover:grayscale-0 transition-all duration-500"
-                                    onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x400/1a1a1a/FFF?text=${product.name.substring(0, 3).toUpperCase()}`; }}
-                                />
-                                {/* Stock Badge */}
-                                <div className="absolute top-3 left-3">
-                                    <div className={`px-3 py-1 border-2 shadow-md ${product.stock <= (product.minStock || 5) ? 'bg-red-600 border-white text-white animate-pulse' : 'bg-white border-black text-black'}`}>
-                                        <span className="text-[10px] font-black uppercase tracking-wider">
-                                            {product.stock <= (product.minStock || 5) ? 'Estoque Baixo' : 'Disponível'}
-                                        </span>
-                                    </div>
-                                </div>
-                                {/* ID Badge */}
-                                <div className="absolute top-3 right-3">
-                                    <div className="bg-black/80 dark:bg-white/80 backdrop-blur-sm px-2 py-0.5 border border-white/20 dark:border-black/20">
-                                        <span className="text-[9px] font-mono font-bold text-white dark:text-black">
-                                            #{product.sku || 'S/ID'}
-                                        </span>
-                                    </div>
+                            {/* 1. Header do Card Style Pedidos */}
+                            <div className="bg-black dark:bg-gray-800 p-2 border-b-2 border-black dark:border-white flex justify-between items-center">
+                                <span className="text-[9px] font-black text-white/50 uppercase tracking-tighter">SKU: {product.sku || 'S/ID'}</span>
+                                <div className={`px-2 py-0.5 text-[8px] font-black uppercase ${product.stock <= (product.minStock || 5) ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
+                                    {product.stock <= (product.minStock || 5) ? 'ALERTA' : 'ESTOQUE OK'}
                                 </div>
                             </div>
 
-                            {/* CONTENT SECTION */}
-                            <div className="p-5 flex flex-col flex-1 gap-4">
-
-                                {/* Header Info */}
-                                <div>
-                                    <h2 className="text-xl md:text-2xl font-black uppercase leading-none text-black dark:text-white mb-2 line-clamp-2">
-                                        {product.name}
-                                    </h2>
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Custo UN</span>
-                                        <span className="text-xl font-mono font-black text-primary">R$ {product.cost.toFixed(2)}</span>
-                                    </div>
+                            {/* 2. Conteúdo Visual */}
+                            <div className="relative aspect-video bg-gray-100 dark:bg-black overflow-hidden">
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="w-full h-full object-contain p-4 filter grayscale group-hover:grayscale-0 transition-all duration-500"
+                                    onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x400/1a1a1a/FFF?text=${product.name.substring(0, 3).toUpperCase()}`; }}
+                                />
+                                <div className="absolute bottom-0 right-0 bg-primary text-white px-3 py-1 font-mono font-black text-sm">
+                                    R$ {product.cost.toFixed(2)}
                                 </div>
+                            </div>
 
-                                {/* Materials Summary */}
-                                <div className="flex-1 p-3 bg-gray-50 dark:bg-black/30 border border-gray-100 dark:border-gray-800 rounded-sm">
-                                    <p className="text-[10px] font-bold uppercase text-gray-400 mb-2 flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-xs">format_list_bulleted</span>
-                                        Insumos ({product.materials.length})
+                            {/* 3. Informações */}
+                            <div className="p-4 flex-1 flex flex-col gap-3">
+                                <h2 className="text-lg font-black uppercase leading-tight text-black dark:text-white line-clamp-1">
+                                    {product.name}
+                                </h2>
+
+                                <div className="p-2 bg-gray-50 dark:bg-black/50 border-l-4 border-primary">
+                                    <p className="text-[9px] font-bold uppercase text-gray-500 mb-1 flex items-center gap-1">
+                                        <span className="material-symbols-outlined text-xs">inventory</span>
+                                        Composição
                                     </p>
-                                    <div className="text-xs font-mono text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed">
-                                        {product.materials.length > 0 ? (
-                                            <ul className="list-disc list-inside">
-                                                {product.materials.slice(0, 3).map((m, i) => {
-                                                    const [name, qty] = m.split(':');
-                                                    return (
-                                                        <li key={i} className="truncate text-[10px] md:text-xs">
-                                                            <span className="font-bold text-black dark:text-gray-200">{name}</span>
-                                                            {qty && <span className="text-gray-400 ml-1">({qty}un)</span>}
-                                                        </li>
-                                                    );
-                                                })}
-                                                {product.materials.length > 3 && <li className="italic text-[10px] opacity-70 mt-1">...mais {product.materials.length - 3} itens</li>}
-                                            </ul>
-                                        ) : (
-                                            <span className="italic opacity-50">Nenhum material cadastrado.</span>
-                                        )}
-                                    </div>
+                                    <p className="text-[10px] font-medium text-gray-600 dark:text-gray-400 line-clamp-1 italic">
+                                        {product.materials.length > 0 ? product.materials.join(', ') : 'Nenhum insumo'}
+                                    </p>
                                 </div>
+                            </div>
 
-                                {/* Controls Footer */}
-                                <div className="flex items-center justify-between pt-4 border-t-2 border-dashed border-gray-300 dark:border-gray-700 mt-2">
-
-                                    {/* Stock Adjust */}
-                                    <div className="flex flex-col gap-1">
-                                        <label className="text-[9px] font-bold uppercase text-gray-400">Estoque</label>
-                                        <div className="flex items-center gap-1">
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, -1) }}
-                                                className="size-8 flex items-center justify-center bg-gray-100 dark:bg-[#222] hover:bg-red-500 hover:text-white transition-colors border border-gray-300 dark:border-gray-600 rounded-sm"
-                                            >
-                                                <span className="material-symbols-outlined text-sm">remove</span>
-                                            </button>
-                                            <span className="w-8 text-center font-mono font-bold text-lg text-black dark:text-white">{product.stock}</span>
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, 1) }}
-                                                className="size-8 flex items-center justify-center bg-gray-100 dark:bg-[#222] hover:bg-green-500 hover:text-white transition-colors border border-gray-300 dark:border-gray-600 rounded-sm"
-                                            >
-                                                <span className="material-symbols-outlined text-sm">add</span>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {/* Actions */}
-                                    <div className="flex gap-2 self-end">
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); openModal(product); }}
-                                            className="h-10 px-3 flex items-center justify-center bg-black dark:bg-white text-white dark:text-black hover:bg-primary hover:text-white font-bold uppercase text-xs tracking-wider transition-all brutal-btn"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); if (window.confirm('Excluir?')) deleteProduct(product.id) }}
-                                            className="size-10 flex items-center justify-center border-2 border-transparent hover:border-red-500 text-gray-400 hover:text-red-500 transition-colors"
-                                        >
-                                            <span className="material-symbols-outlined">delete</span>
-                                        </button>
-                                    </div>
+                            {/* 4. Footer de Controles Profissionais */}
+                            <div className="border-t-2 border-black dark:border-white grid grid-cols-2">
+                                <div className="border-r-2 border-black dark:border-white flex items-center justify-center p-3 gap-3">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, -1) }}
+                                        className="size-10 bg-gray-100 dark:bg-black border-2 border-black dark:border-white flex items-center justify-center hover:bg-red-500 hover:text-white transition-all active:scale-95"
+                                    >
+                                        <span className="material-symbols-outlined">remove</span>
+                                    </button>
+                                    <span className="font-mono font-black text-xl">{product.stock}</span>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); updateProductStock(product.id, 1) }}
+                                        className="size-10 bg-gray-100 dark:bg-black border-2 border-black dark:border-white flex items-center justify-center hover:bg-green-500 hover:text-white transition-all active:scale-95"
+                                    >
+                                        <span className="material-symbols-outlined">add</span>
+                                    </button>
                                 </div>
-
+                                <div className="grid grid-cols-2">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); openModal(product); }}
+                                        className="bg-black dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                                        title="Editar"
+                                    >
+                                        <span className="material-symbols-outlined text-xl">edit</span>
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); deleteProduct(product.id); }}
+                                        className="bg-red-500 text-white flex items-center justify-center hover:bg-black transition-colors"
+                                        title="Excluir"
+                                    >
+                                        <span className="material-symbols-outlined text-xl">delete</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     ))}

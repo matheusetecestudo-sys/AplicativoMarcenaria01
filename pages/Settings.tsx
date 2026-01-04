@@ -471,29 +471,62 @@ export const Settings: React.FC = () => {
                 </div>
 
                 {/* 4. DATA MANAGEMENT */}
-                <div className="lg:col-span-2 bg-gray-50 dark:bg-[#111] border-4 border-black dark:border-white p-4 md:p-6 animate-fade-in-up stagger-4 mb-4">
-                    <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-200 dark:border-gray-800 pb-2">
-                        <span className="material-symbols-outlined text-black dark:text-white text-2xl">database</span>
-                        <h2 className="text-xl font-black uppercase text-black dark:text-white">Gestão de Dados</h2>
+                <div className="lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white animate-fade-in-up stagger-4 mb-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
+                    <div className="bg-black text-white p-4 flex items-center gap-3">
+                        <span className="material-symbols-outlined">database</span>
+                        <h2 className="text-sm font-black uppercase tracking-widest">Gestão de Dados Profissional</h2>
                     </div>
-                    <div className="flex flex-col md:grid md:grid-cols-3 gap-4">
-                        <button onClick={exportData} className="w-full py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase transition-all brutal-btn flex items-center justify-center gap-3">
-                            <span className="material-symbols-outlined shrink-0">download</span>
-                            <span className="text-[10px] tracking-widest uppercase">Backup dos Dados</span>
-                        </button>
 
-                        <div className="relative w-full">
-                            <input type="file" accept=".json" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-                            <button onClick={() => fileInputRef.current?.click()} className="w-full py-4 px-4 border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold uppercase transition-all brutal-btn flex items-center justify-center gap-3">
-                                <span className="material-symbols-outlined shrink-0">upload</span>
-                                <span className="text-[10px] tracking-widest uppercase">Restaurar</span>
+                    <div className="p-4 md:p-6 space-y-4">
+                        <p className="text-[10px] font-bold uppercase text-gray-500 mb-4 leading-relaxed">
+                            Mantenha o banco de dados em conformidade. Recomenda-se realizar backups semanais antes de grandes alterações.
+                        </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button
+                                onClick={exportData}
+                                className="group relative flex items-center gap-4 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-primary hover:text-white transition-all brutal-btn"
+                            >
+                                <div className="size-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-colors">
+                                    <span className="material-symbols-outlined">download</span>
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-xs font-black uppercase tracking-tight">Exportar Backup</p>
+                                    <p className="text-[9px] font-bold uppercase opacity-60">Gerar arquivo .JSON</p>
+                                </div>
                             </button>
+
+                            <div className="relative">
+                                <input type="file" accept=".json" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="w-full group relative flex items-center gap-4 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-green-500 hover:text-white transition-all brutal-btn"
+                                >
+                                    <div className="size-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center group-hover:bg-white group-hover:text-green-600 transition-colors">
+                                        <span className="material-symbols-outlined">upload</span>
+                                    </div>
+                                    <div className="text-left">
+                                        <p className="text-xs font-black uppercase tracking-tight">Importar Dados</p>
+                                        <p className="text-[9px] font-bold uppercase opacity-60">Restaurar de .JSON</p>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
 
-                        <button onClick={handleReset} className="w-full py-4 px-4 border-2 border-red-500 bg-red-50 dark:bg-red-900/10 text-red-600 font-bold uppercase hover:bg-red-500 hover:text-white transition-all brutal-btn flex items-center justify-center gap-3 focus:ring-4 focus:ring-red-500/20">
-                            <span className="material-symbols-outlined shrink-0">delete_forever</span>
-                            <span className="text-[10px] tracking-widest uppercase">Resetar Fábrica</span>
-                        </button>
+                        <div className="pt-4 mt-6 border-t-2 border-dashed border-gray-200 dark:border-gray-800">
+                            <button
+                                onClick={handleReset}
+                                className="w-full group relative flex items-center gap-4 p-4 bg-red-500 text-white border-4 border-black dark:border-white hover:bg-black hover:text-red-500 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none translate-y-[-2px] active:translate-y-0"
+                            >
+                                <div className="size-12 bg-white text-red-500 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors">
+                                    <span className="material-symbols-outlined">delete_forever</span>
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-sm font-black uppercase tracking-widest">Resetar Fábrica</p>
+                                    <p className="text-[9px] font-bold uppercase opacity-80">Apagar todo o histórico definitivamente</p>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
