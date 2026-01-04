@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
 import { supabase } from './supabaseClient';
 import { Sidebar } from './components/Sidebar';
@@ -28,10 +28,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const { settings, isAuthenticated } = useApp();
 
-  const isLoginPage = location.pathname === '/' || location.pathname === '/login';
+  const isAuthPage = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/reset-password';
 
-  // Force full width on Login page
-  if (isLoginPage || !isAuthenticated) {
+  // Force full width on Auth pages
+  if (isAuthPage || !isAuthenticated) {
     return <>{children}</>;
   }
 
@@ -79,6 +79,7 @@ const AuthListener: React.FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth Event:", event);
       if (event === 'PASSWORD_RECOVERY') {
         navigate('/reset-password');
       }
@@ -91,7 +92,7 @@ const AuthListener: React.FC = () => {
 const App: React.FC = () => {
   return (
     <AppProvider>
-      <HashRouter>
+      <BrowserRouter>
         <AuthListener />
         <Layout>
           <Routes>
@@ -108,9 +109,12 @@ const App: React.FC = () => {
             <Route path="/calculadora" element={<ProtectedRoute><Calculator /></ProtectedRoute>} />
             <Route path="/configuracoes" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             <Route path="/ajuda" element={<ProtectedRoute><Help /></ProtectedRoute>} />
+
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Layout>
-      </HashRouter>
+      </BrowserRouter>
     </AppProvider>
   );
 };

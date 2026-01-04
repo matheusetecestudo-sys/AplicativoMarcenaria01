@@ -159,21 +159,21 @@ export const Orders: React.FC = () => {
     const [selectedProductId, setSelectedProductId] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [customUnitPrice, setCustomUnitPrice] = useState<number | ''>('');
-    const [currentMargin, setCurrentMargin] = useState(50); // Default 50% profit margin
 
     // Layout State (Mobile)
     const [isBuilderExpanded, setIsBuilderExpanded] = useState(true);
 
-    // Auto-update price when product or margin changes
+    // Auto-update price when product changes
     useEffect(() => {
         if (selectedProductId) {
             const product = products.find(p => p.id === selectedProductId);
             if (product) {
-                const calculatedPrice = product.cost * (1 + currentMargin / 100);
+                // Default to +50% margin like before
+                const calculatedPrice = product.cost * 1.5;
                 setCustomUnitPrice(Number(calculatedPrice.toFixed(2)));
             }
         }
-    }, [selectedProductId, currentMargin, products]);
+    }, [selectedProductId, products]);
 
     const addItemToCart = () => {
         if (!selectedProductId || quantity <= 0) return;
@@ -400,17 +400,8 @@ export const Orders: React.FC = () => {
                         </div>
 
                         <div className="flex gap-2">
-                            <div className="w-24">
-                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Margem %</span>
-                                <input
-                                    type="number"
-                                    className="w-full h-10 bg-gray-900 text-primary px-2 font-black border-2 border-primary focus:outline-none text-xs text-center"
-                                    value={currentMargin}
-                                    onChange={e => setCurrentMargin(parseFloat(e.target.value) || 0)}
-                                />
-                            </div>
                             <div className="flex-1">
-                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Preço Sugerido (R$)</span>
+                                <span className="text-[9px] font-bold uppercase text-white/50 block mb-1">Preço Unitário (R$)</span>
                                 <input
                                     type="number"
                                     step="0.01"

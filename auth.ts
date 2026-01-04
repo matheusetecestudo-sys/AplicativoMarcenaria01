@@ -49,7 +49,7 @@ export const loginWithGitHub = async () => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'github',
             options: {
-                redirectTo: `${window.location.origin}/#/dashboard`,
+                redirectTo: `${window.location.origin}/dashboard`,
             }
         });
 
@@ -121,7 +121,7 @@ export const resetPassword = async (email: string) => {
         // Para HashRouter, o Supabase anexa os tokens após a URL. 
         // Redirecionar para o root é o mais seguro, e o AuthListener no App.tsx cuidará do evento.
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.origin}/`,
+            redirectTo: `${window.location.origin}/reset-password`,
         });
 
         if (error) return { error };

@@ -25,6 +25,7 @@ export interface Product {
   sku: string;
   materials: string[];
   cost: number;
+  price: number; // Preço de venda
   laborCost?: number; // Custo de mão de obra (opcional)
   stock: number;
   minStock: number;
