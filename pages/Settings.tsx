@@ -263,6 +263,66 @@ export const Settings: React.FC = () => {
         if (printWindow) { printWindow.document.write(reportContent); printWindow.document.close(); setTimeout(() => { printWindow.print(); }, 500); }
     };
 
+    // --- EXPORT HELPER ---
+    const downloadXLS = (fileName: string, title: string, headers: string[], rows: (string | number)[][]) => {
+        const tableContent = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+                <meta charset="UTF-8">
+                <style>
+                    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 11pt; color: #333; }
+                    table { border-collapse: collapse; width: 100%; }
+                    th { 
+                        background-color: #f8f9fa; 
+                        color: #444; 
+                        font-weight: 600; 
+                        padding: 12px 15px; 
+                        border-bottom: 2px solid #ddd; 
+                        text-align: left; 
+                        text-transform: uppercase;
+                        font-size: 10pt;
+                    }
+                    td { 
+                        padding: 10px 15px; 
+                        border-bottom: 1px solid #eee; 
+                        vertical-align: middle; 
+                    }
+                    tr:nth-child(even) { background-color: #ffffff; }
+                    tr:hover { background-color: #fcfcfc; }
+                    .title { 
+                        font-size: 20px; 
+                        font-weight: 300; 
+                        margin-bottom: 20px; 
+                        color: #000;
+                        padding-bottom: 10px;
+                        border-bottom: 4px solid #000;
+                        display: inline-block;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="title">${title}</div>
+                <br><br>
+                <table>
+                    <thead>
+                        <tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>
+                        ${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `;
+
+        const blob = new Blob([tableContent], { type: 'application/vnd.ms-excel' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${fileName}-${new Date().toISOString().split('T')[0]}.xls`;
+        a.click();
+    };
+
     const isDark = settings.appearance.theme === 'Escuro';
 
     return (
@@ -434,89 +494,121 @@ export const Settings: React.FC = () => {
                     </div>
                 </div>
 
-                {/* 4. DATA MANAGEMENT */}
+                {/* 4. EXCEL EXPORT */}
                 <div className="lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white animate-fade-in-up stagger-4 mb-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
                     <div className="bg-black text-white p-4 flex items-center gap-3">
                         <span className="material-symbols-outlined">table_view</span>
-                        <h2 className="text-sm font-black uppercase tracking-widest">Exportação de Dados (Excel/CSV)</h2>
+                        <h2 className="text-sm font-black uppercase tracking-widest">Relatórios em Planilha (Excel)</h2>
                     </div>
 
                     <div className="p-4 md:p-6 space-y-4">
                         <p className="text-[10px] font-bold uppercase text-gray-500 mb-4 leading-relaxed">
-                            Baixe suas informações em formato de planilha para análise externa.
+                            Baixe suas informações formatadas para Excel (XLS) com suporte a cores e organização visual.
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <button
                                 onClick={() => {
-                                    const csvHeader = "ID,Cliente,Data Criacao,Prazo,Status,Canal,Total,Itens\n";
-                                    const csvRows = orders.map(o => {
-                                        const itemsStr = o.items.map(i => `${i.quantity}x ${i.productName}`).join('; ');
-                                        return `${o.id},"${o.client}",${o.createdAt},${o.deadline},${o.status},${o.origin},${o.totalValue},"${itemsStr}"`;
-                                    }).join("\n");
-                                    const blob = new Blob([csvHeader + csvRows], { type: 'text/csv' });
-                                    const url = URL.createObjectURL(blob);
-                                    const a = document.createElement('a');
-                                    a.href = url;
-                                    a.download = `pedidos-${new Date().toISOString().split('T')[0]}.csv`;
-                                    a.click();
+                                    const headers = ["ID", "Cliente", "Data", "Status", "Canal", "Faturamento", "Custo Envio", "Itens"];
+                                    const rows = orders.map(o => [
+                                        o.id,
+                                        o.client,
+                                        new Date(o.createdAt).toLocaleDateString(),
+                                        o.status,
+                                        o.origin,
+                                        `R$ ${o.totalValue.toFixed(2)}`,
+                                        `R$ ${o.shippingCost?.toFixed(2) || '0.00'}`,
+                                        o.items.map(i => `${i.quantity}x ${i.productName}`).join(', ')
+                                    ]);
+                                    downloadXLS("relatorio-pedidos", "Relatório de Pedidos de Venda", headers, rows);
                                 }}
-                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-blue-500 hover:text-white transition-all brutal-btn"
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-green-600 hover:text-white transition-all brutal-btn"
                             >
-                                <span className="material-symbols-outlined text-3xl">shopping_cart</span>
-                                <span className="text-xs font-black uppercase">Pedidos.csv</span>
+                                <span className="material-symbols-outlined text-3xl">description</span>
+                                <span className="text-xs font-black uppercase">Pedidos (.xls)</span>
                             </button>
 
                             <button
                                 onClick={() => {
-                                    const csvHeader = "ID,Produto,SKU,Custo,Preco Venda,Estoque\n";
-                                    const csvRows = products.map(p => {
-                                        return `${p.id},"${p.name}","${p.sku}",${p.cost},${p.price},${p.stock}`;
-                                    }).join("\n");
-                                    const blob = new Blob([csvHeader + csvRows], { type: 'text/csv' });
-                                    const url = URL.createObjectURL(blob);
-                                    const a = document.createElement('a');
-                                    a.href = url;
-                                    a.download = `produtos-${new Date().toISOString().split('T')[0]}.csv`;
-                                    a.click();
+                                    const headers = ["ID", "Produto", "SKU", "Custo Prod.", "Preço Venda", "Margem", "Estoque"];
+                                    const rows = products.map(p => {
+                                        const margin = p.price > 0 ? ((p.price - p.cost) / p.price * 100).toFixed(1) + '%' : '0%';
+                                        return [
+                                            p.id,
+                                            p.name,
+                                            p.sku || '-',
+                                            `R$ ${p.cost.toFixed(2)}`,
+                                            `R$ ${p.price.toFixed(2)}`,
+                                            margin,
+                                            p.stock
+                                        ];
+                                    });
+                                    downloadXLS("relatorio-produtos", "Inventário de Produtos", headers, rows);
                                 }}
-                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-purple-500 hover:text-white transition-all brutal-btn"
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-green-600 hover:text-white transition-all brutal-btn"
                             >
                                 <span className="material-symbols-outlined text-3xl">inventory_2</span>
-                                <span className="text-xs font-black uppercase">Produtos.csv</span>
+                                <span className="text-xs font-black uppercase">Produtos (.xls)</span>
                             </button>
 
                             <button
                                 onClick={() => {
-                                    const csvHeader = "ID,Material,Unidade,Custo Unit,Estoque,Minimo\n";
-                                    const csvRows = materials.map(m => {
-                                        return `${m.id},"${m.name}","${m.unit}",${m.costPerUnit},${m.stock},${m.minStock}`;
-                                    }).join("\n");
-                                    const blob = new Blob([csvHeader + csvRows], { type: 'text/csv' });
-                                    const url = URL.createObjectURL(blob);
-                                    const a = document.createElement('a');
-                                    a.href = url;
-                                    a.download = `materiais-${new Date().toISOString().split('T')[0]}.csv`;
-                                    a.click();
+                                    const headers = ["ID", "Insumo", "Unidade", "Custo/Unid", "Em Estoque", "Estoque Mín.", "Status"];
+                                    const rows = materials.map(m => {
+                                        const status = m.stock <= m.minStock ? "BAIXO" : "OK";
+                                        return [
+                                            m.id,
+                                            m.name,
+                                            m.unit,
+                                            `R$ ${m.costPerUnit.toFixed(2)}`,
+                                            m.stock,
+                                            m.minStock,
+                                            status
+                                        ];
+                                    });
+                                    downloadXLS("relatorio-insumos", "Controle de Materiais e Insumos", headers, rows);
                                 }}
-                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-orange-500 hover:text-white transition-all brutal-btn"
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-green-600 hover:text-white transition-all brutal-btn"
                             >
                                 <span className="material-symbols-outlined text-3xl">construction</span>
-                                <span className="text-xs font-black uppercase">Materiais.csv</span>
+                                <span className="text-xs font-black uppercase">Materiais (.xls)</span>
                             </button>
                         </div>
 
                         <div className="pt-4 mt-6 border-t-2 border-dashed border-gray-200 dark:border-gray-800">
                             <button
-                                onClick={handleReset}
-                                className="w-full group relative flex items-center gap-4 p-4 bg-red-500 text-white border-4 border-black dark:border-white hover:bg-black hover:text-red-500 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none translate-y-[-2px] active:translate-y-0"
+                                onClick={async () => {
+                                    setIsSyncing(true);
+                                    await recalculateAllProductCosts();
+                                    setIsSyncing(false);
+                                    alert("Custos de produtos sincronizados com sucesso!");
+                                }}
+                                disabled={isSyncing}
+                                className={`w-full group relative flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/10 border-2 border-blue-500 hover:bg-blue-500 hover:text-white transition-all brutal-btn ${isSyncing ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
-                                <div className="size-12 bg-white text-red-500 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors">
+                                <div className="size-12 bg-blue-500 text-white flex items-center justify-center group-hover:bg-white group-hover:text-blue-500 transition-colors">
+                                    <span className={`material-symbols-outlined ${isSyncing ? 'animate-spin' : ''}`}>
+                                        {isSyncing ? 'sync' : 'calculate'}
+                                    </span>
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-xs font-black uppercase tracking-tight">Recalcular e Sincronizar Custos</p>
+                                    <p className="text-[9px] font-bold uppercase opacity-60">Atualiza preços baseados nos insumos</p>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div className="pt-2">
+                            <button
+                                onClick={handleReset}
+                                className="w-full group relative flex items-center gap-4 p-4 bg-red-400/10 border-2 border-red-500 hover:bg-red-500 hover:text-white transition-all brutal-btn"
+                            >
+                                <div className="size-12 bg-transparent text-red-500 flex items-center justify-center group-hover:text-white transition-colors">
                                     <span className="material-symbols-outlined">delete_forever</span>
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-sm font-black uppercase tracking-widest">Resetar Fábrica</p>
-                                    <p className="text-[9px] font-bold uppercase opacity-80">Apagar todo o histórico definitivamente</p>
+                                    <p className="text-xs font-black uppercase tracking-tight">Resetar Sistema</p>
+                                    <p className="text-[9px] font-bold uppercase opacity-60">Apagar todos os dados locais e nuvem</p>
                                 </div>
                             </button>
                         </div>
