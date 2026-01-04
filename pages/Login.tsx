@@ -96,113 +96,144 @@ export const Login: React.FC = () => {
     };
 
     return (
-        <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4 bg-gray-100 dark:bg-black overflow-y-auto transition-colors duration-300">
+        <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4 bg-background-light dark:bg-black overflow-hidden selection:bg-primary selection:text-white">
 
-            {/* BACKGROUND PATTERN */}
-            <div className="absolute inset-0 z-0 opacity-10 dark:opacity-20 pointer-events-none"
-                style={{ backgroundImage: 'radial-gradient(#0000FF 1px, transparent 1px)', backgroundSize: '24px 24px' }}>
+            {/* DYNAMIC MESH GRADIENT BACKGROUND */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 blur-[120px] rounded-full animate-pulse"></div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[150px] rounded-full animate-pulse stagger-2"></div>
+                <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-blue-400/10 blur-[100px] rounded-full animate-pulse stagger-1"></div>
             </div>
 
-            <div className="relative z-10 w-full max-w-md animate-fade-in-up py-8">
+            {/* GRAIN OVERLAY */}
+            <div className="absolute inset-0 z-[1] opacity-20 pointer-events-none"
+                style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}></div>
 
-                {/* MAIN CARD */}
-                <div className="bg-white dark:bg-[#111] border-4 border-black dark:border-white shadow-[12px_12px_0px_0px_rgba(0,0,255,1)] p-8 md:p-10 relative overflow-hidden transition-all duration-300">
+            <div className="relative z-10 w-full max-w-md animate-fade-in-up">
+
+                {/* MAIN CARD: ULTRA PREMIUM GLASS */}
+                <div className="bg-white/70 dark:bg-[#0A0A0A]/80 border-4 border-black dark:border-white/10 shadow-[0_30px_100px_rgba(0,0,255,0.15)] p-8 md:p-12 relative overflow-hidden glass transition-all duration-500 hover:shadow-[0_40px_120px_rgba(0,0,255,0.25)]">
+
+                    {/* Decorative Element */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rotate-45 translate-x-16 -translate-y-16 pointer-events-none"></div>
 
                     {/* Header / Brand */}
-                    <div className="mb-6 border-b-4 border-primary pb-4">
-                        <h1 className="text-black dark:text-white text-3xl font-black uppercase tracking-tighter leading-none mb-1">
-                            {view === 'LOGIN' ? 'Acesso Local' : view === 'REGISTER' ? 'Novo Operador' : 'Recuperar Chave'}
+                    <div className="mb-10 text-center relative z-10">
+                        <div className="inline-flex size-16 bg-black dark:bg-white items-center justify-center border-4 border-primary mb-6 glow-blue transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+                            <span className="material-symbols-outlined text-white dark:text-black text-3xl">precision_manufacturing</span>
+                        </div>
+                        <h1 className="text-black dark:text-white text-4xl font-black uppercase tracking-tighter leading-none mb-2">
+                            {view === 'LOGIN' ? 'Painel Digital' : view === 'REGISTER' ? 'Novo Registro' : 'Recuperação'}
                         </h1>
-                        <p className="text-gray-500 dark:text-gray-400 font-bold uppercase text-[10px] tracking-widest">
-                            Rino Score System v2.0 (Offline)
+                        <p className="text-gray-500 dark:text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em]">
+                            Sistema de Gestão RinoScore
                         </p>
                     </div>
 
                     {/* Notification Area */}
                     {message && (
-                        <div className={`mb-6 p-3 text-xs font-black uppercase tracking-wide border-l-4 animate-fade-in-up
-                    ${message.type === 'error' ? 'bg-red-50 dark:bg-red-900/20 border-red-500 text-red-600' : 'bg-green-50 dark:bg-green-900/20 border-green-500 text-green-600'}
+                        <div className={`mb-8 p-4 text-xs font-black uppercase tracking-wide border-l-4 animate-fade-in-up glass
+                    ${message.type === 'error' ? 'bg-red-500/10 border-red-500 text-red-500' : 'bg-green-500/10 border-green-500 text-green-500'}
                 `}>
-                            {message.text}
+                            <div className="flex items-center gap-2">
+                                <span className="material-symbols-outlined text-sm">{message.type === 'error' ? 'error' : 'check_circle'}</span>
+                                {message.text}
+                            </div>
                         </div>
                     )}
 
                     {/* --- VIEW: LOGIN --- */}
                     {view === 'LOGIN' && (
-                        <form onSubmit={handleLogin} className="flex flex-col gap-5 animate-fade-in-up">
-                            <div className="relative">
+                        <form onSubmit={handleLogin} className="flex flex-col gap-6 animate-fade-in stagger-1">
+                            <div className="group relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-300">
+                                    <span className="material-symbols-outlined text-sm">alternate_email</span>
+                                </span>
                                 <input
                                     type="email"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 pl-10 text-black dark:text-white font-bold uppercase text-sm brutal-input"
-                                    placeholder="EMAIL"
+                                    className="w-full h-14 bg-white/50 dark:bg-black/50 border-2 border-gray-200 dark:border-white/10 focus:border-primary focus:ring-4 focus:ring-primary/10 p-3 pl-12 text-black dark:text-white font-bold uppercase text-xs transition-all outline-none rounded-lg"
+                                    placeholder="USUÁRIO / EMAIL"
                                     value={loginData.email}
                                     onChange={e => setLoginData({ ...loginData, email: e.target.value })}
                                 />
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">person</span>
                             </div>
-                            <div className="relative">
+                            <div className="group relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-300">
+                                    <span className="material-symbols-outlined text-sm">lock_open</span>
+                                </span>
                                 <input
                                     type="password"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 pl-10 text-black dark:text-white font-bold text-sm brutal-input"
-                                    placeholder="SENHA"
+                                    className="w-full h-14 bg-white/50 dark:bg-black/50 border-2 border-gray-200 dark:border-white/10 focus:border-primary focus:ring-4 focus:ring-primary/10 p-3 pl-12 text-black dark:text-white font-bold text-xs transition-all outline-none rounded-lg"
+                                    placeholder="CHAVE DE ACESSO"
                                     value={loginData.password}
                                     onChange={e => setLoginData({ ...loginData, password: e.target.value })}
                                 />
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">key</span>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="mt-2 h-14 w-full bg-black dark:bg-white text-white dark:text-black font-black uppercase tracking-[0.2em] hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white border-2 border-transparent transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] active:translate-y-[2px] active:shadow-none brutal-btn flex items-center justify-center gap-2"
+                                className="mt-4 h-16 w-full bg-black dark:bg-white text-white dark:text-black font-black uppercase tracking-[0.2em] hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white border-none transition-all shadow-xl active:scale-95 disabled:opacity-50 brutal-btn flex items-center justify-center gap-3 text-sm glow-blue"
                             >
-                                {isLoading ? <span className="animate-pulse">Acessando...</span> : <><span>Entrar</span><span className="material-symbols-outlined">login</span></>}
+                                {isLoading ? (
+                                    <div className="flex items-center gap-2">
+                                        <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                                        <span>Processando...</span>
+                                    </div>
+                                ) : (
+                                    <><span>Acessar Dashboard</span><span className="material-symbols-outlined text-lg">arrow_forward</span></>
+                                )}
                             </button>
 
-
-
-
-                            <div className="flex justify-between items-center mt-4 pt-4 border-t-2 border-dashed border-gray-300 dark:border-gray-800">
-                                <button type="button" onClick={() => { clearMessage(); setView('REGISTER'); }} className="text-xs font-bold uppercase text-gray-500 hover:text-primary hover:underline">Cadastrar</button>
-                                <button type="button" onClick={() => { clearMessage(); setView('RECOVER'); }} className="text-xs font-bold uppercase text-gray-500 hover:text-primary hover:underline">Esqueci a Senha</button>
+                            <div className="flex justify-between items-center mt-6 pt-6 border-t border-gray-100 dark:border-white/5">
+                                <button type="button" onClick={() => { clearMessage(); setView('REGISTER'); }} className="text-[10px] font-black uppercase text-gray-400 hover:text-primary transition-colors flex items-center gap-1">
+                                    <span className="material-symbols-outlined text-xs">person_add</span> Criar Conta
+                                </button>
+                                <button type="button" onClick={() => { clearMessage(); setView('RECOVER'); }} className="text-[10px] font-black uppercase text-gray-400 hover:text-primary transition-colors flex items-center gap-1">
+                                    <span className="material-symbols-outlined text-xs">help</span> Recuperar
+                                </button>
                             </div>
                         </form>
                     )}
 
                     {/* --- VIEW: REGISTER --- */}
                     {view === 'REGISTER' && (
-                        <form onSubmit={handleRegister} className="flex flex-col gap-4 animate-fade-in-up">
-                            <div className="relative">
+                        <form onSubmit={handleRegister} className="flex flex-col gap-4 animate-fade-in stagger-1">
+                            <div className="group relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                                    <span className="material-symbols-outlined text-sm">badge</span>
+                                </span>
                                 <input
                                     type="text"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 pl-10 text-black dark:text-white font-bold uppercase text-sm brutal-input"
+                                    className="w-full h-12 bg-white/50 dark:bg-black/50 border-2 border-gray-200 dark:border-white/10 focus:border-primary p-3 pl-12 text-black dark:text-white font-bold uppercase text-xs rounded-lg outline-none"
                                     placeholder="NOME COMPLETO"
                                     value={registerData.name}
                                     onChange={e => setRegisterData({ ...registerData, name: e.target.value })}
                                 />
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">badge</span>
                             </div>
-                            <div className="relative">
+                            <div className="group relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                                    <span className="material-symbols-outlined text-sm">mail</span>
+                                </span>
                                 <input
                                     type="email"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 pl-10 text-black dark:text-white font-bold uppercase text-sm brutal-input"
+                                    className="w-full h-12 bg-white/50 dark:bg-black/50 border-2 border-gray-200 dark:border-white/10 focus:border-primary p-3 pl-12 text-black dark:text-white font-bold uppercase text-xs rounded-lg outline-none"
                                     placeholder="EMAIL"
                                     value={registerData.email}
                                     onChange={e => setRegisterData({ ...registerData, email: e.target.value })}
                                 />
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">mail</span>
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <input
                                     type="password"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 text-black dark:text-white font-bold text-sm brutal-input"
+                                    className="w-full h-12 bg-white/50 dark:bg-black/50 border-2 border-gray-200 dark:border-white/10 focus:border-primary p-3 text-black dark:text-white font-bold text-xs rounded-lg outline-none"
                                     placeholder="SENHA"
                                     value={registerData.password}
                                     onChange={e => setRegisterData({ ...registerData, password: e.target.value })}
                                 />
                                 <input
                                     type="password"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 text-black dark:text-white font-bold text-sm brutal-input"
+                                    className="w-full h-12 bg-white/50 dark:bg-black/50 border-2 border-gray-200 dark:border-white/10 focus:border-primary p-3 text-black dark:text-white font-bold text-xs rounded-lg outline-none"
                                     placeholder="CONFIRMAR"
                                     value={registerData.confirmPassword}
                                     onChange={e => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
@@ -212,55 +243,59 @@ export const Login: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="mt-2 h-14 w-full bg-primary text-white font-black uppercase tracking-[0.2em] hover:brightness-110 border-2 border-transparent transition-all shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF] active:translate-y-[2px] active:shadow-none brutal-btn"
+                                className="mt-4 h-14 w-full bg-primary text-white font-black uppercase tracking-[0.2em] hover:brightness-110 shadow-lg active:scale-95 transition-all text-xs rounded-lg"
                             >
-                                {isLoading ? 'Enviando...' : 'Cadastrar'}
+                                {isLoading ? 'Registrando...' : 'Finalizar Cadastro'}
                             </button>
 
-                            <button type="button" onClick={() => { clearMessage(); setView('LOGIN'); }} className="mt-2 text-xs font-bold uppercase text-gray-500 hover:text-black dark:hover:text-white hover:underline text-center">
-                                Voltar para Login
+                            <button type="button" onClick={() => { clearMessage(); setView('LOGIN'); }} className="mt-4 text-[10px] font-black uppercase text-gray-500 hover:text-black dark:hover:text-white text-center">
+                                Já possui conta? Faça Login
                             </button>
                         </form>
                     )}
 
                     {/* --- VIEW: RECOVER --- */}
                     {view === 'RECOVER' && (
-                        <form onSubmit={handleRecover} className="flex flex-col gap-5 animate-fade-in-up">
-                            <p className="text-sm font-bold text-gray-600 dark:text-gray-300">Informe seu e-mail para receber um link de redefinição de chave de segurança.</p>
+                        <form onSubmit={handleRecover} className="flex flex-col gap-6 animate-fade-in stagger-1">
+                            <p className="text-xs font-bold text-gray-400 text-center px-4 leading-relaxed uppercase">Instruções de recuperação serão enviadas para o seu endereço seguro.</p>
 
-                            <div className="relative">
+                            <div className="relative group">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                                    <span className="material-symbols-outlined text-sm">send_and_archive</span>
+                                </span>
                                 <input
                                     type="email"
-                                    className="w-full h-12 bg-gray-50 dark:bg-black border-4 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none p-3 pl-10 text-black dark:text-white font-bold uppercase text-sm brutal-input"
-                                    placeholder="SEU EMAIL CADASTRADO"
+                                    className="w-full h-14 bg-white/50 dark:bg-black/50 border-2 border-gray-200 dark:border-white/10 focus:border-primary p-3 pl-12 text-black dark:text-white font-bold uppercase text-xs rounded-lg outline-none"
+                                    placeholder="E-MAIL CADASTRADO"
                                     value={recoverEmail}
                                     onChange={e => setRecoverEmail(e.target.value)}
                                 />
-                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">send</span>
-                            </div>
-
-                            <div className="bg-blue-50 dark:bg-blue-900/20 p-3 border-l-4 border-blue-500 text-[10px] text-blue-700 dark:text-blue-300 leading-relaxed">
-                                <strong className="block uppercase mb-1 font-black">Configuração Necessária:</strong>
-                                Para o link funcionar, adicione este endereço exato em "Redirect URLs" no painel do Supabase (Authentication):
-                                <code className="block mt-2 bg-white dark:bg-black p-1 border border-blue-200 dark:border-blue-800 rounded font-mono select-all">
-                                    {window.location.origin}
-                                </code>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="mt-2 h-14 w-full bg-black dark:bg-white text-white dark:text-black font-black uppercase tracking-[0.2em] hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white border-2 border-transparent transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] active:translate-y-[2px] active:shadow-none brutal-btn"
+                                className="h-14 w-full bg-black dark:bg-white text-white dark:text-black font-black uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all text-xs rounded-lg"
                             >
-                                {isLoading ? 'Processando...' : 'Enviar Link'}
+                                {isLoading ? 'Verificando...' : 'Solicitar Redefinição'}
                             </button>
 
-                            <button type="button" onClick={() => { clearMessage(); setView('LOGIN'); }} className="mt-2 text-xs font-bold uppercase text-gray-500 hover:text-black dark:hover:text-white hover:underline text-center">
-                                Cancelar
+                            <button type="button" onClick={() => { clearMessage(); setView('LOGIN'); }} className="text-[10px] font-black uppercase text-gray-500 hover:text-black dark:hover:text-white text-center">
+                                Voltar para o portal
                             </button>
                         </form>
                     )}
 
+                </div>
+
+                {/* Footer Quote */}
+                <div className="mt-12 text-center flex flex-col items-center animate-fade-in stagger-4">
+                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.5em] mb-4">Powered by Advanced Engineering</p>
+                    <div className="flex items-center gap-4">
+                        <div className="h-px w-8 bg-gray-300 dark:bg-white/10"></div>
+                        <div className="size-1 bg-primary rounded-full"></div>
+                        <div className="h-px w-8 bg-gray-300 dark:bg-white/10"></div>
+                    </div>
                 </div>
             </div>
         </div>

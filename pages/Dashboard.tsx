@@ -270,50 +270,54 @@ export const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* 2. MÓDULOS DE KPI (Cards Industriais) */}
+            {/* 2. MÓDULOS DE KPI (Cards Premium) */}
             <div className="col-span-1 lg:col-span-4 grid grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in-up stagger-1">
 
                 {/* FLUXO TOTAL */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] group overflow-hidden">
-                    <div className="absolute right-0 top-0 p-1 opacity-10">
-                        <span className="material-symbols-outlined text-4xl">receipt_long</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Total Pedidos</span>
-                        <span className="text-3xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{totalOrders}</span>
+                <div className="relative bg-white dark:bg-[#111] border-2 border-black/10 dark:border-white/10 p-6 shadow-xl premium-card glass group overflow-hidden">
+                    <div className="absolute -right-4 -top-4 size-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-700"></div>
+                    <div className="flex flex-col relative z-10">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Total Pedidos</span>
+                        <div className="flex items-end gap-2">
+                            <span className="text-4xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{totalOrders}</span>
+                            <span className="text-[10px] font-bold text-gray-400 mb-1">UN</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* PENDENTES */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_#FFFF00] group overflow-hidden">
-                    <div className="absolute right-0 top-0 p-1 opacity-10">
-                        <span className="material-symbols-outlined text-4xl text-yellow-500">pending</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-500 mb-1">Pendentes</span>
-                        <span className="text-3xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{pendingOrders}</span>
+                <div className="relative bg-white dark:bg-[#111] border-2 border-black/10 dark:border-white/10 p-6 shadow-xl premium-card glass group overflow-hidden">
+                    <div className="absolute -right-4 -top-4 size-24 bg-yellow-500/5 rounded-full blur-2xl group-hover:bg-yellow-500/20 transition-all duration-700"></div>
+                    <div className="flex flex-col relative z-10">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-2">Pendente</span>
+                        <div className="flex items-end gap-2 text-yellow-500">
+                            <span className="text-4xl md:text-5xl font-black leading-none tracking-tighter">{pendingOrders}</span>
+                            <span className="text-[10px] font-bold mb-1 opacity-60">PROD</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* ATRASADOS */}
-                <div className={`relative bg-white dark:bg-[#1A1A1A] border-4 ${lateOrders > 0 ? 'border-red-500 shadow-[4px_4px_0px_0px_#FF0000]' : 'border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]'} p-4 transition-all duration-300 group overflow-hidden`}>
-                    <div className="absolute right-0 top-0 p-1 opacity-10">
-                        <span className={`material-symbols-outlined text-4xl ${lateOrders > 0 ? 'text-red-500' : ''}`}>warning</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className={`text-[9px] font-black uppercase tracking-widest ${lateOrders > 0 ? 'text-red-500' : 'text-gray-400'} mb-1`}>Críticos</span>
-                        <span className={`text-3xl md:text-5xl font-black leading-none tracking-tighter ${lateOrders > 0 ? 'text-red-500' : 'text-black dark:text-white'}`}>{lateOrders}</span>
+                <div className={`relative bg-white dark:bg-[#111] border-2 ${lateOrders > 0 ? 'border-red-500/50' : 'border-black/10 dark:border-white/10'} p-6 shadow-xl premium-card glass group overflow-hidden`}>
+                    <div className={`absolute -right-4 -top-4 size-24 ${lateOrders > 0 ? 'bg-red-500/20' : 'bg-gray-500/5'} rounded-full blur-2xl transition-all duration-700`}></div>
+                    <div className="flex flex-col relative z-10">
+                        <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${lateOrders > 0 ? 'text-red-500' : 'text-gray-400'} mb-2`}>Atraso Crítico</span>
+                        <div className={`flex items-end gap-2 ${lateOrders > 0 ? 'text-red-500' : 'text-black dark:text-white'}`}>
+                            <span className="text-4xl md:text-5xl font-black leading-none tracking-tighter">{lateOrders}</span>
+                            <span className="text-[10px] font-bold mb-1 opacity-60">REF</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* CONCLUÍDOS */}
-                <div className="relative bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_#00FF00] group overflow-hidden">
-                    <div className="absolute right-0 top-0 p-1 opacity-10">
-                        <span className="material-symbols-outlined text-4xl text-green-500">check_circle</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Concluídos</span>
-                        <span className="text-3xl md:text-5xl font-black text-black dark:text-white leading-none tracking-tighter">{completedOrders}</span>
+                <div className="relative bg-white dark:bg-[#111] border-2 border-black/10 dark:border-white/10 p-6 shadow-xl premium-card glass group overflow-hidden">
+                    <div className="absolute -right-4 -top-4 size-24 bg-green-500/5 rounded-full blur-2xl group-hover:bg-green-500/20 transition-all duration-700"></div>
+                    <div className="flex flex-col relative z-10">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Logística OK</span>
+                        <div className="flex items-end gap-2 text-green-500">
+                            <span className="text-4xl md:text-5xl font-black leading-none tracking-tighter">{completedOrders}</span>
+                            <span className="text-[10px] font-bold mb-1 opacity-60">FIM</span>
+                        </div>
                     </div>
                 </div>
             </div>

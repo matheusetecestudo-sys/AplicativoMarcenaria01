@@ -14,11 +14,12 @@ const NavItem: React.FC<{ to: string; icon: string; label: string; onClick: () =
       to={to}
       onClick={onClick}
       className={({ isActive }) =>
-        `flex items-center gap-3 px-3 py-2 transition-colors duration-200 ${isActive ? 'bg-primary text-white' : 'hover:bg-primary/30 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}`
+        `flex items-center gap-4 px-4 py-3 transition-all duration-300 relative group overflow-hidden ${isActive ? 'bg-primary text-white shadow-lg glow-blue' : 'hover:bg-primary/10 text-gray-500 dark:text-gray-400 hover:text-primary'}`
       }
     >
-      <span className="material-symbols-outlined">{icon}</span>
-      <p className="text-base font-bold uppercase">{label}</p>
+      <span className="material-symbols-outlined transition-transform duration-300 group-hover:scale-110">{icon}</span>
+      <p className="text-xs font-black uppercase tracking-widest">{label}</p>
+      <div className="absolute right-0 top-0 h-full w-1 bg-white opacity-0 group-active:opacity-100 transition-opacity"></div>
     </NavLink>
   );
 };

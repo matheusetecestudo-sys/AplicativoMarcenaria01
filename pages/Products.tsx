@@ -200,9 +200,12 @@ export const Products: React.FC = () => {
                     <p className="text-xl font-bold uppercase">Nenhum produto encontrado</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 pb-8">
-                    {filteredProducts.map(product => (
-                        <div key={product.id} className="group flex flex-col bg-white dark:bg-[#1a1a1a] border-4 border-black dark:border-white transition-all duration-300 relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#0000FF]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+                    {filteredProducts.map((product) => (
+                        <div
+                            key={product.id}
+                            className="group relative bg-white dark:bg-[#111] border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] overflow-hidden flex flex-col premium-card glass hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#0000FF]"
+                        >
 
                             {/* 1. Header do Card Style Pedidos */}
                             <div className="bg-black dark:bg-gray-800 p-2 border-b-2 border-black dark:border-white flex justify-between items-center">
@@ -284,8 +287,8 @@ export const Products: React.FC = () => {
             {/* MINIMALIST BRUTALIST MODAL */}
             {
                 isModalOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 bg-black/90 backdrop-blur-sm animate-fade-in-up" onClick={closeModal}>
-                        <div className="bg-white dark:bg-[#0A0A0A] w-full max-w-4xl border-0 md:border-4 border-primary shadow-none md:shadow-[12px_12px_0px_0px_rgba(0,0,255,0.5)] flex flex-col h-full md:max-h-[90vh] md:rounded-lg" onClick={e => e.stopPropagation()}>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-6 bg-black/95 backdrop-blur-md animate-fade-in" onClick={closeModal}>
+                        <div className="bg-white dark:bg-[#0A0A0A] w-full max-w-4xl border-0 md:border-4 border-primary shadow-none md:shadow-[0_20px_50px_rgba(0,0,255,0.3)] flex flex-col h-full md:h-auto md:max-h-[95vh] overflow-hidden" onClick={e => e.stopPropagation()}>
 
                             {/* Modal Header */}
                             <div className="bg-primary p-4 flex justify-between items-center shrink-0">
@@ -446,8 +449,8 @@ export const Products: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* PERSISTENT MODAL FOOTER */}
-                                <div className="p-4 md:p-6 bg-white dark:bg-[#0A0A0A] border-t-4 border-black dark:border-white flex gap-3 shrink-0">
+                                {/* PERSISTENT MODAL FOOTER - STICKS TO BOTTOM ON BOTH MOBILE & DESKTOP */}
+                                <div className="p-4 md:p-6 bg-white dark:bg-[#0D0D0D] border-t-4 border-black dark:border-white flex gap-3 shrink-0 mt-auto shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
                                     <button
                                         type="button"
                                         onClick={closeModal}
