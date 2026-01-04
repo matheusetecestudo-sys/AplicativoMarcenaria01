@@ -29,6 +29,7 @@ interface AppContextType {
     importData: (json: string) => boolean;
     exportData: () => void;
     resetApp: () => void;
+    recalculateAllProductCosts: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -490,13 +491,47 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         window.location.reload();
     };
 
+    const recalculateAllProductCosts = async () => {
+        const updatedProducts = products.map(product => {
+            let totalCost = 0;
+            if (product.materials && product.materials.length > 0) {
+                product.materials.forEach(matStr => {
+                    const [matName, qtyStr] = matStr.split(':');
+                    const qty = parseFloat(qtyStr.trim()) || 0;
+                    const material = materials.find(m => m.name.toLowerCase() === matName.toLowerCase().trim());
+                    if (material) {
+                        totalCost += (material.costPerUnit * qty);
+                    }
+                });
+            }
+            // If the product has a cost defined but no materials, we keep it. 
+            // If it has materials, we update it to the sum of materials.
+            return (product.materials && product.materials.length > 0) ? { ...product, cost: totalCost } : product;
+        });
+
+        // Update local state
+        setProducts(updatedProducts);
+
+        // Update Database
+        if (isSupabaseConfigured && isAuthenticated) {
+            for (const p of updatedProducts) {
+                try {
+                    await updateRow('products', p.id, { cost: p.cost });
+                } catch (e) {
+                    console.error(`Error updating cost for product ${p.name}:`, e);
+                }
+            }
+        }
+    };
+
     return (
         <AppContext.Provider value={{
             orders, products, materials, settings, isAuthenticated, timeRange, setTimeRange,
             login, loginWithGitHub, logout, addOrder, deleteOrder, updateOrderStatus,
             addProduct, updateProduct, deleteProduct, updateProductStock,
             addMaterial, updateMaterial, deleteMaterial,
-            updateSettings, importData, exportData, resetApp
+            updateSettings, importData, exportData, resetApp,
+            recalculateAllProductCosts
         }}>
             {children}
         </AppContext.Provider>

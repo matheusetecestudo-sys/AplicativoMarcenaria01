@@ -27,7 +27,8 @@ const ToggleSwitch: React.FC<{ label: string; checked: boolean; onChange: () => 
 
 export const Settings: React.FC = () => {
     const navigate = useNavigate();
-    const { settings, updateSettings, exportData, importData, resetApp, orders, products, materials, logout, timeRange, setTimeRange } = useApp();
+    const { settings, updateSettings, exportData, importData, resetApp, recalculateAllProductCosts, orders, products, materials, logout, timeRange, setTimeRange } = useApp();
+    const [isSyncing, setIsSyncing] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const logoInputRef = useRef<HTMLInputElement>(null);
 
@@ -483,6 +484,29 @@ export const Settings: React.FC = () => {
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="md:col-span-2">
+                                <button
+                                    onClick={async () => {
+                                        setIsSyncing(true);
+                                        await recalculateAllProductCosts();
+                                        setIsSyncing(false);
+                                        alert("Custos de produtos sincronizados com sucesso!");
+                                    }}
+                                    disabled={isSyncing}
+                                    className={`w-full group relative flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/10 border-2 border-blue-500 hover:bg-blue-500 hover:text-white transition-all brutal-btn ${isSyncing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                >
+                                    <div className="size-12 bg-blue-500 text-white flex items-center justify-center group-hover:bg-white group-hover:text-blue-500 transition-colors">
+                                        <span className={`material-symbols-outlined ${isSyncing ? 'animate-spin' : ''}`}>
+                                            {isSyncing ? 'sync' : 'calculate'}
+                                        </span>
+                                    </div>
+                                    <div className="text-left">
+                                        <p className="text-xs font-black uppercase tracking-tight">Sincronizar Custos</p>
+                                        <p className="text-[9px] font-bold uppercase opacity-60">Recalcular preços baseados nos insumos atuais</p>
+                                    </div>
+                                </button>
+                            </div>
+
                             <button
                                 onClick={exportData}
                                 className="group relative flex items-center gap-4 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-primary hover:text-white transition-all brutal-btn"

@@ -111,7 +111,7 @@ export const Dashboard: React.FC = () => {
                 const unitCost = product ? product.cost : (item.unitPrice * 0.6);
                 orderCost += (unitCost * item.quantity);
             });
-            profit += (order.totalValue - orderCost);
+            profit += (order.totalValue - (order.shippingCost || 0) - orderCost);
         });
         return profit;
     };
@@ -151,7 +151,7 @@ export const Dashboard: React.FC = () => {
             grouped[key].custo += orderCost;
             totalCusto += orderCost;
 
-            const p = order.totalValue - orderCost;
+            const p = order.totalValue - (order.shippingCost || 0) - orderCost;
             grouped[key].lucro += p;
             totalLucro += p;
 
@@ -334,7 +334,15 @@ export const Dashboard: React.FC = () => {
                             </div>
                             <div className="text-right border-l-2 border-gray-200 dark:border-gray-800 pl-4">
                                 <p className="text-[8px] font-black text-gray-400 uppercase">Lucro</p>
-                                <p className="text-xs font-black text-green-600">{formatCurrencyShort(totals.lucro)}</p>
+                                <div className="flex items-center gap-1.5">
+                                    <p className="text-xs font-black text-green-600">{formatCurrencyShort(totals.lucro)}</p>
+                                    <span className="text-[8px] font-black bg-green-500 text-white px-1 py-0.5 rounded-sm">
+                                        {(() => {
+                                            const margin = totals.faturamento > 0 ? (totals.lucro / totals.faturamento) * 100 : 0;
+                                            return `${margin.toFixed(0)}%`;
+                                        })()}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>

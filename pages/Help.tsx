@@ -166,6 +166,7 @@ const HelpSection: React.FC<{
 
 export const Help: React.FC = () => {
     const [activeSection, setActiveSection] = useState('auth');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const scrollTo = (id: string) => {
         const element = document.getElementById(id);
@@ -204,22 +205,45 @@ export const Help: React.FC = () => {
         { id: 'config', label: '06. Configurações', icon: 'settings' },
     ];
 
+    const filteredNav = navLinks.filter(l =>
+        l.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        l.id.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="w-full h-full pb-12 flex flex-col xl:flex-row gap-8 relative">
+
+            {/* BACKGROUND DECORATION */}
+            <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[150px] rounded-full -z-10 pointer-events-none"></div>
+            <div className="fixed bottom-0 left-0 w-[300px] h-[300px] bg-primary/10 blur-[100px] rounded-full -z-10 pointer-events-none"></div>
 
             {/* LEFT: NAVIGATION SIDEBAR (Sticky) */}
             <aside className="xl:w-80 shrink-0 hidden md:block">
                 <div className="sticky top-4 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-0 shadow-[8px_8px_0px_0px_#0000FF] flex flex-col max-h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar">
-                    <div className="p-6 bg-black dark:bg-white text-white dark:text-black border-b-4 border-primary">
-                        <h1 className="text-3xl font-black uppercase leading-none tracking-tighter">Manual<br />Técnico</h1>
-                        <div className="flex items-center gap-2 mt-3">
+                    <div className="p-6 bg-black dark:bg-white text-white dark:text-black border-b-4 border-primary relative overflow-hidden">
+                        <div className="absolute top-0 right-0 size-20 bg-primary/20 rotate-45 translate-x-10 -translate-y-10 group-hover:bg-primary/40 transition-all"></div>
+                        <h1 className="text-3xl font-black uppercase leading-none tracking-tighter relative z-10">Manual<br />Técnico</h1>
+                        <div className="flex items-center gap-2 mt-3 relative z-10">
                             <span className="material-symbols-outlined text-sm">menu_book</span>
                             <p className="text-[10px] font-bold uppercase tracking-widest">Base de Conhecimento</p>
                         </div>
                     </div>
 
+                    <div className="p-3 bg-gray-50 dark:bg-black border-b-2 border-gray-100 dark:border-gray-800">
+                        <div className="relative">
+                            <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">search</span>
+                            <input
+                                type="text"
+                                placeholder="BUSCAR NO MANUAL..."
+                                className="w-full pl-7 pr-3 py-2 bg-white dark:bg-[#111] border-2 border-gray-200 dark:border-gray-700 text-[9px] font-black uppercase focus:border-primary focus:outline-none"
+                                value={searchQuery}
+                                onChange={e => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
                     <nav className="flex flex-col py-2">
-                        {navLinks.map(link => (
+                        {filteredNav.map(link => (
                             <button
                                 key={link.id}
                                 onClick={() => scrollTo(link.id)}
@@ -430,7 +454,12 @@ export const Help: React.FC = () => {
                     actionLink="/calculadora"
                 >
                     <p>Ferramenta para orçar projetos personalizados (Bespoke) sem afetar seu banco de dados oficial.</p>
-                    <p>Ideal para atendimentos rápidos via WhatsApp ou balcão. Adicione materiais, mão de obra e margem de lucro para gerar um preço de venda sugerido com base científica em seus custos.</p>
+                    <p><strong className="text-black dark:text-white">Orçamentos dinâmicos.</strong> Ferramenta para orçar projetos personalizados (Bespoke) sem afetar seu banco de dados oficial.</p>
+                    <p className="mt-2">Ideal para atendimentos rápidos via WhatsApp ou balcão. Adicione materiais, mão de obra e margem de lucro para gerar um preço de venda sugerido com base científica em seus custos.</p>
+                    <div className="mt-4 p-4 glass border-2 border-primary glow-blue">
+                        <span className="text-[10px] font-black uppercase text-primary block mb-2">Engenharia de Preço</span>
+                        <p className="text-xs italic opacity-70">A calculadora utiliza a técnica de Markup sobre o Custo Variável Total (Insumos + Mão de Obra) para garantir que sua margem desejada seja atingida após todos os descontos.</p>
+                    </div>
                 </HelpSection>
 
                 <hr className="border-t-2 border-dashed border-gray-300 dark:border-gray-800 mb-12 opacity-50" />
