@@ -27,9 +27,8 @@ const ToggleSwitch: React.FC<{ label: string; checked: boolean; onChange: () => 
 
 export const Settings: React.FC = () => {
     const navigate = useNavigate();
-    const { settings, updateSettings, exportData, importData, resetApp, recalculateAllProductCosts, orders, products, materials, logout, timeRange, setTimeRange } = useApp();
+    const { settings, updateSettings, resetApp, recalculateAllProductCosts, orders, products, materials, logout, timeRange, setTimeRange } = useApp();
     const [isSyncing, setIsSyncing] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const logoInputRef = useRef<HTMLInputElement>(null);
 
     // Local state for the form to allow "Save" action
@@ -96,27 +95,6 @@ export const Settings: React.FC = () => {
 
     const toggleNotification = (key: 'lowStock' | 'deadlines') => {
         updateSettings({ notifications: { ...settings.notifications, [key]: !settings.notifications[key] } });
-    };
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            const raw = e.target?.result as string;
-            setIsSyncing(true); // Reuse syncing state for visual feedback if desired
-            const success = await importData(raw);
-            setIsSyncing(false);
-
-            if (success) {
-                alert('Dados importados com sucesso!');
-            } else {
-                alert('Erro ao importar arquivo. Verifique se o formato é válido.');
-            }
-        };
-        reader.readAsText(file);
-        event.target.value = '';
     };
 
     const handleReset = () => {
@@ -459,67 +437,73 @@ export const Settings: React.FC = () => {
                 {/* 4. DATA MANAGEMENT */}
                 <div className="lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white animate-fade-in-up stagger-4 mb-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
                     <div className="bg-black text-white p-4 flex items-center gap-3">
-                        <span className="material-symbols-outlined">database</span>
-                        <h2 className="text-sm font-black uppercase tracking-widest">Gestão de Dados Profissional</h2>
+                        <span className="material-symbols-outlined">table_view</span>
+                        <h2 className="text-sm font-black uppercase tracking-widest">Exportação de Dados (Excel/CSV)</h2>
                     </div>
 
                     <div className="p-4 md:p-6 space-y-4">
                         <p className="text-[10px] font-bold uppercase text-gray-500 mb-4 leading-relaxed">
-                            Mantenha o banco de dados em conformidade. Recomenda-se realizar backups semanais antes de grandes alterações.
+                            Baixe suas informações em formato de planilha para análise externa.
                         </p>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="md:col-span-2">
-                                <button
-                                    onClick={async () => {
-                                        setIsSyncing(true);
-                                        await recalculateAllProductCosts();
-                                        setIsSyncing(false);
-                                        alert("Custos de produtos sincronizados com sucesso!");
-                                    }}
-                                    disabled={isSyncing}
-                                    className={`w-full group relative flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/10 border-2 border-blue-500 hover:bg-blue-500 hover:text-white transition-all brutal-btn ${isSyncing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                >
-                                    <div className="size-12 bg-blue-500 text-white flex items-center justify-center group-hover:bg-white group-hover:text-blue-500 transition-colors">
-                                        <span className={`material-symbols-outlined ${isSyncing ? 'animate-spin' : ''}`}>
-                                            {isSyncing ? 'sync' : 'calculate'}
-                                        </span>
-                                    </div>
-                                    <div className="text-left">
-                                        <p className="text-xs font-black uppercase tracking-tight">Sincronizar Custos</p>
-                                        <p className="text-[9px] font-bold uppercase opacity-60">Recalcular preços baseados nos insumos atuais</p>
-                                    </div>
-                                </button>
-                            </div>
-
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <button
-                                onClick={exportData}
-                                className="group relative flex items-center gap-4 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-primary hover:text-white transition-all brutal-btn"
+                                onClick={() => {
+                                    const csvHeader = "ID,Cliente,Data Criacao,Prazo,Status,Canal,Total,Itens\n";
+                                    const csvRows = orders.map(o => {
+                                        const itemsStr = o.items.map(i => `${i.quantity}x ${i.productName}`).join('; ');
+                                        return `${o.id},"${o.client}",${o.createdAt},${o.deadline},${o.status},${o.origin},${o.totalValue},"${itemsStr}"`;
+                                    }).join("\n");
+                                    const blob = new Blob([csvHeader + csvRows], { type: 'text/csv' });
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = `pedidos-${new Date().toISOString().split('T')[0]}.csv`;
+                                    a.click();
+                                }}
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-blue-500 hover:text-white transition-all brutal-btn"
                             >
-                                <div className="size-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-colors">
-                                    <span className="material-symbols-outlined">download</span>
-                                </div>
-                                <div className="text-left">
-                                    <p className="text-xs font-black uppercase tracking-tight">Exportar Backup</p>
-                                    <p className="text-[9px] font-bold uppercase opacity-60">Gerar arquivo .JSON</p>
-                                </div>
+                                <span className="material-symbols-outlined text-3xl">shopping_cart</span>
+                                <span className="text-xs font-black uppercase">Pedidos.csv</span>
                             </button>
 
-                            <div className="relative">
-                                <input type="file" accept=".json" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-                                <button
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="w-full group relative flex items-center gap-4 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-green-500 hover:text-white transition-all brutal-btn"
-                                >
-                                    <div className="size-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center group-hover:bg-white group-hover:text-green-600 transition-colors">
-                                        <span className="material-symbols-outlined">upload</span>
-                                    </div>
-                                    <div className="text-left">
-                                        <p className="text-xs font-black uppercase tracking-tight">Importar Dados</p>
-                                        <p className="text-[9px] font-bold uppercase opacity-60">Restaurar de .JSON</p>
-                                    </div>
-                                </button>
-                            </div>
+                            <button
+                                onClick={() => {
+                                    const csvHeader = "ID,Produto,SKU,Custo,Preco Venda,Estoque\n";
+                                    const csvRows = products.map(p => {
+                                        return `${p.id},"${p.name}","${p.sku}",${p.cost},${p.price},${p.stock}`;
+                                    }).join("\n");
+                                    const blob = new Blob([csvHeader + csvRows], { type: 'text/csv' });
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = `produtos-${new Date().toISOString().split('T')[0]}.csv`;
+                                    a.click();
+                                }}
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-purple-500 hover:text-white transition-all brutal-btn"
+                            >
+                                <span className="material-symbols-outlined text-3xl">inventory_2</span>
+                                <span className="text-xs font-black uppercase">Produtos.csv</span>
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    const csvHeader = "ID,Material,Unidade,Custo Unit,Estoque,Minimo\n";
+                                    const csvRows = materials.map(m => {
+                                        return `${m.id},"${m.name}","${m.unit}",${m.costPerUnit},${m.stock},${m.minStock}`;
+                                    }).join("\n");
+                                    const blob = new Blob([csvHeader + csvRows], { type: 'text/csv' });
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = `materiais-${new Date().toISOString().split('T')[0]}.csv`;
+                                    a.click();
+                                }}
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-orange-500 hover:text-white transition-all brutal-btn"
+                            >
+                                <span className="material-symbols-outlined text-3xl">construction</span>
+                                <span className="text-xs font-black uppercase">Materiais.csv</span>
+                            </button>
                         </div>
 
                         <div className="pt-4 mt-6 border-t-2 border-dashed border-gray-200 dark:border-gray-800">
