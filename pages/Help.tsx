@@ -281,26 +281,6 @@ export const Help: React.FC = () => {
                 </div>
             </aside>
 
-            {/* MOBILE NAVIGATION BAR (Shown only on small screens) */}
-            <div className="md:hidden sticky top-0 z-40 bg-white/98 dark:bg-[#1A1A1A]/98 backdrop-blur-md border-b-4 border-black dark:border-white -mx-3 px-3 py-3 mb-6 flex gap-2 overflow-x-auto no-scrollbar shadow-lg">
-                {navLinks.map(link => (
-                    <button
-                        key={link.id}
-                        onClick={() => scrollTo(link.id)}
-                        className={`
-                            whitespace-nowrap px-3 py-2 rounded-none border-2 border-black dark:border-white text-[9px] font-black uppercase tracking-tighter transition-all flex items-center gap-1.5
-                            ${activeSection === link.id
-                                ? 'bg-primary text-white border-primary shadow-[2px_2px_0px_0px_#000]'
-                                : 'bg-white dark:bg-black text-black dark:text-white'
-                            }
-                        `}
-                    >
-                        <span className="material-symbols-outlined text-[12px]">{link.icon}</span>
-                        {link.label.split('. ')[1]}
-                    </button>
-                ))}
-            </div>
-
             {/* RIGHT: CONTENT */}
             <div className="flex-1 max-w-5xl pt-0 lg:pr-2">
 
