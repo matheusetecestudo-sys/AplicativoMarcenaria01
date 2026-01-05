@@ -454,10 +454,16 @@ export const Dashboard: React.FC = () => {
                                         <p className="text-sm font-black text-black dark:text-white uppercase line-clamp-1">{order.client}</p>
                                     </div>
                                     <span className={`text-[8px] font-black px-1.5 py-0.5 border-2 border-black dark:border-white uppercase
-                                        ${(order.status !== 'CONCLUÍDO' && order.status !== 'CANCELADO' && new Date(order.deadline + 'T23:59:59') < new Date()) ? 'bg-red-500 text-white' :
-                                            order.status === 'CONCLUÍDO' ? 'bg-green-500 text-black' :
-                                                'bg-yellow-400 text-black'}`}>
-                                        {(order.status !== 'CONCLUÍDO' && order.status !== 'CANCELADO' && new Date(order.deadline + 'T23:59:59') < new Date()) ? 'ATRASADO' : order.status}
+                                        ${(() => {
+                                            const todayStr = new Date().toISOString().split('T')[0];
+                                            const isLate = order.status !== 'CONCLUÍDO' && order.status !== 'CANCELADO' && order.deadline < todayStr;
+                                            return isLate ? 'bg-red-500 text-white' : order.status === 'CONCLUÍDO' ? 'bg-green-500 text-black' : 'bg-yellow-400 text-black';
+                                        })()}`}>
+                                        {(() => {
+                                            const todayStr = new Date().toISOString().split('T')[0];
+                                            const isLate = order.status !== 'CONCLUÍDO' && order.status !== 'CANCELADO' && order.deadline < todayStr;
+                                            return isLate ? 'ATRASADO' : order.status;
+                                        })()}
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-end">
