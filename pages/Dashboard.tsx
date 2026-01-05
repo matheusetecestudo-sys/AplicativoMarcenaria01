@@ -384,42 +384,115 @@ export const Dashboard: React.FC = () => {
                 {/* CANAIS E STATUS (COLUNA DUPLA NO DESKTOP, STACK NO MOBILE) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* CANAIS */}
-                    <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
-                        <div className="flex items-center gap-2 mb-4 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
+                    <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                        <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
                             <span className="material-symbols-outlined text-primary text-lg">public</span>
-                            <h3 className="text-black dark:text-white text-xs font-black uppercase">Canais</h3>
+                            <h3 className="text-black dark:text-white text-xs font-black uppercase">Canais de Venda</h3>
                         </div>
-                        <div className="flex justify-around items-center h-24">
-                            <div className="flex flex-col items-center">
-                                <span className="text-2xl font-black text-black dark:text-white">{onlineOrders.length}</span>
-                                <span className="text-[8px] font-black uppercase text-cyan-500">Online</span>
+
+                        <div className="space-y-4">
+                            {/* Online */}
+                            <div className="flex items-center justify-between p-3 bg-cyan-50 dark:bg-cyan-900/10 border-l-4 border-cyan-500">
+                                <div className="flex items-center gap-3">
+                                    <div className="size-10 bg-cyan-500 flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-white text-xl">language</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-black uppercase text-gray-500">Online</p>
+                                        <p className="text-2xl font-black text-black dark:text-white">{onlineOrders.length}</p>
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400">
+                                        {totalOrders > 0 ? ((onlineOrders.length / totalOrders) * 100).toFixed(0) : 0}%
+                                    </p>
+                                    <p className="text-[9px] font-black text-green-600 dark:text-green-400">
+                                        {formatCurrencyShort(onlineProfit)}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="w-px h-12 bg-gray-200 dark:border-gray-800"></div>
-                            <div className="flex flex-col items-center">
-                                <span className="text-2xl font-black text-black dark:text-white">{physicalOrders.length}</span>
-                                <span className="text-[8px] font-black uppercase text-orange-500">Físico</span>
+
+                            {/* Físico */}
+                            <div className="flex items-center justify-between p-3 bg-orange-50 dark:bg-orange-900/10 border-l-4 border-orange-500">
+                                <div className="flex items-center gap-3">
+                                    <div className="size-10 bg-orange-500 flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-white text-xl">store</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-black uppercase text-gray-500">Loja Física</p>
+                                        <p className="text-2xl font-black text-black dark:text-white">{physicalOrders.length}</p>
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-xs font-bold text-orange-600 dark:text-orange-400">
+                                        {totalOrders > 0 ? ((physicalOrders.length / totalOrders) * 100).toFixed(0) : 0}%
+                                    </p>
+                                    <p className="text-[9px] font-black text-green-600 dark:text-green-400">
+                                        {formatCurrencyShort(physicalProfit)}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* STATUS */}
-                    <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
-                        <div className="flex items-center gap-2 mb-4 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
-                            <span className="material-symbols-outlined text-primary text-lg">donut_small</span>
-                            <h3 className="text-black dark:text-white text-xs font-black uppercase">Status</h3>
+                    <div className="bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                        <div className="flex items-center gap-2 mb-6 border-b-2 border-gray-100 dark:border-gray-800 pb-2">
+                            <span className="material-symbols-outlined text-primary text-lg">monitoring</span>
+                            <h3 className="text-black dark:text-white text-xs font-black uppercase">Distribuição de Status</h3>
                         </div>
-                        <div className="h-24 w-full relative">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie data={statusData} cx="50%" cy="50%" innerRadius={25} outerRadius={35} paddingAngle={5} dataKey="value" stroke="none">
-                                        {statusData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                                        ))}
-                                    </Pie>
-                                </PieChart>
-                            </ResponsiveContainer>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-sm font-black text-black dark:text-white">{totalOrders}</span>
+
+                        <div className="space-y-3">
+                            {/* Pendente */}
+                            <div className="flex items-center justify-between p-2 bg-yellow-50 dark:bg-yellow-900/10 border-l-4 border-yellow-400">
+                                <div className="flex items-center gap-2">
+                                    <div className="size-3 bg-yellow-400"></div>
+                                    <span className="text-xs font-black uppercase text-gray-700 dark:text-gray-300">Pendente</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="text-sm font-black text-black dark:text-white">{pendingOrders}</span>
+                                    <span className="text-[10px] font-bold text-yellow-600 dark:text-yellow-400 min-w-[35px] text-right">
+                                        {totalOrders > 0 ? ((pendingOrders / totalOrders) * 100).toFixed(0) : 0}%
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Atrasado */}
+                            <div className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/10 border-l-4 border-red-500">
+                                <div className="flex items-center gap-2">
+                                    <div className="size-3 bg-red-500"></div>
+                                    <span className="text-xs font-black uppercase text-gray-700 dark:text-gray-300">Atrasado</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="text-sm font-black text-black dark:text-white">{lateOrders}</span>
+                                    <span className="text-[10px] font-bold text-red-600 dark:text-red-400 min-w-[35px] text-right">
+                                        {totalOrders > 0 ? ((lateOrders / totalOrders) * 100).toFixed(0) : 0}%
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Concluído */}
+                            <div className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/10 border-l-4 border-green-500">
+                                <div className="flex items-center gap-2">
+                                    <div className="size-3 bg-green-500"></div>
+                                    <span className="text-xs font-black uppercase text-gray-700 dark:text-gray-300">Concluído</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="text-sm font-black text-black dark:text-white">{completedOrders}</span>
+                                    <span className="text-[10px] font-bold text-green-600 dark:text-green-400 min-w-[35px] text-right">
+                                        {totalOrders > 0 ? ((completedOrders / totalOrders) * 100).toFixed(0) : 0}%
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Taxa de Conclusão */}
+                            <div className="mt-4 pt-3 border-t-2 border-dashed border-gray-200 dark:border-gray-800">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-[9px] font-black uppercase text-gray-400">Taxa de Conclusão</span>
+                                    <span className="text-lg font-black text-green-600 dark:text-green-400">
+                                        {totalOrders > 0 ? ((completedOrders / totalOrders) * 100).toFixed(0) : 0}%
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
