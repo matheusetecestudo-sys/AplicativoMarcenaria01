@@ -1,19 +1,33 @@
 
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
 import { supabase } from './supabaseClient';
 import { Sidebar } from './components/Sidebar';
-import { Dashboard } from './pages/Dashboard';
-import { Orders } from './pages/Orders';
-import { Products } from './pages/Products';
-import { Materials } from './pages/Materials';
-import { Stock } from './pages/Stock';
-import { Calculator } from './pages/Calculator';
-import { Login } from './pages/Login';
-import { ResetPassword } from './pages/ResetPassword';
-import { Settings } from './pages/Settings';
-import { Help } from './pages/Help';
+
+// Lazy load all pages for better performance
+const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
+const Orders = lazy(() => import('./pages/Orders').then(m => ({ default: m.Orders })));
+const Products = lazy(() => import('./pages/Products').then(m => ({ default: m.Products })));
+const Materials = lazy(() => import('./pages/Materials').then(m => ({ default: m.Materials })));
+const Stock = lazy(() => import('./pages/Stock').then(m => ({ default: m.Stock })));
+const Calculator = lazy(() => import('./pages/Calculator').then(m => ({ default: m.Calculator })));
+const Login = lazy(() => import('./pages/Login').then(m => ({ default: m.Login })));
+const ResetPassword = lazy(() => import('./pages/ResetPassword').then(m => ({ default: m.ResetPassword })));
+const Settings = lazy(() => import('./pages/Settings').then(m => ({ default: m.Settings })));
+const Help = lazy(() => import('./pages/Help').then(m => ({ default: m.Help })));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex items-center justify-center h-full min-h-[400px]">
+    <div className="flex flex-col items-center gap-4">
+      <div className="size-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      <p className="text-xs font-black uppercase text-gray-400 tracking-widest">Carregando...</p>
+    </div>
+  </div>
+);
+
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useApp();
@@ -119,24 +133,26 @@ const App: React.FC = () => {
       <BrowserRouter>
         <AuthListener />
         <Layout>
-          <Routes>
-            <Route path="/" element={<SmartRedirect />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<SmartRedirect />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* Protected Routes */}
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/pedidos" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-            <Route path="/produtos" element={<ProtectedRoute><Products /></ProtectedRoute>} />
-            <Route path="/materias" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
-            <Route path="/estoques" element={<ProtectedRoute><Stock /></ProtectedRoute>} />
-            <Route path="/calculadora" element={<ProtectedRoute><Calculator /></ProtectedRoute>} />
-            <Route path="/configuracoes" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-            <Route path="/ajuda" element={<ProtectedRoute><Help /></ProtectedRoute>} />
+              {/* Protected Routes */}
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/pedidos" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+              <Route path="/produtos" element={<ProtectedRoute><Products /></ProtectedRoute>} />
+              <Route path="/materias" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
+              <Route path="/estoques" element={<ProtectedRoute><Stock /></ProtectedRoute>} />
+              <Route path="/calculadora" element={<ProtectedRoute><Calculator /></ProtectedRoute>} />
+              <Route path="/configuracoes" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/ajuda" element={<ProtectedRoute><Help /></ProtectedRoute>} />
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          </Routes>
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+          </Suspense>
         </Layout>
       </BrowserRouter>
     </AppProvider>
