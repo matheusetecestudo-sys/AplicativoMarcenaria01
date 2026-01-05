@@ -263,64 +263,92 @@ export const Settings: React.FC = () => {
         if (printWindow) { printWindow.document.write(reportContent); printWindow.document.close(); setTimeout(() => { printWindow.print(); }, 500); }
     };
 
-    // --- EXPORT HELPER ---
-    const downloadXLS = (fileName: string, title: string, headers: string[], rows: (string | number)[][]) => {
-        const tableContent = `
-            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+    // --- EXPORT HELPER (PDF) ---
+    const downloadPDF = (fileName: string, title: string, headers: string[], rows: (string | number)[][]) => {
+        const reportContent = `
+            <!DOCTYPE html>
+            <html lang="pt-BR">
             <head>
                 <meta charset="UTF-8">
+                <title>${title}</title>
                 <style>
-                    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 11pt; color: #333; }
-                    table { border-collapse: collapse; width: 100%; }
-                    th { 
-                        background-color: #f8f9fa; 
-                        color: #444; 
-                        font-weight: 600; 
-                        padding: 12px 15px; 
-                        border-bottom: 2px solid #ddd; 
-                        text-align: left; 
-                        text-transform: uppercase;
-                        font-size: 10pt;
-                    }
-                    td { 
-                        padding: 10px 15px; 
-                        border-bottom: 1px solid #eee; 
-                        vertical-align: middle; 
-                    }
-                    tr:nth-child(even) { background-color: #ffffff; }
-                    tr:hover { background-color: #fcfcfc; }
-                    .title { 
-                        font-size: 20px; 
-                        font-weight: 300; 
-                        margin-bottom: 20px; 
-                        color: #000;
-                        padding-bottom: 10px;
-                        border-bottom: 4px solid #000;
-                        display: inline-block;
-                    }
+                    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700;900&display=swap');
+                    @page { size: A4; margin: 10mm; }
+                    body { font-family: 'Space Grotesk', sans-serif; color: #000; background: #fff; line-height: 1.3; -webkit-print-color-adjust: exact; margin: 20px; }
+                    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 5px solid #000; padding-bottom: 15px; margin-bottom: 30px; }
+                    .logo-box { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border: 4px solid #000; background: #0000FF; color: #fff; }
+                    .logo-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+                    .company-name { font-size: 24px; font-weight: 900; text-transform: uppercase; }
+                    .report-type { font-size: 12px; font-weight: bold; text-transform: uppercase; background: #0000FF; color: #fff; padding: 4px 12px; display: inline-block; }
+                    
+                    .title-container { margin-bottom: 30px; border-left: 8px solid #0000FF; padding-left: 15px; }
+                    .title-container h1 { font-size: 28px; font-weight: 900; text-transform: uppercase; margin: 0; }
+                    .title-container p { font-size: 12px; font-weight: bold; color: #666; text-transform: uppercase; margin-top: 5px; }
+
+                    table { width: 100%; border-collapse: collapse; font-size: 10px; border: 3px solid #000; margin-top: 20px; }
+                    th { background: #000; color: #fff; padding: 12px 8px; text-align: left; text-transform: uppercase; font-weight: 900; border: 1px solid #333; }
+                    td { padding: 8px; border: 1px solid #000; font-weight: 500; }
+                    tr:nth-child(even) { background: #f0f0ff; }
+                    
+                    .footer { position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 9px; text-transform: uppercase; color: #aaa; border-top: 1px solid #eee; padding-top: 10px; }
+                    
+                    .status-badge { padding: 2px 6px; font-weight: 900; text-transform: uppercase; font-size: 8px; border: 1px solid #000; }
+                    .status-ok { background: #e0ffe0; color: #006600; }
+                    .status-alert { background: #ffe0e0; color: #cc0000; }
                 </style>
             </head>
             <body>
-                <div class="title">${title}</div>
-                <br><br>
+                <div class="header">
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <div class="logo-box">
+                            ${settings.company.logo ? `<img src="${settings.company.logo}" class="logo-img" />` : '<span style="font-size:40px; font-weight:900;">R</span>'}
+                        </div>
+                        <div>
+                            <div class="company-name">${settings.company.name || 'Sua Marcenaria'}</div>
+                            <div style="font-size: 11px; font-weight: bold; color: #666;">${settings.company.cnpj || 'Documento Não Informado'}</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="report-type">Exportação de Dados</div>
+                        <div style="font-size: 12px; margin-top: 5px; font-weight: 900;">${new Date().toLocaleDateString('pt-BR')}</div>
+                    </div>
+                </div>
+
+                <div class="title-container">
+                    <h1>${title}</h1>
+                    <p>Relatório gerado automaticamente pelo sistema</p>
+                </div>
+                
                 <table>
                     <thead>
                         <tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>
                     </thead>
                     <tbody>
-                        ${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
+                        ${rows.map(row => `
+                            <tr>
+                                ${row.map(cell => {
+            const isStatus = cell === 'BAIXO' || cell === 'REPOR' || cell === 'OK';
+            const statusClass = (cell === 'BAIXO' || cell === 'REPOR') ? 'status-alert' : 'status-ok';
+            return `<td>${isStatus ? `<span class="status-badge ${statusClass}">${cell}</span>` : cell}</td>`;
+        }).join('')}
+                            </tr>
+                        `).join('')}
                     </tbody>
                 </table>
+
+                <div class="footer">Gerado por RinoScore System • ${new Date().getFullYear()} • Página 1 de 1</div>
             </body>
             </html>
         `;
 
-        const blob = new Blob([tableContent], { type: 'application/vnd.ms-excel' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${fileName}-${new Date().toISOString().split('T')[0]}.xls`;
-        a.click();
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+            printWindow.document.write(reportContent);
+            printWindow.document.close();
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
     };
 
     const isDark = settings.appearance.theme === 'Escuro';
@@ -494,84 +522,80 @@ export const Settings: React.FC = () => {
                     </div>
                 </div>
 
-                {/* 4. EXCEL EXPORT */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white animate-fade-in-up stagger-4 mb-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]">
-                    <div className="bg-black text-white p-4 flex items-center gap-3">
-                        <span className="material-symbols-outlined">table_view</span>
-                        <h2 className="text-sm font-black uppercase tracking-widest">Relatórios em Planilha (Excel)</h2>
+                {/* 4. PDF EXPORT */}
+                <div className="lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white animate-fade-in-up stagger-4 mb-12 shadow-[8px_8px_0px_0px_#0000FF] dark:shadow-[8px_8px_0px_0px_rgba(0,0,255,0.3)]">
+                    <div className="bg-primary text-white p-4 flex items-center gap-3">
+                        <span className="material-symbols-outlined">description</span>
+                        <h2 className="text-sm font-black uppercase tracking-widest">Relatórios e Exportação (PDF)</h2>
                     </div>
 
                     <div className="p-4 md:p-6 space-y-4">
                         <p className="text-[10px] font-bold uppercase text-gray-500 mb-4 leading-relaxed">
-                            Baixe suas informações formatadas para Excel (XLS) com suporte a cores e organização visual.
+                            Exporte seus dados em formato PDF com a identidade visual da sua marcenaria e organização profissional.
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <button
                                 onClick={() => {
-                                    const headers = ["ID", "Cliente", "Data", "Status", "Canal", "Faturamento", "Custo Envio", "Itens"];
+                                    const headers = ["ID", "Cliente", "Data", "Status", "Faturamento", "Itens"];
                                     const rows = orders.map(o => [
-                                        o.id,
+                                        o.id.slice(0, 8),
                                         o.client,
-                                        new Date(o.createdAt).toLocaleDateString(),
+                                        new Date(o.createdAt).toLocaleDateString('pt-BR'),
                                         o.status,
-                                        o.origin,
-                                        `R$ ${o.totalValue.toFixed(2)}`,
-                                        `R$ ${o.shippingCost?.toFixed(2) || '0.00'}`,
+                                        `R$ ${o.totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
                                         o.items.map(i => `${i.quantity}x ${i.productName}`).join(', ')
                                     ]);
-                                    downloadXLS("relatorio-pedidos", "Relatório de Pedidos de Venda", headers, rows);
+                                    downloadPDF("relatorio-pedidos", "Relatório de Pedidos de Venda", headers, rows);
                                 }}
-                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-green-600 hover:text-white transition-all brutal-btn"
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:border-primary hover:bg-primary hover:text-white transition-all brutal-btn"
                             >
-                                <span className="material-symbols-outlined text-3xl">description</span>
-                                <span className="text-xs font-black uppercase">Pedidos (.xls)</span>
+                                <span className="material-symbols-outlined text-3xl">shopping_cart</span>
+                                <span className="text-xs font-black uppercase">Pedidos (PDF)</span>
                             </button>
 
                             <button
                                 onClick={() => {
-                                    const headers = ["ID", "Produto", "SKU", "Custo Prod.", "Preço Venda", "Margem", "Estoque"];
+                                    const headers = ["Produto", "SKU", "Custo Prod.", "Preço Venda", "Margem", "Estoque"];
                                     const rows = products.map(p => {
                                         const margin = p.price > 0 ? ((p.price - p.cost) / p.price * 100).toFixed(1) + '%' : '0%';
                                         return [
-                                            p.id,
                                             p.name,
                                             p.sku || '-',
-                                            `R$ ${p.cost.toFixed(2)}`,
-                                            `R$ ${p.price.toFixed(2)}`,
+                                            `R$ ${p.cost.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+                                            `R$ ${p.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
                                             margin,
-                                            p.stock
+                                            `${p.stock} un`
                                         ];
                                     });
-                                    downloadXLS("relatorio-produtos", "Inventário de Produtos", headers, rows);
+                                    downloadPDF("relatorio-produtos", "Inventário de Produtos", headers, rows);
                                 }}
-                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-green-600 hover:text-white transition-all brutal-btn"
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:border-primary hover:bg-primary hover:text-white transition-all brutal-btn"
                             >
                                 <span className="material-symbols-outlined text-3xl">inventory_2</span>
-                                <span className="text-xs font-black uppercase">Produtos (.xls)</span>
+                                <span className="text-xs font-black uppercase">Produtos (PDF)</span>
                             </button>
 
                             <button
                                 onClick={() => {
-                                    const headers = ["ID", "Insumo", "Unidade", "Custo/Unid", "Em Estoque", "Estoque Mín.", "Status"];
+                                    const headers = ["Insumo", "Unidade", "Custo/Unid", "Em Estoque", "Mínimo", "Status"];
                                     const rows = materials.map(m => {
                                         const status = m.stock <= m.minStock ? "BAIXO" : "OK";
                                         return [
-                                            m.id,
                                             m.name,
                                             m.unit,
-                                            `R$ ${m.costPerUnit.toFixed(2)}`,
-                                            m.stock,
-                                            m.minStock,
+                                            `R$ ${m.costPerUnit.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+                                            `${m.stock} ${m.unit}`,
+                                            `${m.minStock} ${m.unit}`,
                                             status
                                         ];
                                     });
-                                    downloadXLS("relatorio-insumos", "Controle de Materiais e Insumos", headers, rows);
+                                    downloadPDF("relatorio-insumos", "Controle de Materiais e Insumos", headers, rows);
                                 }}
-                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:bg-green-600 hover:text-white transition-all brutal-btn"
+                                className="group flex flex-col items-center gap-2 p-4 bg-gray-50 dark:bg-black border-2 border-black dark:border-white hover:border-primary hover:bg-primary hover:text-white transition-all brutal-btn"
                             >
                                 <span className="material-symbols-outlined text-3xl">construction</span>
-                                <span className="text-xs font-black uppercase">Materiais (.xls)</span>
+                                <span className="text-xs font-black uppercase">Materiais (PDF)</span>
                             </button>
                         </div>
 
