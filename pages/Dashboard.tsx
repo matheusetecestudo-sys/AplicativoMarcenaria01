@@ -7,8 +7,8 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, Tooltip, LineChart, Line, Ce
 
 // Formatters
 const formatCurrencyShort = (value: number) => {
-    if (value >= 1000) return `${(value / 1000).toFixed(1)}k`;
-    return value.toString();
+    if (value >= 1000) return `R$ ${(value / 1000).toFixed(1)}k`;
+    return `R$ ${value.toFixed(2)}`;
 };
 
 const formatCurrencyFull = (value: number) => {
