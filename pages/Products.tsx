@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { Product } from '../types';
+import { CurrencyInput } from '../components/CurrencyInput';
 
 export const Products: React.FC = () => {
     const { products, updateProductStock, addProduct, updateProduct, deleteProduct, materials } = useApp();
@@ -388,11 +389,10 @@ export const Products: React.FC = () => {
                                             Preço Venda
                                             <span className="material-symbols-outlined text-[10px] text-green-500" title="Preço final para o cliente">attach_money</span>
                                         </label>
-                                        <input
-                                            type="number" step="0.01"
-                                            className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
+                                        <CurrencyInput
                                             value={formData.price}
-                                            onChange={e => setFormData({ ...formData, price: e.target.value })}
+                                            onChange={value => setFormData({ ...formData, price: value.toString() })}
+                                            className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
                                             required
                                         />
                                     </div>
@@ -401,11 +401,10 @@ export const Products: React.FC = () => {
                                             Custo Prod.
                                             <span className="material-symbols-outlined text-[10px] cursor-help" title="Custo total de materiais + mão de obra">info</span>
                                         </label>
-                                        <input
-                                            type="number" step="0.01"
-                                            className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
+                                        <CurrencyInput
                                             value={formData.cost}
-                                            onChange={e => setFormData({ ...formData, cost: e.target.value })}
+                                            onChange={value => setFormData({ ...formData, cost: value.toString() })}
+                                            className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
                                             required
                                         />
                                     </div>
@@ -414,11 +413,10 @@ export const Products: React.FC = () => {
                                             Mão de Obra
                                             <span className="material-symbols-outlined text-[10px]" title="Custo fixo de tempo/trabalho">engineering</span>
                                         </label>
-                                        <input
-                                            type="number" step="0.01"
-                                            className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
+                                        <CurrencyInput
                                             value={formData.laborCost}
-                                            onChange={e => setFormData({ ...formData, laborCost: e.target.value })}
+                                            onChange={value => setFormData({ ...formData, laborCost: value.toString() })}
+                                            className="w-full bg-white dark:bg-black border-2 border-black/10 dark:border-white/10 p-3 text-sm font-mono font-bold focus:border-primary outline-none"
                                         />
                                     </div>
                                     <div className="flex flex-col gap-1.5">

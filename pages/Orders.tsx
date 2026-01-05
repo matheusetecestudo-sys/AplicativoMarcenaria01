@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { Order, OrderItem, TimeRange } from '../types';
+import { CurrencyInput } from '../components/CurrencyInput';
 
 // --- CUSTOM BRUTALIST DATE PICKER COMPONENT ---
 const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) => void }> = ({ value, onChange }) => {
@@ -416,14 +417,11 @@ export const Orders: React.FC = () => {
 
                         <div className="flex gap-1 px-1">
                             <div className="flex-1 relative">
-                                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-[10px]">R$</span>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    className="w-full h-8 bg-white dark:bg-[#111] text-black dark:text-white pl-7 pr-2 font-black border-2 border-black dark:border-white text-xs text-right"
+                                <CurrencyInput
                                     value={customUnitPrice}
                                     placeholder="VALOR UNIT."
-                                    onChange={e => setCustomUnitPrice(parseFloat(e.target.value) || '')}
+                                    onChange={value => setCustomUnitPrice(value)}
+                                    className="w-full h-8 bg-white dark:bg-[#111] text-black dark:text-white px-2 font-black border-2 border-black dark:border-white text-xs text-right"
                                 />
                             </div>
                             <button
@@ -467,12 +465,10 @@ export const Orders: React.FC = () => {
                         <div className="flex justify-between items-center mb-3">
                             <span className="text-[10px] font-black uppercase text-gray-500">Entrega:</span>
                             <div className="relative w-28">
-                                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">R$</span>
-                                <input
-                                    type="number"
-                                    className="w-full bg-gray-50 dark:bg-black border-2 border-black focus:border-primary py-1 pl-7 text-right font-black text-sm"
+                                <CurrencyInput
                                     value={shipping}
-                                    onChange={e => setShipping(e.target.value)}
+                                    onChange={value => setShipping(value)}
+                                    className="w-full bg-gray-50 dark:bg-black border-2 border-black focus:border-primary py-1 px-2 text-right font-black text-sm"
                                 />
                             </div>
                         </div>

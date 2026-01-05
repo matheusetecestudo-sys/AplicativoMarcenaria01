@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import { CurrencyInput } from '../components/CurrencyInput';
 
 export const Calculator: React.FC = () => {
     const [materials, setMaterials] = useState([{ name: '', cost: 0 }]);
@@ -90,13 +90,11 @@ export const Calculator: React.FC = () => {
                                     />
                                     <div className="flex gap-2 w-full sm:w-auto">
                                         <div className="relative w-full sm:w-40">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm">R$</span>
-                                            <input
-                                                className="w-full bg-gray-50 dark:bg-black text-black dark:text-white p-3 pl-10 border-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none font-bold text-sm brutal-input text-right transition-colors"
-                                                placeholder="0.00"
-                                                type="number"
-                                                value={mat.cost || ''}
-                                                onChange={(e) => updateMaterial(index, 'cost', e.target.value)}
+                                            <CurrencyInput
+                                                value={mat.cost || 0}
+                                                onChange={value => updateMaterial(index, 'cost', value)}
+                                                className="w-full bg-gray-50 dark:bg-black text-black dark:text-white p-3 border-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none font-bold text-sm brutal-input text-right transition-colors"
+                                                placeholder="0,00"
                                             />
                                         </div>
                                         {materials.length > 1 && (
@@ -134,13 +132,11 @@ export const Calculator: React.FC = () => {
                                     <span className="text-[10px] font-bold uppercase bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded-sm text-gray-600 dark:text-gray-400">Opcional</span>
                                 </div>
                                 <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">R$</span>
-                                    <input
-                                        className="w-full bg-gray-50 dark:bg-black text-black dark:text-white p-4 pl-12 border-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none font-bold text-lg brutal-input transition-colors"
-                                        placeholder="0.00"
-                                        type="number"
+                                    <CurrencyInput
                                         value={laborCostPerUnit}
-                                        onChange={(e) => setLaborCostPerUnit(e.target.value)}
+                                        onChange={value => setLaborCostPerUnit(value)}
+                                        className="w-full bg-gray-50 dark:bg-black text-black dark:text-white p-4 border-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none font-bold text-lg brutal-input transition-colors"
+                                        placeholder="R$ 0,00"
                                     />
                                 </div>
                             </label>
@@ -151,13 +147,11 @@ export const Calculator: React.FC = () => {
                                     <span className="text-[10px] font-bold uppercase bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded-sm text-gray-600 dark:text-gray-400">Opcional</span>
                                 </div>
                                 <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">R$</span>
-                                    <input
-                                        className="w-full bg-gray-50 dark:bg-black text-black dark:text-white p-4 pl-12 border-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none font-bold text-lg brutal-input transition-colors"
-                                        placeholder="0.00"
-                                        type="number"
+                                    <CurrencyInput
                                         value={shippingCost}
-                                        onChange={(e) => setShippingCost(e.target.value)}
+                                        onChange={value => setShippingCost(value)}
+                                        className="w-full bg-gray-50 dark:bg-black text-black dark:text-white p-4 border-2 border-gray-300 dark:border-gray-700 focus:border-primary focus:outline-none font-bold text-lg brutal-input transition-colors"
+                                        placeholder="R$ 0,00"
                                     />
                                 </div>
                             </label>

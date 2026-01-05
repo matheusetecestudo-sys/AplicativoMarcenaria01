@@ -1,7 +1,9 @@
 
+
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { Material } from '../types';
+import { CurrencyInput } from '../components/CurrencyInput';
 
 export const Materials: React.FC = () => {
     const { materials, addMaterial, updateMaterial, deleteMaterial, updateMaterialStock, settings } = useApp();
@@ -22,14 +24,9 @@ export const Materials: React.FC = () => {
         setTimeout(() => setUpdatingId(null), 500);
     };
 
-    const handleQuickPrice = async (material: Material, newPrice: string) => {
-        const price = parseFloat(newPrice);
-        if (isNaN(price)) {
-            setEditingPriceId(null);
-            return;
-        }
+    const handleQuickPrice = async (material: Material, newPrice: number) => {
         setUpdatingId(material.id);
-        await updateMaterial({ ...material, costPerUnit: price });
+        await updateMaterial({ ...material, costPerUnit: newPrice });
         setEditingPriceId(null);
         setTimeout(() => setUpdatingId(null), 500);
     };
@@ -405,18 +402,11 @@ export const Materials: React.FC = () => {
                                             {isCritical ? 'CRÍTICO' : isLow ? 'BAIXO' : 'NORMAL'}
                                         </span>
                                         {editingPriceId === material.id ? (
-                                            <input
-                                                autoFocus
-                                                type="number"
-                                                step="0.01"
-                                                className="w-20 bg-white dark:bg-black border-2 border-primary text-right px-1 text-[9px] font-mono font-bold text-black dark:text-white"
+                                            <CurrencyInput
                                                 value={tempPrice}
-                                                onChange={e => setTempPrice(e.target.value)}
-                                                onBlur={() => handleQuickPrice(material, tempPrice)}
-                                                onKeyDown={e => {
-                                                    if (e.key === 'Enter') handleQuickPrice(material, tempPrice);
-                                                    if (e.key === 'Escape') setEditingPriceId(null);
-                                                }}
+                                                onChange={value => setTempPrice(value.toString())}
+                                                className="w-20 bg-white dark:bg-black border-2 border-primary text-right px-1 text-[9px] font-mono font-bold text-black dark:text-white"
+                                                onBlur={() => handleQuickPrice(material, parseFloat(tempPrice))}
                                             />
                                         ) : (
                                             <span className="text-[9px] font-mono font-bold text-gray-500 flex items-center gap-1 group/mprice">
@@ -515,12 +505,11 @@ export const Materials: React.FC = () => {
                                     </label>
                                     <label className="flex flex-col text-black dark:text-white font-bold uppercase">
                                         <span className="text-[10px] text-gray-500 mb-2 tracking-widest">Custo Unit. (R$)</span>
-                                        <input
-                                            type="number" step="0.01"
-                                            required
+                                        <CurrencyInput
+                                            value={formData.costPerUnit || 0}
+                                            onChange={value => setFormData({ ...formData, costPerUnit: value })}
                                             className="p-3 bg-white dark:bg-black text-black dark:text-white border-2 border-gray-200 dark:border-gray-800 focus:border-primary focus:outline-none font-mono font-bold"
-                                            value={formData.costPerUnit}
-                                            onChange={e => setFormData({ ...formData, costPerUnit: parseFloat(e.target.value) })}
+                                            required
                                         />
                                     </label>
                                 </div>
