@@ -331,14 +331,16 @@ export const Materials: React.FC = () => {
                                                     if (btn?.classList.contains('confirm-mode')) {
                                                         deleteMaterial(material.id);
                                                     } else {
-                                                        btn?.classList.add('confirm-mode');
-                                                        if (btn) btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span>';
-                                                        setTimeout(() => {
-                                                            if (btn) {
-                                                                btn.classList.remove('confirm-mode');
-                                                                btn.innerHTML = '<span class="material-symbols-outlined text-sm">delete</span>';
-                                                            }
-                                                        }, 3000);
+                                                        if (window.confirm("⚠️ ATENÇÃO: Excluir um material afetará o cálculo de custo de TODOS os produtos que o utilizam. Os relatórios financeiros antigos podem ficar imprecisos. Deseja prosseguir?")) {
+                                                            btn?.classList.add('confirm-mode');
+                                                            if (btn) btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span>';
+                                                            setTimeout(() => {
+                                                                if (btn) {
+                                                                    btn.classList.remove('confirm-mode');
+                                                                    btn.innerHTML = '<span class="material-symbols-outlined text-sm">delete</span>';
+                                                                }
+                                                            }, 3000);
+                                                        }
                                                     }
                                                 }}
                                                 id={`del-btn-${material.id}`}
@@ -459,7 +461,7 @@ export const Materials: React.FC = () => {
                                         Configurar
                                     </button>
                                     <button
-                                        onClick={() => { if (window.confirm('Excluir definitivo?')) deleteMaterial(material.id) }}
+                                        onClick={() => { if (window.confirm('⚠️ ATENÇÃO: Excluir um material afetará o cálculo de custo dos produtos e relatórios. Deseja prosseguir com a exclusão definitiva?')) deleteMaterial(material.id) }}
                                         className="size-14 flex items-center justify-center bg-red-500 text-white border-2 border-black dark:border-white shadow-[4px_4px_0px_#000]"
                                     >
                                         <span className="material-symbols-outlined">delete</span>

@@ -293,7 +293,12 @@ export const Products: React.FC = () => {
                                         <span className="material-symbols-outlined text-3xl group-hover/edit:rotate-12 transition-transform">edit_note</span>
                                     </button>
                                     <button
-                                        onClick={(e) => { e.stopPropagation(); deleteProduct(product.id); }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (window.confirm("⚠️ ATENÇÃO: Excluir este produto não removerá pedidos antigos que o contêm, mas você não poderá mais adicioná-lo a novos pedidos ou editá-lo em pedidos existentes. Deseja prosseguir?")) {
+                                                deleteProduct(product.id);
+                                            }
+                                        }}
                                         className="bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-all group/del"
                                         title="Remover"
                                     >
