@@ -366,8 +366,13 @@ export const Help: React.FC = () => {
                         <li><strong>Status:</strong> Mude de "A Fazer" para "Entregue" conforme o trabalho anda.</li>
                     </ul>
 
-                    <AlertBlock type="danger" title="Estoque Inteligente">
-                        Quando você coloca um produto no pedido, o sistema já "reserva" ele do estoque. Se você cancelar o pedido, o item volta para a prateleira virtual.
+                    <AlertBlock type="info" title="Novidade: Editar Pedido">
+                        Errou alguma coisa? Agora você pode clicar no ícone de <strong>lápis</strong> em qualquer pedido para carregá-lo de volta no formulário e corrigir o que for necessário.
+                    </AlertBlock>
+
+                    <AlertBlock type="danger" title="Não delete pedidos concluídos!">
+                        Para manter seu Dashboard e relatórios financeiros precisos (lucro, faturamento), <strong>recomendamos nunca deletar pedidos concluídos</strong>.
+                        Use o botão <strong>"Ocultar Concluídos"</strong> para limpar sua visão sem apagar o histórico de dinheiro da sua marcenaria.
                     </AlertBlock>
                 </HelpSection>
 
@@ -468,9 +473,9 @@ export const Help: React.FC = () => {
                         <li><strong>Tema Escuro/Claro:</strong> Escolha o visual que cansa menos a sua vista.</li>
                     </ul>
 
-                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Relatórios (Planilhas):</h3>
+                    <h3 className="text-black dark:text-white font-black uppercase text-xs mt-4 mb-2">Relatórios em PDF:</h3>
                     <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                        <li><strong>Baixar Pedidos, Produtos ou Materiais:</strong> Clique nos botões para baixar um arquivo do <strong>Excel</strong> todo bonitinho e organizado com seus dados. Ótimo para enviar pro contador ou guardar backup.</li>
+                        <li><strong>Exportação Profissional:</strong> Baixe listas de pedidos, produtos ou materiais em formato <strong>PDF</strong> de alta qualidade, com o logo da sua empresa e cores da marcenaria. Ideal para impressão ou envio por WhatsApp.</li>
                         <li><strong>Sincronizar Custos:</strong> Se mudou o preço do MDF, clique aqui e o sistema atualiza o preço de custo de TODOS os móveis que usam MDF de uma vez só.</li>
                     </ul>
 
@@ -486,9 +491,9 @@ export const Help: React.FC = () => {
                             <span className="material-symbols-outlined text-3xl text-white dark:text-black">verified_user</span>
                         </div>
                     </div>
-                    <p className="font-black uppercase text-sm tracking-[0.2em] mb-2 text-black dark:text-white">Sistema de Marcenaria v2.5</p>
+                    <p className="font-black uppercase text-sm tracking-[0.2em] mb-2 text-black dark:text-white">Sistema de Marcenaria v2.6</p>
                     <p className="text-[10px] max-w-md mx-auto leading-relaxed mb-4">Feito para simplificar sua oficina e organizar seu lucro.</p>
-                    <p className="text-[9px] uppercase font-bold text-gray-500">Última atualização: {new Date().toLocaleDateString()}</p>
+                    <p className="text-[9px] uppercase font-bold text-gray-500">Última atualização: {new Date().toLocaleDateString('pt-BR')}</p>
                 </div>
 
             </div>

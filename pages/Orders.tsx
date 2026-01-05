@@ -136,6 +136,7 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
 export const Orders: React.FC = () => {
     const { orders, addOrder, updateOrder, deleteOrder, updateOrderStatus, products, timeRange, setTimeRange } = useApp();
     const [filter, setFilter] = useState('');
+    const [hideCompleted, setHideCompleted] = useState(false);
 
     // Editing State
     const [isEditing, setIsEditing] = useState(false);
@@ -327,12 +328,16 @@ export const Orders: React.FC = () => {
                     return orderDate.getMonth() === today.getMonth() && orderDate.getFullYear() === today.getFullYear();
                 case 'ANO':
                     return orderDate.getFullYear() === today.getFullYear();
-                case 'TUDO':
                 default:
-                    return true;
+                    break;
             }
+
+            // 3. Status Filter (Hide Completed)
+            if (hideCompleted && order.status === 'CONCLUÍDO') return false;
+
+            return true;
         });
-    }, [orders, filter, timeRange]);
+    }, [orders, filter, timeRange, hideCompleted]);
 
     return (
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 lg:h-full h-auto pb-8 items-start">
@@ -523,12 +528,28 @@ export const Orders: React.FC = () => {
                         </div>
                     </div>
 
-                    <input
-                        className="w-full bg-white dark:bg-black text-black dark:text-white p-2 text-base font-bold border-4 border-black dark:border-white focus:outline-none focus:border-primary brutal-input uppercase placeholder:text-gray-500"
-                        placeholder="BUSCAR CLIENTE OU ID..."
-                        value={filter}
-                        onChange={e => setFilter(e.target.value)}
-                    />
+                    <div className="flex flex-col sm:flex-row gap-3">
+                        <input
+                            className="flex-1 bg-white dark:bg-black text-black dark:text-white p-2 text-base font-bold border-4 border-black dark:border-white focus:outline-none focus:border-primary brutal-input uppercase placeholder:text-gray-500"
+                            placeholder="BUSCAR CLIENTE OU ID..."
+                            value={filter}
+                            onChange={e => setFilter(e.target.value)}
+                        />
+                        <button
+                            onClick={() => setHideCompleted(!hideCompleted)}
+                            className={`
+                                h-[52px] px-4 flex items-center gap-2 border-4 transition-all brutal-btn font-black uppercase text-[10px]
+                                ${hideCompleted
+                                    ? 'bg-primary text-white border-black shadow-[4px_4px_0px_#000]'
+                                    : 'bg-white dark:bg-black text-gray-400 border-gray-200 dark:border-gray-800 hover:border-black'}
+                            `}
+                        >
+                            <span className="material-symbols-outlined text-lg">
+                                {hideCompleted ? 'visibility_off' : 'visibility'}
+                            </span>
+                            {hideCompleted ? 'Ocultando Concluídos' : 'Mostrar Concluídos'}
+                        </button>
+                    </div>
                 </div>
 
                 <div className="flex-1 overflow-auto custom-scrollbar">
