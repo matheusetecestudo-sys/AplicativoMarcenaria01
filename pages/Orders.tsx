@@ -134,8 +134,12 @@ const BrutalistDatePicker: React.FC<{ value: string; onChange: (date: string) =>
 };
 
 export const Orders: React.FC = () => {
-    const { orders, addOrder, deleteOrder, updateOrderStatus, products, timeRange, setTimeRange } = useApp();
+    const { orders, addOrder, updateOrder, deleteOrder, updateOrderStatus, products, timeRange, setTimeRange } = useApp();
     const [filter, setFilter] = useState('');
+
+    // Editing State
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingOrderId, setEditingOrderId] = useState<string | null>(null);
 
     // Header State
     const [clientName, setClientName] = useState('');
@@ -207,7 +211,7 @@ export const Orders: React.FC = () => {
         return itemsTotal + shippingCost;
     };
 
-    const handleFinalizeOrder = () => {
+    const handleFinalizeOrder = async () => {
         if (!clientName.trim()) {
             alert("Por favor, informe o nome do cliente.");
             return;
@@ -222,23 +226,63 @@ export const Orders: React.FC = () => {
         }
 
         const shippingCost = typeof shipping === 'number' ? shipping : parseFloat(shipping) || 0;
+        const totalValue = calculateCartTotal();
 
-        const newOrder: Order = {
-            id: `#${Math.floor(1000 + Math.random() * 9000)}`, // Generates 4 digit ID
-            client: clientName,
-            deadline: deadline,
-            createdAt: new Date().toISOString().split('T')[0],
-            status: 'PENDENTE',
-            origin: origin,
-            items: currentItems,
-            shippingCost: shippingCost,
-            totalValue: calculateCartTotal()
-        };
+        if (isEditing && editingOrderId) {
+            const originalOrder = orders.find(o => o.id === editingOrderId);
+            if (!originalOrder) return;
 
-        addOrder(newOrder);
-        alert("Pedido criado com sucesso!");
+            const updatedOrder: Order = {
+                ...originalOrder,
+                client: clientName,
+                deadline: deadline,
+                origin: origin,
+                items: currentItems,
+                shippingCost: shippingCost,
+                totalValue: totalValue
+            };
 
-        // Reset Form
+            await updateOrder(updatedOrder);
+            alert("Pedido atualizado com sucesso!");
+            cancelEdit();
+        } else {
+            const newOrder: Order = {
+                id: `#${Math.floor(1000 + Math.random() * 9000)}`, // Generates 4 digit ID
+                client: clientName,
+                deadline: deadline,
+                createdAt: new Date().toISOString().split('T')[0],
+                status: 'PENDENTE',
+                origin: origin,
+                items: currentItems,
+                shippingCost: shippingCost,
+                totalValue: totalValue
+            };
+
+            await addOrder(newOrder);
+            alert("Pedido criado com sucesso!");
+
+            // Reset Form (done in cancelEdit)
+            cancelEdit();
+        }
+    };
+
+    const handleEditOrder = (order: Order) => {
+        setIsEditing(true);
+        setEditingOrderId(order.id);
+        setClientName(order.client);
+        setDeadline(order.deadline);
+        setOrigin(order.origin);
+        setShipping(order.shippingCost);
+        setCurrentItems(order.items);
+
+        // Scroll to builder on mobile
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setIsBuilderExpanded(true);
+    };
+
+    const cancelEdit = () => {
+        setIsEditing(false);
+        setEditingOrderId(null);
         setClientName('');
         setDeadline('');
         setOrigin('FISICO');
@@ -300,8 +344,8 @@ export const Orders: React.FC = () => {
                 <div className="p-2 border-b-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] shrink-0">
                     <div className="flex justify-between items-center mb-1">
                         <h2 className="text-black dark:text-white text-base font-black uppercase flex items-center gap-2">
-                            <span className="material-symbols-outlined text-primary text-xl">shopping_cart_checkout</span>
-                            Novo Pedido
+                            <span className="material-symbols-outlined text-primary text-xl">{isEditing ? 'edit_note' : 'shopping_cart_checkout'}</span>
+                            {isEditing ? `Editando ${editingOrderId}` : 'Novo Pedido'}
                         </h2>
                         {/* MOBILE TOGGLE BUTTON */}
                         <button
@@ -438,9 +482,17 @@ export const Orders: React.FC = () => {
                                 onClick={handleFinalizeOrder}
                                 className="flex-1 bg-primary text-white font-black uppercase text-xs tracking-widest hover:brightness-110 active:scale-95 shadow-[4px_4px_0px_0px_#000] border-4 border-black flex items-center justify-center"
                             >
-                                CONFIRMAR
+                                {isEditing ? 'ATUALIZAR' : 'CONFIRMAR'}
                             </button>
                         </div>
+                        {isEditing && (
+                            <button
+                                onClick={cancelEdit}
+                                className="w-full mt-3 py-2 bg-gray-100 dark:bg-black/50 text-gray-400 font-black uppercase text-[10px] tracking-widest hover:text-red-500 border-2 border-dashed border-gray-300 dark:border-gray-800"
+                            >
+                                CANCELAR EDIÇÃO
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -531,6 +583,14 @@ export const Orders: React.FC = () => {
                                             >
                                                 {isOnline ? 'ONLINE' : 'LOJA'}
                                             </div>
+
+                                            <button
+                                                onClick={() => handleEditOrder(order)}
+                                                className={`size-10 flex items-center justify-center bg-transparent border-2 border-black/30 dark:border-white/30 text-black/50 dark:text-white/50 hover:text-white hover:bg-black hover:border-black transition-all brutal-btn ${isLate || isDone || isPending ? 'border-black/50 text-black/50 hover:bg-white hover:text-primary' : ''}`}
+                                                title="Editar Pedido"
+                                            >
+                                                <span className="material-symbols-outlined">edit</span>
+                                            </button>
 
                                             <button
                                                 onClick={(e) => handleDeleteOrder(e, order.id)}

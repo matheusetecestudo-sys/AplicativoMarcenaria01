@@ -16,6 +16,7 @@ interface AppContextType {
     loginWithGitHub: () => Promise<{ error: any }>;
     logout: () => void;
     addOrder: (order: Order) => Promise<void>;
+    updateOrder: (order: Order) => Promise<void>;
     deleteOrder: (id: string) => Promise<void>;
     updateOrderStatus: (id: string, status: Order['status']) => Promise<void>;
     addProduct: (product: Product) => Promise<void>;
@@ -283,6 +284,26 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         }
     };
 
+    const updateOrder = async (order: Order) => {
+        if (isSupabaseConfigured && isAuthenticated) {
+            try {
+                await updateRow('orders', order.id, {
+                    client: order.client,
+                    deadline: order.deadline,
+                    status: order.status,
+                    origin: order.origin,
+                    shipping_cost: order.shippingCost,
+                    total_value: order.totalValue,
+                    items: order.items
+                });
+            } catch (e) {
+                console.error("Error updating order:", e);
+                return;
+            }
+        }
+        setOrders(prev => prev.map(o => o.id === order.id ? order : o));
+    };
+
     const deleteOrder = async (id: string) => {
         const order = orders.find(o => o.id === id);
 
@@ -529,7 +550,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return (
         <AppContext.Provider value={{
             orders, products, materials, settings, isAuthenticated, timeRange, setTimeRange,
-            login, loginWithGitHub, logout, addOrder, deleteOrder, updateOrderStatus,
+            login, loginWithGitHub, logout, addOrder, updateOrder, deleteOrder, updateOrderStatus,
             addProduct, updateProduct, deleteProduct, updateProductStock,
             addMaterial, updateMaterial, deleteMaterial, updateMaterialStock,
             updateSettings, resetApp,
