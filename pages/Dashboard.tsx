@@ -399,16 +399,25 @@ export const Dashboard: React.FC = () => {
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-black uppercase text-gray-500">Online</p>
-                                        <p className="text-2xl font-black text-black dark:text-white">{onlineOrders.length}</p>
+                                        <div className="flex items-baseline gap-1">
+                                            <p className="text-2xl font-black text-black dark:text-white">{onlineOrders.length}</p>
+                                            <p className="text-[8px] font-bold text-gray-400 uppercase">Pedidos</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="text-right">
-                                    <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400">
-                                        {totalOrders > 0 ? ((onlineOrders.length / totalOrders) * 100).toFixed(0) : 0}%
-                                    </p>
-                                    <p className="text-[9px] font-black text-green-600 dark:text-green-400">
-                                        {formatCurrencyShort(onlineProfit)}
-                                    </p>
+                                <div className="text-right space-y-0.5">
+                                    <div className="flex items-baseline justify-end gap-1">
+                                        <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400">
+                                            {totalOrders > 0 ? ((onlineOrders.length / totalOrders) * 100).toFixed(0) : 0}%
+                                        </p>
+                                        <p className="text-[7px] font-bold text-gray-400 uppercase">dos Pedidos</p>
+                                    </div>
+                                    <div className="flex items-baseline justify-end gap-1">
+                                        <p className="text-[9px] font-black text-green-600 dark:text-green-400">
+                                            {formatCurrencyShort(onlineProfit)}
+                                        </p>
+                                        <p className="text-[7px] font-bold text-gray-400 uppercase">Lucro</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -420,16 +429,25 @@ export const Dashboard: React.FC = () => {
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-black uppercase text-gray-500">Loja Física</p>
-                                        <p className="text-2xl font-black text-black dark:text-white">{physicalOrders.length}</p>
+                                        <div className="flex items-baseline gap-1">
+                                            <p className="text-2xl font-black text-black dark:text-white">{physicalOrders.length}</p>
+                                            <p className="text-[8px] font-bold text-gray-400 uppercase">Pedidos</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="text-right">
-                                    <p className="text-xs font-bold text-orange-600 dark:text-orange-400">
-                                        {totalOrders > 0 ? ((physicalOrders.length / totalOrders) * 100).toFixed(0) : 0}%
-                                    </p>
-                                    <p className="text-[9px] font-black text-green-600 dark:text-green-400">
-                                        {formatCurrencyShort(physicalProfit)}
-                                    </p>
+                                <div className="text-right space-y-0.5">
+                                    <div className="flex items-baseline justify-end gap-1">
+                                        <p className="text-xs font-bold text-orange-600 dark:text-orange-400">
+                                            {totalOrders > 0 ? ((physicalOrders.length / totalOrders) * 100).toFixed(0) : 0}%
+                                        </p>
+                                        <p className="text-[7px] font-bold text-gray-400 uppercase">dos Pedidos</p>
+                                    </div>
+                                    <div className="flex items-baseline justify-end gap-1">
+                                        <p className="text-[9px] font-black text-green-600 dark:text-green-400">
+                                            {formatCurrencyShort(physicalProfit)}
+                                        </p>
+                                        <p className="text-[7px] font-bold text-gray-400 uppercase">Lucro</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
