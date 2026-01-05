@@ -91,8 +91,17 @@ export const Dashboard: React.FC = () => {
 
     // --- KPIS ---
     const totalOrders = filteredOrders.length;
-    const pendingOrders = filteredOrders.filter(o => o.status === 'PENDENTE').length;
-    const lateOrders = filteredOrders.filter(o => o.status === 'ATRASADO').length;
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const pendingOrders = filteredOrders.filter(o =>
+        o.status === 'PENDENTE' && new Date(o.deadline + 'T23:59:59') >= todayEnd
+    ).length;
+
+    const lateOrders = filteredOrders.filter(o =>
+        o.status !== 'CONCLUÍDO' && o.status !== 'CANCELADO' && new Date(o.deadline + 'T23:59:59') < new Date()
+    ).length;
+
     const completedOrders = filteredOrders.filter(o => o.status === 'CONCLUÍDO').length;
 
     const lowStockProducts = products.filter(p => p.stock <= 5).length;
@@ -445,10 +454,10 @@ export const Dashboard: React.FC = () => {
                                         <p className="text-sm font-black text-black dark:text-white uppercase line-clamp-1">{order.client}</p>
                                     </div>
                                     <span className={`text-[8px] font-black px-1.5 py-0.5 border-2 border-black dark:border-white uppercase
-                                        ${order.status === 'ATRASADO' ? 'bg-red-500 text-white' :
+                                        ${(order.status !== 'CONCLUÍDO' && order.status !== 'CANCELADO' && new Date(order.deadline + 'T23:59:59') < new Date()) ? 'bg-red-500 text-white' :
                                             order.status === 'CONCLUÍDO' ? 'bg-green-500 text-black' :
                                                 'bg-yellow-400 text-black'}`}>
-                                        {order.status}
+                                        {(order.status !== 'CONCLUÍDO' && order.status !== 'CANCELADO' && new Date(order.deadline + 'T23:59:59') < new Date()) ? 'ATRASADO' : order.status}
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-end">

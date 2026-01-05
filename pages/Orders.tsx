@@ -561,9 +561,13 @@ export const Orders: React.FC = () => {
                                 <span className="text-xs font-normal mt-1 opacity-70">Tente ajustar o filtro de data.</span>
                             </div>
                         ) : filteredOrders.map((order) => {
-                            const isLate = order.status === 'ATRASADO';
+                            const today = new Date();
+                            today.setHours(23, 59, 59, 999); // Final do dia de hoje
+                            const orderDeadline = new Date(order.deadline + 'T23:59:59');
+
+                            const isLate = order.status !== 'CONCLUÍDO' && order.status !== 'CANCELADO' && orderDeadline < new Date();
                             const isDone = order.status === 'CONCLUÍDO';
-                            const isPending = order.status === 'PENDENTE';
+                            const isPending = order.status === 'PENDENTE' && !isLate;
                             const isOnline = order.origin === 'ONLINE';
 
                             return (
