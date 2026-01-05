@@ -91,15 +91,14 @@ export const Dashboard: React.FC = () => {
 
     // --- KPIS ---
     const totalOrders = filteredOrders.length;
-    const todayEnd = new Date();
-    todayEnd.setHours(23, 59, 59, 999);
+    const todayStr = new Date().toISOString().split('T')[0];
 
     const pendingOrders = filteredOrders.filter(o =>
-        o.status === 'PENDENTE' && new Date(o.deadline + 'T23:59:59') >= todayEnd
+        o.status === 'PENDENTE' && o.deadline >= todayStr
     ).length;
 
     const lateOrders = filteredOrders.filter(o =>
-        o.status !== 'CONCLUÍDO' && o.status !== 'CANCELADO' && new Date(o.deadline + 'T23:59:59') < new Date()
+        o.status !== 'CONCLUÍDO' && o.status !== 'CANCELADO' && o.deadline < todayStr
     ).length;
 
     const completedOrders = filteredOrders.filter(o => o.status === 'CONCLUÍDO').length;
